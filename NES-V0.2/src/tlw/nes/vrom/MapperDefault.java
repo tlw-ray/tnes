@@ -1,11 +1,13 @@
 package tlw.nes.vrom;
 
+import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.MemoryMapper;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;
+import tlw.nes.vppu.PPU;
 import tlw.nes.vppu.Tile;
 
 public class MapperDefault implements MemoryMapper {
@@ -85,20 +87,19 @@ public class MapperDefault implements MemoryMapper {
 //    }
 
     public void write(int address, short value) {
-
+    	ROM rom=nes.getRom();
         if (address < 0x2000) {
-
             // Mirroring of RAM:
             nes.getCpuMemory().getMem()[address & 0x7FF] = value;
 
         } else if (address > 0x4017) {
 
         	nes.getCpuMemory().getMem()[address] = value;
-            if (address >= 0x6000 && address < 0x8000) {
+            if (address >= CPU_MEM_RAM_CARTRIDGE && address < CPU_MEM_BANK_LOWER) {
 
                 // Write to SaveRAM. Store in file:
-                if (nes.getRom() != null) {
-                	nes.getRom().writeBatteryRam(address, value);
+                if (rom != null) {
+                	rom.writeBatteryRam(address, value);
                 }
 
             }
@@ -117,7 +118,7 @@ public class MapperDefault implements MemoryMapper {
 
     public void writelow(int address, short value) {
 
-        if (address < 0x2000) {
+        if (address < CPU_MEM_IO) {
             // Mirroring of RAM:
             nes.getCpuMemory().getMem()[address & 0x7FF] = value;
 
@@ -125,7 +126,7 @@ public class MapperDefault implements MemoryMapper {
         	nes.getCpuMemory().getMem()[address] = value;
 
         } else if (address > 0x2007 && address < ROM.ROM_SIZE) {
-            regWrite(0x2000 + (address & 0x7), value);
+            regWrite(CPU_MEM_IO + (address & 0x7), value);
 
         } else {
             regWrite(address, value);
@@ -170,7 +171,7 @@ public class MapperDefault implements MemoryMapper {
             // ROM:
             return nes.getCpuMemory().getMem()[address];
 
-        } else if (address >= 0x2000) {
+        } else if (address >= CPU_MEM_IO) {
 
             // I/O Ports.
             return regLoad(address);
@@ -327,72 +328,67 @@ public class MapperDefault implements MemoryMapper {
     protected void regWrite(int address, short value) {
 
         switch (address) {
-            case 0x2000: {
-
+            case PPU_REGISTER_CONTROL1: {
                 // PPU Control register 1
                 nes.getCpuMemory().write(address, value);
                 nes.getPpu().updateControlReg1(value);
                 break;
 
             }
-            case 0x2001: {
-
+            case PPU_REGISTER_CONTROL2: {
                 // PPU Control register 2
                 nes.getCpuMemory().write(address, value);
                 nes.getPpu().updateControlReg2(value);
                 break;
-
             }
-            case 0x2003: {
-
+            case PPU_SPRITE_ADDRESS: {
                 // Set Sprite RAM address:
                 nes.getPpu().writeSRAMAddress(value);
                 break;
-
             }
-            case 0x2004: {
+            case PPU_SPRITE_MEMORY_DATA: {
 
                 // Write to Sprite RAM:
                 nes.getPpu().sramWrite(value);
                 break;
 
             }
-            case 0x2005: {
+            case PPU_SCREEN_SCROLL_OFFSET: {
 
                 // Screen Scroll offsets:
                 nes.getPpu().scrollWrite(value);
                 break;
 
             }
-            case 0x2006: {
+            case PPU_MEMORY_ADDRESS: {
 
                 // Set VRAM address:
                 nes.getPpu().writeVRAMAddress(value);
                 break;
 
             }
-            case 0x2007: {
+            case PPU_MEMORY_DATA: {
 
                 // Write to VRAM:
                 nes.getPpu().vramWrite(value);
                 break;
 
             }
-            case 0x4014: {
+            case PPU_DMA_ACCESS_SPRINT: {
 
                 // Sprite Memory DMA Access
                 nes.getPpu().sramDMA(value);
                 break;
 
             }
-            case 0x4015: {
+            case PPU_SOUND_CHANNEL_SWITCH: {
 
                 // Sound Channel Switch, DMC Status
                 nes.getPapu().writeReg(address, value);
                 break;
 
             }
-            case 0x4016: {
+            case PPU_JOYSTICK1: {
 
                 ////System.out.println("joy strobe write "+value);
 
@@ -406,7 +402,7 @@ public class MapperDefault implements MemoryMapper {
                 break;
 
             }
-            case 0x4017: {
+            case PPU_JOYSTICK2: {
 
                 // Sound channel frame sequencer:
                 nes.getPapu().writeReg(address, value);
@@ -417,7 +413,7 @@ public class MapperDefault implements MemoryMapper {
 
                 // Sound registers
                 ////System.out.println("write to sound reg");
-                if (address >= ROM.ROM_SIZE && address <= 0x4017) {
+                if (address >= ROM.ROM_SIZE && address <= PPU_JOYSTICK2) {
                     nes.getPapu().writeReg(address, value);
                 }
                 break;
@@ -432,56 +428,29 @@ public class MapperDefault implements MemoryMapper {
         InputHandler in = nes.getGui().getJoy1();
         short ret;
 
-        switch (joy1StrobeState) {
-            case 0:
-                ret = in.getKeyState(InputHandler.KEY_A);
-                break;
-            case 1:
-                ret = in.getKeyState(InputHandler.KEY_B);
-                break;
-            case 2:
-                ret = in.getKeyState(InputHandler.KEY_SELECT);
-                break;
-            case 3:
-                ret = in.getKeyState(InputHandler.KEY_START);
-                break;
-            case 4:
-                ret = in.getKeyState(InputHandler.KEY_UP);
-                break;
-            case 5:
-                ret = in.getKeyState(InputHandler.KEY_DOWN);
-                break;
-            case 6:
-                ret = in.getKeyState(InputHandler.KEY_LEFT);
-                break;
-            case 7:
-                ret = in.getKeyState(InputHandler.KEY_RIGHT);
-                break;
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-            case 18:
-                ret = (short) 0;
-                break;
-            case 19:
-                ret = (short) 1;
-                break;
-            default:
-                ret = 0;
+        switch(joy1StrobeState){
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        	ret=in.getKeyState(joy1StrobeState);
+        	break;
+        case 19:
+        	ret=1;
+        	break;
+        default :
+        	ret=0;
         }
 
         joy1StrobeState++;
         if (joy1StrobeState == 24) {
             joy1StrobeState = 0;
         }
-
+        
         return ret;
 
     }
@@ -559,41 +528,32 @@ public class MapperDefault implements MemoryMapper {
     }
 
     protected void loadCHRROM() {
-
-        ////System.out.println("Loading CHR ROM..");
-
+    	Globals.info("Loading CHR ROM..");
     	ROM rom=nes.getRom();
         if (rom.getVromBankCount() > 0) {
         	loadVromBank(0, MemoryMapper.CPU_MEM_RAM_INTERNAL);
             if (rom.getVromBankCount() == 1) {
-                loadVromBank(0, 0x1000);
+                loadVromBank(0, ROM.VROM_SIZE);
             } else {
-                loadVromBank(1, 0x1000);
+                loadVromBank(1, ROM.VROM_SIZE);
             }
         } else {
-            //System.out.println("There aren't any CHR-ROM banks..");
+        	Globals.info("There aren't any CHR-ROM banks..");
         }
-
     }
 
     public void loadBatteryRam() {
-
-        if (nes.getRom().hasBatteryRam()) {
-
-            short[] ram = nes.getRom().getBatteryRam();
-            if (ram != null && ram.length == 0x2000) {
-
+    	ROM rom=nes.getRom();
+        if (rom.hasBatteryRam()) {
+            short[] ram = rom.getBatteryRam();
+            if (ram != null && ram.length == ROM.BATTERYROM_SIZE) {
                 // Load Battery RAM into memory:
-                System.arraycopy(ram, 0, nes.getCpuMemory().getMem(), 0x6000, 0x2000);
-
+                System.arraycopy(ram, 0, nes.getCpuMemory().getMem(), CPU_MEM_RAM_CARTRIDGE, ROM.BATTERYROM_SIZE);
             }
-
         }
-
     }
     
     protected void loadRomBank(int bank, int address) {
-
         // Loads a ROM bank into the specified address.
     	ROM rom=nes.getRom();
         bank %= rom.getRomBankCount();
@@ -603,27 +563,26 @@ public class MapperDefault implements MemoryMapper {
         Memory cpuMemory=nes.getCpuMemory();
         short[] cpuMemoryData=cpuMemory.getMem();
         System.arraycopy(bankData, 0, cpuMemoryData, address, ROM.ROM_SIZE);
-
     }
 
     protected void loadVromBank(int bank, int address) {
-
-        if (nes.getRom().getVromBankCount() == 0) {
+    	ROM rom=nes.getRom();
+        if (rom.getVromBankCount() == 0) {
             return;
         }
         nes.getPpu().triggerRendering();
 
-        System.arraycopy(nes.getRom().getVromBank(bank % nes.getRom().getVromBankCount()), 0, nes.getPpuMemory().getMem(), address, 4096);
+        System.arraycopy(rom.getVromBank(bank % rom.getVromBankCount()), 0, nes.getPpuMemory().getMem(), address, 4096);
 
-        Tile[] vromTile = nes.getRom().getVromBankTiles(bank % nes.getRom().getVromBankCount());
+        Tile[] vromTile = rom.getVromBankTiles(bank % rom.getVromBankCount());
         System.arraycopy(vromTile, 0, nes.getPpu().getPtTile(), address >> 4, 256);
 
     }
 
     protected void load32kRomBank(int bank, int address) {
-
-        loadRomBank((bank * 2) % nes.getRom().getRomBankCount(), address);
-        loadRomBank((bank * 2 + 1) % nes.getRom().getRomBankCount(), address + 16384);
+    	ROM rom=nes.getRom();
+        loadRomBank((bank * 2) % rom.getRomBankCount(), address);
+        loadRomBank((bank * 2 + 1) % rom.getRomBankCount(), address + ROM.ROM_SIZE);
 
     }
 
@@ -640,18 +599,18 @@ public class MapperDefault implements MemoryMapper {
     }
 
     protected void load1kVromBank(int bank1k, int address) {
-
-        if (nes.getRom().getVromBankCount() == 0) {
+    	ROM rom=nes.getRom();
+        if (rom.getVromBankCount() == 0) {
             return;
         }
         nes.getPpu().triggerRendering();
 
-        int bank4k = (bank1k / 4) % nes.getRom().getVromBankCount();
+        int bank4k = (bank1k / 4) % rom.getVromBankCount();
         int bankoffset = (bank1k % 4) * 1024;
-        System.arraycopy(nes.getRom().getVromBank(bank4k), 0, nes.getPpuMemory().getMem(), bankoffset, 1024);
+        System.arraycopy(rom.getVromBank(bank4k), 0, nes.getPpuMemory().getMem(), bankoffset, 1024);
 
         // Update tiles:
-        Tile[] vromTile = nes.getRom().getVromBankTiles(bank4k);
+        Tile[] vromTile = rom.getVromBankTiles(bank4k);
         int baseIndex = address >> 4;
         for (int i = 0; i < 64; i++) {
             nes.getPpu().getPtTile()[baseIndex + i] = vromTile[((bank1k % 4) << 6) + i];
@@ -660,31 +619,32 @@ public class MapperDefault implements MemoryMapper {
     }
 
     protected void load2kVromBank(int bank2k, int address) {
-
-        if (nes.getRom().getVromBankCount() == 0) {
+    	ROM rom=nes.getRom();
+    	PPU ppu=nes.getPpu();
+        if (rom.getVromBankCount() == 0) {
             return;
         }
-        nes.getPpu().triggerRendering();
+        ppu.triggerRendering();
 
-        int bank4k = (bank2k / 2) % nes.getRom().getVromBankCount();
+        int bank4k = (bank2k / 2) % rom.getVromBankCount();
         int bankoffset = (bank2k % 2) * 2048;
-        System.arraycopy(nes.getRom().getVromBank(bank4k), bankoffset, nes.getPpuMemory().getMem(), address, 2048);
+        System.arraycopy(rom.getVromBank(bank4k), bankoffset, nes.getPpuMemory().getMem(), address, 2048);
 
         // Update tiles:
-        Tile[] vromTile = nes.getRom().getVromBankTiles(bank4k);
+        Tile[] vromTile = rom.getVromBankTiles(bank4k);
         int baseIndex = address >> 4;
         for (int i = 0; i < 128; i++) {
-            nes.getPpu().getPtTile()[baseIndex + i] = vromTile[((bank2k % 2) << 7) + i];
+            ppu.getPtTile()[baseIndex + i] = vromTile[((bank2k % 2) << 7) + i];
         }
 
     }
 
     protected void load8kRomBank(int bank8k, int address) {
-
-        int bank16k = (bank8k / 2) % nes.getRom().getRomBankCount();
+    	ROM rom=nes.getRom();
+        int bank16k = (bank8k / 2) % rom.getRomBankCount();
         int offset = (bank8k % 2) * 8192;
 
-        short[] bank = nes.getRom().getRomBank(bank16k);
+        short[] bank = rom.getRomBank(bank16k);
         nes.getCpuMemory().write(address, bank, offset, 8192);
 
     }

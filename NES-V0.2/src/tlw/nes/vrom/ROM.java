@@ -32,11 +32,11 @@ public class ROM{
 	public static final int MIRRORING_SINGLE4		= 6;
 	public static final int MIRRORING_CHRROM      	= 7;
 	
-	public static final int ROM_SIZE	=0x4000;
-	public static final int VROM_SIZE	=0x1000;
-	public static final int TILE_COUNT	=0x100;
-	public static final int HEAD_LENGTH	=0x10;
-	public static final int BATTERYROM_SIZE=0x2000;
+	public static final int ROM_SIZE		=0x4000;
+	public static final int BATTERYROM_SIZE	=0x2000;
+	public static final int VROM_SIZE		=0x1000;
+	public static final int TILE_COUNT		=0x100;
+	public static final int HEAD_LENGTH		=0x10;
 	
 	private static String[] MAPPER_NAMES;
 	private static boolean[] MAPPER_SUPPORTED;
@@ -484,7 +484,7 @@ public class ROM{
 		}
 		//System.out.println("Trying to write to battery RAM. batteryRam="+batteryRam+" enableSave="+enableSave);
 		if(batteryRam && !failedSaveFile){
-			saveRam[address-0x6000] = value;
+			saveRam[address-MemoryMapper.CPU_MEM_RAM_CARTRIDGE] = value;
 			saveRamUpToDate = false;
 		}
 	}

@@ -36,6 +36,7 @@ public class ROM{
 	public static final int VROM_SIZE	=0x1000;
 	public static final int TILE_COUNT	=0x100;
 	public static final int HEAD_LENGTH	=0x10;
+	public static final int BATTERYROM_SIZE=0x2000;
 	
 	private static String[] MAPPER_NAMES;
 	private static boolean[] MAPPER_SUPPORTED;

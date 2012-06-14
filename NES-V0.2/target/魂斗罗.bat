@@ -1,0 +1,1 @@
+JAVA -cp tnes.jar; tlw.nes.platform.jfc.JPanelNES rom/»ê¶·ÂÞ1.nes

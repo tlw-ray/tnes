@@ -1,0 +1,926 @@
+From: "Saved by Windows Internet Explorer 9"
+Subject: 6502 Disssembler
+Date: Tue, 21 Feb 2012 22:29:02 +0800
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01CCF0E8.36AD55B0"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17609
+
+这是 MIME 格式的多方邮件。
+
+------=_NextPart_000_0000_01CCF0E8.36AD55B0
+Content-Type: text/html;
+	charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.e-tradition.net/bytes/6502/disassembler.html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>6502 Disssembler</TITLE>
+<META content=3D"text/html; charset=3Diso-8859-15" =
+http-equiv=3Dcontent-type>
+<META content=3Dno http-equiv=3Dimagetoolbar>
+<META name=3Ddescription=20
+content=3D"A JavaScript disassembler for the 6502/6510 MPU">
+<META name=3Dkeywords=20
+content=3D"6502 disassembler, 6510 disassembler, MOS 6502, MOS 6510, =
+JavaScript, electronic tradition, e-tradion.net"><!-- N. Landsteiner, =
+electronic tradion 2005; e-tradion.net -->
+<SCRIPT language=3DJavaScript type=3Dtext/javascript=20
+src=3D"http://www.e-tradition.net/bytes/6502/6502disassembler.js"></SCRIP=
+T>
+
+<STYLE type=3Dtext/css>.display {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: white; FONT-SIZE: 15px
+}
+.display2 {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: white; FONT-SIZE: 12px
+}
+XMP {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: white; FONT-SIZE: 12px
+}
+.regset {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: #77dd11; FONT-SIZE: 15px; =
+TEXT-DECORATION: none
+}
+A.regset {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: #77dd11; FONT-SIZE: 15px; =
+TEXT-DECORATION: none
+}
+A.regset:link {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: #77dd11; FONT-SIZE: 15px; =
+TEXT-DECORATION: none
+}
+A.regset:visited {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: #77dd11; FONT-SIZE: 15px; =
+TEXT-DECORATION: none
+}
+A.regset:hover {
+	TEXT-DECORATION: underline
+}
+A.regset:active {
+	COLOR: ; TEXT-DECORATION: underline
+}
+H1 {
+	LETTER-SPACING: 2px; FONT-FAMILY: arial,helvetica,sans-serif; COLOR: =
+white; FONT-SIZE: 32px; FONT-WEIGHT: normal
+}
+H1 SMALL {
+	LETTER-SPACING: 2px; FONT-SIZE: 24px
+}
+H3 {
+	LETTER-SPACING: 1px; FONT-FAMILY: arial,helvetica,sans-serif; COLOR: =
+white; FONT-SIZE: 20px; FONT-WEIGHT: normal
+}
+.text18 {
+	LINE-HEIGHT: 18px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; =
+COLOR: white; FONT-SIZE: 11px
+}
+.text {
+	FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; COLOR: white; =
+FONT-SIZE: 11px
+}
+.isButton {
+	FONT-FAMILY: courier,fixed,sans-serif; COLOR: black; FONT-SIZE: 12px
+}
+.formField {
+	FONT-FAMILY: courier,fixed,sans-serif; BACKGROUND: #333333; COLOR: =
+#dddddd; FONT-SIZE: 12px
+}
+</STYLE>
+
+<META name=3DGENERATOR content=3D"MSHTML 9.00.8112.16441"></HEAD>
+<BODY=20
+style=3D"BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BORDER-TOP: 0px; =
+BORDER-RIGHT: 0px"=20
+bottomMargin=3D0 aLink=3D#bb0000 leftMargin=3D0 rightMargin=3D0 =
+topMargin=3D0=20
+bgColor=3D#002543 text=3D#ffffff vLink=3D#d4dce5 link=3D#d4dce5 =
+marginwidth=3D"0"=20
+marginheight=3D"0"><A name=3Dtop></A>
+<TABLE border=3D0 cellSpacing=3D0 cellPadding=3D0 width=3D700>
+  <TBODY>
+  <TR>
+    <TD height=3D18 width=3D20><IMG=20
+      src=3D"http://www.e-tradition.net/images/leer.gif" width=3D20 =
+height=3D1></TD>
+    <TD height=3D18 width=3D192><IMG=20
+      src=3D"http://www.e-tradition.net/images/leer.gif" width=3D192 =
+height=3D1></TD>
+    <TD height=3D18></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD height=3D109><A href=3D"http://www.e-tradition.net/"><IMG=20
+      title=3De-tradition.net border=3D0 hspace=3D8 =
+alt=3De-tradition.net=20
+      src=3D"http://www.e-tradition.net/images/site_xsmall.gif" =
+width=3D165=20
+      height=3D109></A></TD>
+    <TD vAlign=3Dmiddle>
+      <H1>6502 Disassembler</H1></TD></TR>
+  <TR>
+    <TD height=3D18 colSpan=3D3>&nbsp;</TD></TR>
+  <TR>
+    <TD colSpan=3D2></TD>
+    <TD vAlign=3Dtop><!-- disass -->
+      <TABLE border=3D0 cellSpacing=3D5 cellPadding=3D0>
+        <FORM onsubmit=3D"return false" name=3Ddisass>
+        <TBODY>
+        <TR vAlign=3Dtop>
+          <TD class=3Ddisplay2>code:</TD>
+          <TD class=3Ddisplay2>disassembly:</TD></TR>
+        <TR vAlign=3Dtop>
+          <TD><TEXTAREA class=3DformField wrap=3Dvirtual cols=3D30 =
+rows=3D20 name=3Dcodefield></TEXTAREA></TD>
+          <TD><TEXTAREA class=3DformField wrap=3Dvirtual cols=3D38 =
+rows=3D20 readOnly name=3Dlisting></TEXTAREA></TD></TR>
+        <TR vAlign=3Dmiddle>
+          <TD>
+            <TABLE border=3D0 cellSpacing=3D0 cellPadding=3D2>
+              <TBODY>
+              <TR vAlign=3Dmiddle>
+                <TD class=3Ddisplay2 noWrap align=3Dright>opcode starts =
+at=20
+                (hex):</TD>
+                <TD><INPUT =
+onchange=3Dthis.form.startAddr.value=3Dthis.value=20
+                  class=3DformField name=3DcodeAddr value=3D0000 =
+size=3D6></TD></TR>
+              <TR vAlign=3Dmiddle>
+                <TD class=3Ddisplay2 noWrap align=3Dright>disassemble =
+from=20
+                (hex):</TD>
+                <TD><INPUT class=3DformField name=3DstartAddr =
+value=3D0000=20
+              size=3D6></TD></TR>
+              <TR vAlign=3Dmiddle>
+                <TD class=3Ddisplay2 noWrap align=3Dright>to (hex):</TD>
+                <TD><INPUT class=3DformField name=3DstopAddr =
+value=3D0000=20
+              size=3D6></TD></TR></TBODY></TABLE></TD>
+          <TD align=3Dright><INPUT class=3DisButton =
+onclick=3Ddisassemble() value=3D&nbsp;disassemble&nbsp; =
+type=3Dbutton></TD></TR></FORM></TBODY></TABLE><!-- /disass -->
+      <P class=3Dtext>&nbsp;</P>
+      <P class=3Dtext18>Show the <A onclick=3D"if (this.blur) =
+this.blur()"=20
+      =
+href=3D"http://www.e-tradition.net/bytes/6502/6502_instruction_set.html" =
+
+      target=3Dinstset><IMG border=3D0=20
+      src=3D"http://www.e-tradition.net/images/link.gif" width=3D11 =
+height=3D12>6502=20
+      instruction set</A>.<BR>Show the <A onclick=3D"if (this.blur) =
+this.blur()"=20
+      href=3D"http://www.e-tradition.net/bytes/6502/index.html"=20
+      target=3Dvirtual6502><IMG border=3D0=20
+      src=3D"http://www.e-tradition.net/images/link.gif" width=3D11=20
+      height=3D12>virtual 6502</A> emulator.<BR>Show the <A=20
+      onclick=3D"if (this.blur) this.blur()"=20
+      href=3D"http://www.e-tradition.net/bytes/6502/assembler.html"=20
+      target=3Dinstset><IMG border=3D0=20
+      src=3D"http://www.e-tradition.net/images/link.gif" width=3D11 =
+height=3D12>6502=20
+      Assembler</A></P>
+      <P class=3Dtext>&nbsp;</P>
+      <H3>Instructions</H3>
+      <P class=3Dtext18>This is is simple disassembler for the 65xx =
+micro=20
+      processor.<BR>It is thought to accompany the <A=20
+      onclick=3D"if (this.blur) this.blur()"=20
+      href=3D"http://www.e-tradition.net/bytes/6502/index.html"=20
+      target=3Dvirtual6502>virtual 6502</A> emulator.</P>
+      <P class=3Dtext18>To get your code disassmbled:</P>
+      <OL>
+        <LI class=3Dtext18>Enter the object code in the "code" pane.=20
+        <LI class=3Dtext18>Enter the start address.=20
+        <LI class=3Dtext18>Enter an optional stop address (dissasmble =
+the whole=20
+        code else).=20
+        <LI class=3Dtext18>Click the button "disassemble".=20
+        <LI class=3Dtext18>Copy the assembler code from the =
+"disassembly" pane for=20
+        further use. </LI></OL>
+      <P class=3Dtext18>The object code is to be entered as series of =
+hex numbers=20
+      (separated by optional white space). Any figures prefixed by a =
+colon ":"=20
+      are ignored as line numbers.<BR>&nbsp;</P>
+      <H3>Assembler Syntax</H3>
+      <P class=3Dtext>The disassembler supports the following =
+syntax:</P>
+      <TABLE border=3D0 cellSpacing=3D0 cellPadding=3D3>
+        <TBODY>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Dtext>Instructions are always 3 letter mnemonics =
+followed=20
+            by an (optional) operand/address:</TD></TR></TBODY></TABLE>
+      <TABLE border=3D0 cellSpacing=3D0 cellPadding=3D3>
+        <TBODY>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>implied</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC A</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>Accumulator</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC #BB</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>immediate</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC HHLL</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>absolute</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC HHLL,X</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>absolute, X-indexed</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC HHLL,Y</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>absolute, Y-indexed</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC LL</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>zeropage</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC LL,X</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>zeropage, X-indexed</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC LL,Y</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>zeropage, Y-indexed</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC (BB,X)</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>X-indexed, indirect</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC (LL),Y</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>indirect, Y-indexed</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC (HHLL)</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>indirect</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>OPC BB</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>relative</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>???</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>undefined =
+opcode</TD></TR></TBODY></TABLE>
+      <TABLE border=3D0 cellSpacing=3D0 cellPadding=3D3>
+        <TBODY>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Dtext>&nbsp;<BR>Where HHLL is a 16 bit word and LL =
+or BB a=20
+            8 bit byte, and A is literal "A".<BR>Operands are always =
+represented=20
+            as hex numbers (e.g.: =
+$0000).<BR><BR>&nbsp;</TD></TR></TBODY></TABLE>
+      <TABLE border=3D0 cellSpacing=3D0 cellPadding=3D3>
+        <TBODY>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Dtext colSpan=3D3>Other Instructions /=20
+        Pragmas:<BR>&nbsp;</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>* =3D $xxxx</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>set program counter (=3D start =
+address)</TD></TR>
+        <TR>
+          <TD class=3Dtext noWrap>&nbsp;&nbsp;</TD>
+          <TD class=3Ddisplay2 noWrap>.END</TD>
+          <TD class=3Dtext noWrap>....</TD>
+          <TD class=3Dtext noWrap>end of assembler =
+code</TD></TR></TBODY></TABLE>
+      <P class=3Dtext18>&nbsp;</P>
+      <P class=3Dtext18>Disclaimer:<BR>This program is provided for free =
+and AS=20
+      IS, therefore without any warranty;<BR>without even the implied =
+warranty=20
+      of merchantability or fitness for a particular purpose.</P>
+      <P class=3Dtext18>&nbsp;</P>
+      <P class=3Dtext18>Links:<BR>The official 65xx Website (The Western =
+Design=20
+      Center Inc.): <A onclick=3D"if (this.blur) this.blur()"=20
+      href=3D"http://www.65xx.com/" target=3D_blank><IMG border=3D0=20
+      src=3D"http://www.e-tradition.net/images/link.gif" width=3D11=20
+      height=3D12>www.65xx.com</A></P>
+      <P class=3Dtext18>&nbsp;</P>
+      <P class=3Dtext18>=A9 Norbert Landsteiner 2005, <A=20
+      href=3D"http://e-tradition.net/" =
+target=3D_blank>e-tradition.net</A></P>
+      <P =
+class=3Dtext18>&nbsp;</P></TD></TR></TBODY></TABLE></BODY></HTML>
+
+------=_NextPart_000_0000_01CCF0E8.36AD55B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.e-tradition.net/images/leer.gif
+
+R0lGODlhDAAMAID/AMDAwAAAACH5BAEAAAAALAAAAAAMAAwAAAIKhI+py+0Po5yUFQA7
+
+------=_NextPart_000_0000_01CCF0E8.36AD55B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.e-tradition.net/images/site_xsmall.gif
+
+R0lGODlhpQBtAPf/AP76/gYCCgYCEhoZHQoGGhIOIhMSGAcGEgsKFAICFgICEgICDgICCgYGFwIC
+BgYGDgYGCgsNKwMGKgsNIxQWKwIGJAIFGwsNGxMVJBweLCImPdLW7PT1+gIGFhMVHfP1/hweJdHY
+8t7k+9je8+vv/QIOMgIMLQYSNgIGEg0PFSouOistM83U6uLm8+vt8wYSMg4YM8DI3svS5tTb7t3j
+8+Xr+9rf7QMMIxUeNM7X7gISNgMLHAsVKxslOyUuQztFWyInMiMmLcbP5NTb6s/W5QISMgYWNgIG
+DhwkNCs2SzI9VAIWOgYaPggaOgsUJCMsPFNdb2hueebr9AIWNjQ9TEpWat7k7gIaPgMWMgQLFRMd
+LBwjLSs1RDQ7RVxlczI2PHJ7iAIeQgIaOgYePgUVKxQlPCUsNTtFU0xWY0JIUNXb4wMSJAciQgge
+OAkbMg4iOxosQzNGXUNPXkRNWFNdaVlibYSNmAIiRgIePgIaNgomRRQ2WxAqSA0cLBgxTB01URUk
+NCc9VRQcJTRDVERWaykyPDlCTGBte2l1g5GdqnqEj1RaYQIeOgMmSgYqTgYmRgYiPgouUgoqSg4u
+TgIGChg6Ww4hNCA0SRwsPCtCWiU5TSQ0RDdNZCw8TDxMXERUZExcbFlqe1RjcmRygHqJmIiWpO7z
++Pr8/u7w8vT19gIqTgImRgIiQQYqSgouTg0yUw8uShY4ViVEYQsUHCtJZD1SZUVabVBme2R5jEhT
+XV1qdpqns6Ovuq65w7jCywYmQgUbLQorRhM1Uhs7Vh0+WxQqPCFBXDFOZzhVbT1ackllfDZLXCw6
+Rltzh1twgVNmdml/kX2PnnGAjc/W3AIqSsDAwAYuTgYqRgouSg8yThpCYhQiLQYKDR8yQB0qNC9C
+UUVgdU9icDxKVW+FlkxaZcTN1Nzh5ePo7AIuTgIqRgYuSgoyTgYYJA4ySlFtgAIuSgwaIxYqNiY7
+RzZKVQsNDvb6/AIGBgoGBvr6+gYGBgICAgEBAQAAAAAAAAAAAAAAACH5BAEAANUALAAAAAClAG0A
+QAj/AKsJHEiwoMGDCBMeXMWw4SqFECNKnEixosWLGAuyWnKL2JSHBB2uukZS0jU8eGg1oyXmkbpW
+MGPKnEmzZiuS12Di3EnS5kxJwbBhk0S0qFBswWL2pPmI5CORGaMKZDUGnB8xIEOODDplHAc9RVqJ
+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
+K2w01llbyxEeAovByE1Xa61RQAA7
+
+------=_NextPart_000_0000_01CCF0E8.36AD55B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.e-tradition.net/images/link.gif
+
+R0lGODlhCwAMAMT/ANfc7tHX6dPY6dne79jd7trf78/W6LXA07S/0oGTqoOVqldviCRDX0Zhe0di
+e8DAwAgrSQgsSSNDXyREXwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEA
+AA8ALAAAAAALAAwAAAUm4COOZGmepYSKRrMCQAKdRI0w5qAPwVLuB1ypUFBETgLHarJ6hAAAOw==
+
+------=_NextPart_000_0000_01CCF0E8.36AD55B0
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.e-tradition.net/bytes/6502/6502disassembler.js
+
+// 6502 disassembler=0A=
+// n. landsteiner, electronic tradion 2005; e-tradion.net=0A=
+=0A=
+// lookup tables=0A=
+=0A=
+var hextab=3D =
+['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];=0A=
+var opctab=3D [=0A=
+	['BRK','imp'], ['ORA','inx'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ORA','zpg'], ['ASL','zpg'], ['???','imp'],=0A=
+	['PHP','imp'], ['ORA','imm'], ['ASL','acc'], ['???','imp'],=0A=
+	['???','imp'], ['ORA','abs'], ['ASL','abs'], ['???','imp'],=0A=
+	['BPL','rel'], ['ORA','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ORA','zpx'], ['ASL','zpx'], ['???','imp'],=0A=
+	['CLC','imp'], ['ORA','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ORA','abx'], ['ASL','abx'], ['???','imp'],=0A=
+	['JSR','abs'], ['AND','inx'], ['???','imp'], ['???','imp'],=0A=
+	['BIT','zpg'], ['AND','zpg'], ['ROL','zpg'], ['???','imp'],=0A=
+	['PLP','imp'], ['AND','imm'], ['ROL','acc'], ['???','imp'],=0A=
+	['BIT','abs'], ['AND','abs'], ['ROL','abs'], ['???','imp'],=0A=
+	['BMI','rel'], ['AND','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['AND','zpx'], ['ROL','zpx'], ['???','imp'],=0A=
+	['SEC','imp'], ['AND','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['AND','abx'], ['ROL','abx'], ['???','imp'],=0A=
+	['RTI','imp'], ['EOR','inx'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['EOR','zpg'], ['LSR','zpg'], ['???','imp'],=0A=
+	['PHA','imp'], ['EOR','imm'], ['LSR','acc'], ['???','imp'],=0A=
+	['JMP','abs'], ['EOR','abs'], ['LSR','abs'], ['???','imp'],=0A=
+	['BVC','rel'], ['EOR','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['EOR','zpx'], ['LSR','zpx'], ['???','imp'],=0A=
+	['CLI','imp'], ['EOR','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['EOR','abx'], ['LSR','abx'], ['???','imp'],=0A=
+	['RTS','imp'], ['ADC','inx'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ADC','zpg'], ['ROR','zpg'], ['???','imp'],=0A=
+	['PLA','imp'], ['ADC','imm'], ['ROR','acc'], ['???','imp'],=0A=
+	['JMP','ind'], ['ADC','abs'], ['ROR','abs'], ['???','imp'],=0A=
+	['BVS','rel'], ['ADC','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ADC','zpx'], ['ROR','zpx'], ['???','imp'],=0A=
+	['SEI','imp'], ['ADC','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['ADC','abx'], ['ROR','abx'], ['???','imp'],=0A=
+	['???','imp'], ['STA','inx'], ['???','imp'], ['???','imp'],=0A=
+	['STY','zpg'], ['STA','zpg'], ['STX','zpg'], ['???','imp'],=0A=
+	['DEY','imp'], ['???','imp'], ['TXA','imp'], ['???','imp'],=0A=
+	['STY','abs'], ['STA','abs'], ['STX','abs'], ['???','imp'],=0A=
+	['BCC','rel'], ['STA','iny'], ['???','imp'], ['???','imp'],=0A=
+	['STY','zpx'], ['STA','zpx'], ['STX','zpy'], ['???','imp'],=0A=
+	['TYA','imp'], ['STA','aby'], ['TXS','imp'], ['???','imp'],=0A=
+	['???','imp'], ['STA','abx'], ['???','imp'], ['???','imp'],=0A=
+	['LDY','imm'], ['LDA','inx'], ['LDX','imm'], ['???','imp'],=0A=
+	['LDY','zpg'], ['LDA','zpg'], ['LDX','zpg'], ['???','imp'],=0A=
+	['TAY','imp'], ['LDA','imm'], ['TAX','imp'], ['???','imp'],=0A=
+	['LDY','abs'], ['LDA','abs'], ['LDX','abs'], ['???','imp'],=0A=
+	['BCS','rel'], ['LDA','iny'], ['???','imp'], ['???','imp'],=0A=
+	['LDY','zpx'], ['LDA','zpx'], ['LDX','zpy'], ['???','imp'],=0A=
+	['CLV','imp'], ['LDA','aby'], ['TSX','imp'], ['???','imp'],=0A=
+	['LDY','abx'], ['LDA','abx'], ['LDX','aby'], ['???','imp'],=0A=
+	['CPY','imm'], ['CMP','inx'], ['???','imp'], ['???','imp'],=0A=
+	['CPY','zpg'], ['CMP','zpg'], ['DEC','zpg'], ['???','imp'],=0A=
+	['INY','imp'], ['CMP','imm'], ['DEX','imp'], ['???','imp'],=0A=
+	['CPY','abs'], ['CMP','abs'], ['DEC','abs'], ['???','imp'],=0A=
+	['BNE','rel'], ['CMP','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['CMP','zpx'], ['DEC','zpx'], ['???','imp'],=0A=
+	['CLD','imp'], ['CMP','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['CMP','abx'], ['DEC','abx'], ['???','imp'],=0A=
+	['CPX','imm'], ['SBC','inx'], ['???','imp'], ['???','imp'],=0A=
+	['CPX','zpg'], ['SBC','zpg'], ['INC','zpg'], ['???','imp'],=0A=
+	['INX','imp'], ['SBC','imm'], ['NOP','imp'], ['???','imp'],=0A=
+	['CPX','abs'], ['SBC','abs'], ['INC','abs'], ['???','imp'],=0A=
+	['BEQ','rel'], ['SBC','iny'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['SBC','zpx'], ['INC','zpx'], ['???','imp'],=0A=
+	['SED','imp'], ['SBC','aby'], ['???','imp'], ['???','imp'],=0A=
+	['???','imp'], ['SBC','abx'], ['INC','abx'], ['???','imp']=0A=
+];=0A=
+=0A=
+var addrtab=3D {=0A=
+	acc:'A',=0A=
+	abs:'abs',=0A=
+	abx:'abs,X',=0A=
+	aby:'abs,Y',=0A=
+	imm:'#',=0A=
+	imp:'impl',=0A=
+	ind:'ind',=0A=
+	inx:'X,ind',=0A=
+	iny:'ind,Y',=0A=
+	rel:'rel',=0A=
+	zpg:'zpg',=0A=
+	zpx:'zpg,X',=0A=
+	zpy:'zpg,Y'=0A=
+}=0A=
+=0A=
+var steptab =3D {=0A=
+	imp:1,=0A=
+	acc:1,=0A=
+	imm:2,=0A=
+	abs:3,=0A=
+	abx:3,=0A=
+	aby:3,=0A=
+	zpg:2,=0A=
+	zpx:2,=0A=
+	zpy:2,=0A=
+	ind:3,=0A=
+	inx:2,=0A=
+	iny:2,=0A=
+	rel:2=0A=
+};=0A=
+=0A=
+=0A=
+// constructor mods (ie4 fix)=0A=
+=0A=
+var IE4_keyref;=0A=
+var IE4_keycoderef;=0A=
+=0A=
+function IE4_makeKeyref() {=0A=
+	IE4_keyref=3D new Array();=0A=
+	IE4_keycoderef=3D new Array();=0A=
+	var hex=3D new Array('A','B','C','D','E','F');=0A=
+	for (var i=3D0; i<=3D15; i++) {=0A=
+		var high=3D(i<10)? i:hex[i-10];=0A=
+		for (var k=3D0; k<=3D15; k++) {=0A=
+			var low=3D(k<10)? k:hex[k-10];=0A=
+			var cc=3Di*16+k;=0A=
+			if (cc>=3D32) {=0A=
+				var cs=3Dunescape("%"+high+low);=0A=
+				IE4_keyref[cc]=3Dcs;=0A=
+				IE4_keycoderef[cs]=3Dcc;=0A=
+			}=0A=
+		}=0A=
+	}=0A=
+}=0A=
+=0A=
+function _ie4_strfrchr(cc) {=0A=
+	return (cc!=3Dnull)? IE4_keyref[cc] : '';=0A=
+}=0A=
+=0A=
+function _ie4_strchcdat(n) {=0A=
+	cs=3Dthis.charAt(n);=0A=
+	return (IE4_keycoderef[cs])? IE4_keycoderef[cs] : 0;=0A=
+}=0A=
+=0A=
+if (!String.fromCharCode) {=0A=
+	IE4_makeKeyref();=0A=
+	String.fromCharCode=3D_ie4_strfrchr;=0A=
+}=0A=
+if (!String.prototype.charCodeAt) {=0A=
+	if (!IE4_keycoderef) IE4_makeKeyref();=0A=
+	String.prototype.charCodeAt=3D_ie4_strchcdat;=0A=
+}=0A=
+=0A=
+// globals=0A=
+=0A=
+var RAM, pc, startAddr, stopAddr, codeAddr;=0A=
+=0A=
+// functions=0A=
+=0A=
+function disassemble() {=0A=
+	// get addresses=0A=
+	codeAddr=3DparseInt(document.disass.codeAddr.value,16);=0A=
+	startAddr=3DparseInt(document.disass.startAddr.value,16);=0A=
+	stopAddr=3DparseInt(document.disass.stopAddr.value,16);=0A=
+	if (isNaN(codeAddr)) {=0A=
+		alert('Invalid address for code:\n"'+document.disass.codeAddr.value+'" =
+is not a valid hex number!\nDisassembly stopped on error.');=0A=
+		return;=0A=
+	}=0A=
+	if (isNaN(startAddr)) {=0A=
+		alert('Invalid start address:\n"'+document.disass.startAddr.value+'" =
+is not a valid hex number!\nDisassembly stopped on error.');=0A=
+		return;=0A=
+	}=0A=
+	if (isNaN(startAddr) ){=0A=
+		alert('Invalid stop address:\n"'+document.disass.stopAddr.value+'" is =
+not a valid hex number!\nDisassembly stopped on error.');=0A=
+		return;=0A=
+	}=0A=
+	codeAddr=3DMath.floor(Math.abs(codeAddr))&0xffff;=0A=
+	startAddress=3DMath.floor(Math.abs(startAddr))&0xffff;=0A=
+	stopAddr=3DMath.floor(Math.abs(stopAddr))&0xffff;=0A=
+	if (startAddr<codeAddr) {=0A=
+		if (confirm('Start address is smaller than code address\nStart =
+disassembly at code addresss ('+getHexWord(codeAddr)+')?')) {=0A=
+			startAddr=3DcodeAddr;=0A=
+		}=0A=
+		else {=0A=
+			alert('Disassembly stopped.\nPlease set addresses to proper values.');=0A=
+			return;=0A=
+		}=0A=
+	}=0A=
+	// load data and set effective stopp address=0A=
+	window.status=3D'loading data to '+getHexWord(startAddr)+' ...';=0A=
+	var ad=3DloadData();=0A=
+	if ((stopAddr=3D=3D0) || (stopAddr<=3DstartAddr)) stopAddr=3Dad;=0A=
+	window.status=3D'starting disassembly =
+'+getHexWord(startAddr)+'_'+getHexWord(stopAddr)+' ...';=0A=
+	// disassemble=0A=
+	pc=3DstartAddress;=0A=
+	document.disass.listing.value=3D'';=0A=
+	list('    ','','* =3D '+getHexWord(startAddr));=0A=
+	pc=3DstartAddr;=0A=
+	while (pc<stopAddr) disassembleStep();=0A=
+	list(getHexWord(pc),'','.END');=0A=
+	window.status=3D'done.';=0A=
+	alert('Dissassembly complete.');=0A=
+}=0A=
+=0A=
+function disassembleStep() {=0A=
+	var instr, op1, op2, addr, ops, disas, adm, step;=0A=
+	// get instruction and ops, inc pc=0A=
+	instr=3DByteAt(pc);=0A=
+	addr=3DgetHexWord(pc);=0A=
+	ops=3DgetHexByte(instr);=0A=
+	disas=3Dopctab[instr][0];=0A=
+	adm=3Dopctab[instr][1];=0A=
+	step=3Dsteptab[adm];=0A=
+	if (step>1) {=0A=
+		op1=3DgetHexByte(ByteAt(pc+1));=0A=
+		if (step>2) op2=3DgetHexByte(ByteAt(pc+2));=0A=
+	}=0A=
+	// format and output to listing=0A=
+	switch (adm) {=0A=
+		case 'imm' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' #$'+op1;=0A=
+			break;=0A=
+		case 'zpg' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' $'+op1;=0A=
+			break;=0A=
+		case 'acc' :=0A=
+			ops+=3D'      ';=0A=
+			disas+=3D' A';=0A=
+			break;=0A=
+		case 'abs' :=0A=
+			ops+=3D' '+op1+' '+op2;=0A=
+			disas+=3D' $'+op2+op1;=0A=
+			break;=0A=
+		case 'zpx' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' $'+op1+',X';=0A=
+			break;=0A=
+		case 'zpy' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' $'+op1+',Y';=0A=
+			break;=0A=
+		case 'abx' :=0A=
+			ops+=3D' '+op1+' '+op2;=0A=
+			disas+=3D' $'+op2+op1+',X';=0A=
+			break;=0A=
+		case 'aby' :=0A=
+			ops+=3D' '+op1+' '+op2;=0A=
+			disas+=3D' $'+op2+op1+',Y';=0A=
+			break;=0A=
+		case 'iny' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' ($'+op1+'),Y';=0A=
+			break;=0A=
+		case 'inx' :=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' ($'+op1+',X)';=0A=
+			break;=0A=
+		case 'rel' :=0A=
+			var opv=3DByteAt(pc+1);=0A=
+			var targ=3Dpc+2;=0A=
+			if (opv&128) {=0A=
+				targ-=3D(opv^255)+1;=0A=
+			}=0A=
+			else {=0A=
+				targ +=3Dopv;=0A=
+			}=0A=
+			targ&=3D0xffff;=0A=
+			ops+=3D' '+op1+'   ';=0A=
+			disas+=3D' $'+getHexWord(targ);=0A=
+			break;=0A=
+		case 'ind' :=0A=
+			ops+=3D' '+op1+' '+op2;=0A=
+			disas+=3D' ($'+op2+op1+')';=0A=
+			break;=0A=
+		default :=0A=
+			ops+=3D'      ';=0A=
+	}=0A=
+	pc=3D(pc+step)&0xffff;=0A=
+	list(addr,ops,disas);=0A=
+}=0A=
+=0A=
+function list(addr,ops,disas) {=0A=
+	if (ops=3D=3D'') ops=3D'        ';=0A=
+	document.disass.listing.value+=3Daddr+'   '+ops+'   '+disas+'\n';=0A=
+}=0A=
+=0A=
+function loadData() {=0A=
+	RAM=3D[];=0A=
+	var addr=3DcodeAddr&0xffff;=0A=
+	data=3Ddocument.disass.codefield.value;=0A=
+	var lc=3D'';=0A=
+	var ofs=3D0;=0A=
+	var mode=3D1;=0A=
+	data=3Ddata.toUpperCase();=0A=
+	for (var i=3D0; i<data.length; i++) {=0A=
+		var c=3Ddata.charAt(i);=0A=
+		if (mode=3D=3D2) {=0A=
+			if ((c=3D=3D'\r') || (c=3D=3D'\n')) mode=3D1;=0A=
+		}=0A=
+		else if (((c>=3D'0') && (c<=3D'9')) || ((c>=3D'A') && (c<=3D'F'))) {=0A=
+			if (mode=3D=3D1) {=0A=
+				if (lc) {=0A=
+					RAM[addr++]=3DparseInt(lc+c,16);=0A=
+					if (addr>0xffff) break;=0A=
+					lc=3D'';=0A=
+				}=0A=
+				else {=0A=
+					lc=3Dc;=0A=
+				}=0A=
+			}=0A=
+		}=0A=
+		else if (c=3D=3D':') {=0A=
+			mode=3D0;=0A=
+		}=0A=
+		else if (c=3D=3D';') {=0A=
+			mode=3D2;=0A=
+		}=0A=
+		else {=0A=
+			mode=3D1;=0A=
+		}=0A=
+	}=0A=
+	return addr;=0A=
+}=0A=
+=0A=
+function ByteAt(addr) {=0A=
+	return RAM[addr] || 0;=0A=
+}=0A=
+=0A=
+function getHexByte(v) {=0A=
+	return ''+hextab[Math.floor(v/16)]+hextab[v&0x0f];=0A=
+}=0A=
+=0A=
+function getHexWord(v) {=0A=
+	return =
+''+hextab[Math.floor(v/0x1000)]+hextab[Math.floor((v&0x0f00)/256)]+hextab=
+[Math.floor((v&0xf0)/16)]+hextab[v&0x000f];=0A=
+}=0A=
+=0A=
+// eof
+------=_NextPart_000_0000_01CCF0E8.36AD55B0--

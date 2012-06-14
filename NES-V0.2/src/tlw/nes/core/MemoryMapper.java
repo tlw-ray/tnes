@@ -31,8 +31,6 @@ public interface MemoryMapper{
 	static final int PPU_MEM_TABLE_PATTERN_1=0x1000;	//Pattern Table 1 (256x2x8, may be VROM) 调色板表1（256X2X8，可能是VROM）
 	static final int PPU_MEM_TABLE_PATTERN_0=0x0000;	//Pattern Table 0 (256x2x8, may be VROM) 调色板表0（256X2X8，可能是VROM）
 	
-	static final int PPU_CONTROL_REGISTER_1=0x2000;
-	
 	static final int PPU_REGISTER_CONTROL1=0x2000;		// | RW  | PPU Control Register 1
 	static final int PPU_REGISTER_CONTROL2=0x2001;		// | RW  | PPU Control Register 2
 	static final int PPU_REGISTER_STAUTS=0x2002;		// | R   | PPU Status Register

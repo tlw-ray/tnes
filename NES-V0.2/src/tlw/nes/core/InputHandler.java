@@ -4,8 +4,8 @@ public interface InputHandler{
 	// Joypad keys:
 	public static final int KEY_A =      0;
 	public static final int KEY_B =      1;
-	public static final int KEY_START =  2;
-	public static final int KEY_SELECT = 3;
+	public static final int KEY_SELECT = 2;
+	public static final int KEY_START =  3;
 	public static final int KEY_UP =     4;
 	public static final int KEY_DOWN =   5;
 	public static final int KEY_LEFT =   6;

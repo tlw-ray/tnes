@@ -132,11 +132,11 @@ public class PPU{
 
 	// Variables used when rendering:
 	private int[] attrib = new int[32];
-	private int[] bgbuffer = new int[256*240];
-	private int[] pixrendered = new int[256*240];
+	private int[] bufferBG = new int[256*240];
+	private int[] bufferPixRendered = new int[256*240];
 //	private int[] spr0dummybuffer = new int[256*240];
 //	private int[] dummyPixPriTable = new int[256*240];
-	private int[] oldFrame = new int[256*240];
+	private int[] bufferOldFrame = new int[256*240];
 	private int[] buffer;
 	private int[] tpix;
 
@@ -211,8 +211,8 @@ public class PPU{
 		curX = 0;
 
 		// Initialize old frame buffer:
-		for(int i=0;i<oldFrame.length;i++){
-			oldFrame[i]=-1;
+		for(int i=0;i<bufferOldFrame.length;i++){
+			bufferOldFrame[i]=-1;
 		}
 	}
 
@@ -411,7 +411,7 @@ public class PPU{
 					// update scroll:
 					cntHT = regHT;
 					cntH = regH;
-					renderBgScanline(bgbuffer,scanline+1-21);
+					renderBgScanline(bufferBG,scanline+1-21);
 				}
 				scanlineAlreadyRendered=false;
 				// Check for sprite 0 (next scanline):
@@ -484,7 +484,7 @@ public class PPU{
 			}
 		}
 		for(int i=0;i<buffer.length;i++)buffer[i]=bgColor;
-		for(int i=0;i<pixrendered.length;i++)pixrendered[i]=65;
+		for(int i=0;i<bufferPixRendered.length;i++)bufferPixRendered[i]=65;
 	}
 
 	protected void endFrame(){
@@ -907,8 +907,8 @@ public class PPU{
 			ei = (startScan+scanCount)<<8;
 			if(ei>0xF000)ei=0xF000;
 			for(destIndex=si;destIndex<ei;destIndex++){
-				if(pixrendered[destIndex]>0xFF){
-					buffer[destIndex] = bgbuffer[destIndex];
+				if(bufferPixRendered[destIndex]>0xFF){
+					buffer[destIndex] = bufferBG[destIndex];
 				}
 			}
 		}
@@ -984,7 +984,7 @@ public class PPU{
 						if(t.getOpaque()[cntFV]){
 							for(;sx<8;sx++){
 								buffer[destIndex] = imgPalette[tpix[tscanoffset+sx]+att];
-								pixrendered[destIndex] |= 256;
+								bufferPixRendered[destIndex] |= 256;
 								destIndex++;
 							}
 						}else{
@@ -992,7 +992,7 @@ public class PPU{
 								col = tpix[tscanoffset+sx];
 								if(col != 0){
 									buffer[destIndex] = imgPalette[col+att];
-									pixrendered[destIndex] |= 256;
+									bufferPixRendered[destIndex] |= 256;
 								}
 								destIndex++;
 							}
@@ -1057,9 +1057,9 @@ public class PPU{
 						}
 
 						if(f_spPatternTable==0){
-							ptTile[sprTile[i]].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,pixrendered);
+							ptTile[sprTile[i]].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 						}else{
-							ptTile[sprTile[i]+256].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,pixrendered);
+							ptTile[sprTile[i]+256].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 						}
 					}else{
 						// 8x16 sprites
@@ -1079,7 +1079,7 @@ public class PPU{
 							srcy2 = startscan+scancount-sprY[i];
 						}
 
-						ptTile[top+(vertFlip[i]?1:0)].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,pixrendered);
+						ptTile[top+(vertFlip[i]?1:0)].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 
 						srcy1 = 0;
 						srcy2 = 8;
@@ -1092,7 +1092,7 @@ public class PPU{
 							srcy2 = startscan+scancount-(sprY[i]+8);
 						}
 
-						ptTile[top+(vertFlip[i]?0:1)].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1+8,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,pixrendered);
+						ptTile[top+(vertFlip[i]?0:1)].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1+8,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 
 					}
 				}
@@ -1142,7 +1142,7 @@ public class PPU{
 				if(horiFlip[0]){
 					for(int i=7;i>=0;i--){
 						if(x>=0 && x<256){
-							if(bufferIndex>=0 && bufferIndex<61440 && pixrendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%256;
 									spr0HitY = scan;
@@ -1158,7 +1158,7 @@ public class PPU{
 
 					for(int i=0;i<8;i++){
 						if(x>=0 && x<256){
-							if(bufferIndex>=0 && bufferIndex<61440 && pixrendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%256;
 									spr0HitY = scan;
@@ -1212,7 +1212,7 @@ public class PPU{
 
 					for(int i=7;i>=0;i--){
 						if(x>=0 && x<256){
-							if(bufferIndex>=0 && bufferIndex<61440 && pixrendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%256;
 									spr0HitY = scan;
@@ -1228,7 +1228,7 @@ public class PPU{
 
 					for(int i=0;i<8;i++){
 						if(x>=0 && x<256){
-							if(bufferIndex>=0 && bufferIndex<61440 && pixrendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%256;
 									spr0HitY = scan;
@@ -1607,11 +1607,11 @@ public class PPU{
 			tmp = (short)buf.readInt();
 
 			// Stuff used during rendering:
-			for(int i=0;i<bgbuffer.length;i++){
-				bgbuffer[i] = buf.readByte();
+			for(int i=0;i<bufferBG.length;i++){
+				bufferBG[i] = buf.readByte();
 			}
-			for(int i=0;i<pixrendered.length;i++){
-				pixrendered[i] = buf.readByte();
+			for(int i=0;i<bufferPixRendered.length;i++){
+				bufferPixRendered[i] = buf.readByte();
 			}
 
 			// Name tables:
@@ -1695,11 +1695,11 @@ public class PPU{
 		buf.putInt(tmp);
 
 		// Stuff used during rendering:
-		for(int i=0;i<bgbuffer.length;i++){
-			buf.putByte((short)bgbuffer[i]);
+		for(int i=0;i<bufferBG.length;i++){
+			buf.putByte((short)bufferBG[i]);
 		}
-		for(int i=0;i<pixrendered.length;i++){
-			buf.putByte((short)pixrendered[i]);
+		for(int i=0;i<bufferPixRendered.length;i++){
+			buf.putByte((short)bufferPixRendered[i]);
 		}
 
 		// Name tables:
@@ -1776,7 +1776,7 @@ public class PPU{
 		regS = 0;
 
 		java.util.Arrays.fill(scanlineChanged,true);
-		java.util.Arrays.fill(oldFrame,-1);
+		java.util.Arrays.fill(bufferOldFrame,-1);
 
 		// Initialize stuff:
 		init();

@@ -31,6 +31,7 @@ public class Globals{
 	//showSpr0Hit
 	public static boolean showSpr0Hit = false;
 	
+	public static boolean doubleBuffer=true;
 	
 	public static boolean disableSprites = false;
 	public static boolean palEmulation=true;

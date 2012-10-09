@@ -3,6 +3,7 @@ package tlw.nes.platform.jfc;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -126,13 +127,28 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 //		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_SPEED);
 //		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
-		// Retrieve raster from image:
-		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-		pix = dbi.getData();
-		
-//		WritableRaster raster=img.getRaster();
-//		raster.setDataElements(0, 0, Globals.PIXEL_X,Globals.PIXEL_Y, pix);
-		nes.getPpu().setBuffer(pix);
+		if(Globals.doubleBuffer){
+			new Thread(){
+				public void run(){
+					while(true){
+						Image img=nes.getPpu().getImage();
+						if(img!=null){
+							drawFrame(img);
+						}
+						try {
+							Thread.sleep(Globals.frameTimeM);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}.start();
+		}else{
+			// Retrieve raster from image:
+			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
+			pix = dbi.getData();
+			nes.getPpu().setBuffer(pix);
+		}
 		
 		// Set background color:
 		for(int i=0;i<pix.length;i++){
@@ -228,12 +244,16 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		return this;
 	}
 	public void drawFrame() {
+		drawFrame(img);
+	}
+	private void drawFrame(Image img){
 		Graphics imgG=img.getGraphics();
 		paintFPS(110, 20, imgG);
 		
 		Graphics g=getGraphics();
 		g.drawImage(img,0,0,getWidth(),getHeight(),null);
-//		g.drawImage(img,0,0,Globals.PIXEL_X,Globals.PIXEL_Y,null);
+		//no scale
+		//g.drawImage(img,0,0,Globals.PIXEL_X,Globals.PIXEL_Y,null);
 	}
 
 	private long prevFrameTime;

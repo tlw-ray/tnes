@@ -1,5 +1,9 @@
 package tlw.nes.vppu;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
 import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
@@ -137,8 +141,13 @@ public class PPU{
 //	private int[] spr0dummybuffer = new int[256*240];
 //	private int[] dummyPixPriTable = new int[256*240];
 	private int[] bufferOldFrame = new int[256*240];
-	private int[] buffer;
+	private int[] buffer = new int[256*240];
 	private int[] tpix;
+	
+	//double buffer
+	private BufferedImage img;
+	private BufferedImage img0=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
+	private BufferedImage img1=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 
 	private boolean[] scanlineChanged = new boolean[240];
 	private boolean validTileData;
@@ -328,16 +337,28 @@ public class PPU{
 
 		// Do NMI:
 		nes.getCpu().requestIrq(CPU6502.IRQ_NMI);
+		
+		if(Globals.doubleBuffer){
+			if(img==img0){
+				img=img1;
+			}else{
+				img=img0;
+			}
+			DataBufferInt bufferInt=(DataBufferInt)img.getRaster().getDataBuffer();
+			buffer=bufferInt.getData();
+		}
 
 		// Make sure everything is rendered:
 		if(lastRenderedScanline < 239){
-			renderFramePartially(nes.getGui().getScreenView().getBuffer(),lastRenderedScanline+1,240-lastRenderedScanline);
+			if(Globals.doubleBuffer){
+				renderFramePartially(buffer,lastRenderedScanline+1,240-lastRenderedScanline);
+			}else{
+				renderFramePartially(nes.getGui().getScreenView().getBuffer(),lastRenderedScanline+1,240-lastRenderedScanline);
+				
+				// Notify image buffer:
+				nes.getGui().getScreenView().drawFrame();
+			}
 		}
-
-		endFrame();
-
-		// Notify image buffer:
-		nes.getGui().getScreenView().drawFrame();
 		
 		if(Globals.enableSound){
 			nes.getPapu().stuff();
@@ -361,6 +382,8 @@ public class PPU{
 		lastRenderedScanline = -1;
 		
 		startFrame();
+		
+		endFrame();
 	}
 
 	protected void endScanline(){
@@ -443,7 +466,7 @@ public class PPU{
 	}
 
 	protected void startFrame(){
-		int[] buffer = nes.getGui().getScreenView().getBuffer();
+//		int[] buffer = nes.getGui().getScreenView().getBuffer();
 		// Set background color:
 		int bgColor=0;
 		if(f_dispType == 0){
@@ -1850,9 +1873,17 @@ public class PPU{
 		}
 	}
 	public int[] getBuffer() {
-		return buffer;
+		if(Globals.doubleBuffer){
+			if(img!=null){
+				DataBufferInt bufferInt=(DataBufferInt)img.getData().getDataBuffer();
+				return bufferInt.getData();
+			}
+			return null;
+		}else{
+			return buffer;
+		}
 	}
-
+	
 	public void setBuffer(int[] buffer) {
 		this.buffer = buffer;
 	}
@@ -1868,5 +1899,7 @@ public class PPU{
 	public Tile[] getPtTile() {
 		return ptTile;
 	}
-	
+	public Image getImage(){
+		return img;
+	}
 }

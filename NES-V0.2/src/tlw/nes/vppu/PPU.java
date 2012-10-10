@@ -40,6 +40,8 @@ public class PPU{
 	
 	public static final int MODEL_VBLANK_INTERRUPTS=1;
 	
+	public static final int BUFFER_SIZE=Globals.PIXEL_X*Globals.PIXEL_Y;
+	
 	private NES nes;
 
 	// Control Flags Register 1:
@@ -136,12 +138,12 @@ public class PPU{
 
 	// Variables used when rendering:
 	private int[] attrib = new int[32];
-	private int[] bufferBG = new int[256*240];
-	private int[] bufferPixRendered = new int[256*240];
-//	private int[] spr0dummybuffer = new int[256*240];
-//	private int[] dummyPixPriTable = new int[256*240];
-	private int[] bufferOldFrame = new int[256*240];
-	private int[] buffer = new int[256*240];
+	private int[] bufferBG = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+	private int[] bufferPixRendered = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+//	private int[] spr0dummybuffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+//	private int[] dummyPixPriTable = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+	private int[] bufferOldFrame = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+	private int[] buffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] tpix;
 	
 	//double buffer
@@ -149,7 +151,7 @@ public class PPU{
 	private BufferedImage img0=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 	private BufferedImage img1=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 
-	private boolean[] scanlineChanged = new boolean[240];
+	private boolean[] scanlineChanged = new boolean[Globals.PIXEL_Y];
 	private boolean validTileData;
 	private int att;
 
@@ -351,9 +353,9 @@ public class PPU{
 		// Make sure everything is rendered:
 		if(lastRenderedScanline < 239){
 			if(Globals.doubleBuffer){
-				renderFramePartially(buffer,lastRenderedScanline+1,240-lastRenderedScanline);
+				renderFramePartially(buffer,lastRenderedScanline+1,Globals.PIXEL_Y-lastRenderedScanline);
 			}else{
-				renderFramePartially(nes.getGui().getScreenView().getBuffer(),lastRenderedScanline+1,240-lastRenderedScanline);
+				renderFramePartially(nes.getGui().getScreenView().getBuffer(),lastRenderedScanline+1,Globals.PIXEL_Y-lastRenderedScanline);
 				
 				// Notify image buffer:
 				nes.getGui().getScreenView().drawFrame();
@@ -439,7 +441,7 @@ public class PPU{
 				scanlineAlreadyRendered=false;
 				// Check for sprite 0 (next scanline):
 				if(!hitSpr0 && f_spVisibility==1){
-					if(sprX[0]>=-7 && sprX[0]<256 && sprY[0]+1<=(scanline-vblankAdd+1-21) && (sprY[0]+1+(f_spriteSize==0?8:16))>=(scanline-vblankAdd+1-21)){
+					if(sprX[0]>=-7 && sprX[0]<Globals.PIXEL_X && sprY[0]+1<=(scanline-vblankAdd+1-21) && (sprY[0]+1+(f_spriteSize==0?8:16))>=(scanline-vblankAdd+1-21)){
 						if(checkSprite0(scanline+vblankAdd+1-21)){
 							////System.out.println("found spr0. curscan="+scanline+" hitscan="+spr0HitY);
 							hitSpr0 = true;
@@ -765,7 +767,7 @@ public class PPU{
 		Memory cpuMem = nes.getCpuMemory();
 		int baseAddress = value * 0x100;
 		short data;
-		for(int i=sramAddress;i<256;i++){
+		for(int i=sramAddress;i<Globals.PIXEL_X;i++){
 			data = cpuMem.load(baseAddress+i);
 			nes.getSprMemory().write(i,data);
 			spriteRamWriteUpdate(i,data);
@@ -921,9 +923,9 @@ public class PPU{
 
 	private void renderFramePartially(int[] buffer, int startScan, int scanCount){
 
-		if(f_spVisibility == 1 && !Globals.disableSprites){
+//		if(f_spVisibility == 1 && !Globals.disableSprites){
 //			renderSpritesPartially(startScan,scanCount,true);
-		}
+//		}
 
 		if(f_bgVisibility == 1){
 			si = startScan<<8;
@@ -946,11 +948,11 @@ public class PPU{
 //			// Check which scanlines have changed, to try to
 //			// speed up scaling:
 //			int j,jmax;
-//			if(startScan+scanCount>240)scanCount=240-startScan;
+//			if(startScan+scanCount>Globals.PIXEL_Y)scanCount=Globals.PIXEL_Y-startScan;
 //			for(int i=startScan;i<startScan+scanCount;i++){
 //				scanlineChanged[i]=false;
 //				si = i<<8;
-//				jmax = si+256;
+//				jmax = si+Globals.PIXEL_X;
 //				for(j=si;j<jmax;j++){
 //					if(buffer[j]!=oldFrame[j]){
 //						scanlineChanged[i]=true;
@@ -968,7 +970,7 @@ public class PPU{
 	}
 
 	private void renderBgScanline(int[] buffer, int scan){
-		baseTile = (regS==0?0:256);
+		baseTile = (regS==0?0:Globals.PIXEL_X);
 		destIndex = (scan<<8)-regFH;
 		curNt = ntable1[cntV+cntV+cntH];
 
@@ -976,7 +978,7 @@ public class PPU{
 		cntH = regH;
 		curNt = ntable1[cntV+cntV+cntH];
 
-		if(scan<240 && (scan-cntFV)>=0){
+		if(scan<Globals.PIXEL_Y && (scan-cntFV)>=0){
 			tscanoffset = cntFV<<3;
 //			y = scan-cntFV;
 			for(tile=0;tile<32;tile++){
@@ -1007,7 +1009,7 @@ public class PPU{
 						if(t.getOpaque()[cntFV]){
 							for(;sx<8;sx++){
 								buffer[destIndex] = imgPalette[tpix[tscanoffset+sx]+att];
-								bufferPixRendered[destIndex] |= 256;
+								bufferPixRendered[destIndex] |= Globals.PIXEL_X;
 								destIndex++;
 							}
 						}else{
@@ -1015,7 +1017,7 @@ public class PPU{
 								col = tpix[tscanoffset+sx];
 								if(col != 0){
 									buffer[destIndex] = imgPalette[col+att];
-									bufferPixRendered[destIndex] |= 256;
+									bufferPixRendered[destIndex] |= Globals.PIXEL_X;
 								}
 								destIndex++;
 							}
@@ -1063,7 +1065,7 @@ public class PPU{
 //			int sprT1,sprT2;
 
 			for(int i=0;i<64;i++){
-				if(bgPriority[i]==bgPri && sprX[i]>=0 && sprX[i]<256 && sprY[i]+8>=startscan && sprY[i]<startscan+scancount){
+				if(bgPriority[i]==bgPri && sprX[i]>=0 && sprX[i]<Globals.PIXEL_X && sprY[i]+8>=startscan && sprY[i]<startscan+scancount){
 					// Show sprite.
 					if(f_spriteSize == 0){
 						// 8x8 sprites
@@ -1082,13 +1084,13 @@ public class PPU{
 						if(f_spPatternTable==0){
 							ptTile[sprTile[i]].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 						}else{
-							ptTile[sprTile[i]+256].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
+							ptTile[sprTile[i]+Globals.PIXEL_X].render(0,srcy1,8,srcy2,sprX[i],sprY[i]+1,buffer,sprCol[i],sprPalette,horiFlip[i],vertFlip[i],i,bufferPixRendered);
 						}
 					}else{
 						// 8x16 sprites
 						int top = sprTile[i];
 						if((top&1)!=0){
-							top = sprTile[i]-1+256;
+							top = sprTile[i]-1+Globals.PIXEL_X;
 						}
 
 						srcy1 = 0;
@@ -1130,7 +1132,7 @@ public class PPU{
 		spr0HitY = -1;
 
 		int toffset;
-		int tIndexAdd = (f_spPatternTable==0?0:256);
+		int tIndexAdd = (f_spPatternTable==0?0:Globals.PIXEL_X);
 		int x,y;
 		int bufferIndex;
 //		int col;
@@ -1146,7 +1148,7 @@ public class PPU{
 			// 8x8 sprites.
 
 			// Check range:
-			if(y<=scan && y+8>scan && x>=-7 && x<256){
+			if(y<=scan && y+8>scan && x>=-7 && x<Globals.PIXEL_X){
 
 				// Sprite is in range.
 				// Draw scanline:
@@ -1161,13 +1163,13 @@ public class PPU{
 				}
 				toffset*=8;
 
-				bufferIndex = scan*256+x;
+				bufferIndex = scan*Globals.PIXEL_X+x;
 				if(horiFlip[0]){
 					for(int i=7;i>=0;i--){
-						if(x>=0 && x<256){
-							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
+						if(x>=0 && x<Globals.PIXEL_X){
+							if(bufferIndex>=0 && bufferIndex<BUFFER_SIZE && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
-									spr0HitX = bufferIndex%256;
+									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
 									return true;
 								}
@@ -1180,10 +1182,10 @@ public class PPU{
 				}else{
 
 					for(int i=0;i<8;i++){
-						if(x>=0 && x<256){
+						if(x>=0 && x<Globals.PIXEL_X){
 							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
-									spr0HitX = bufferIndex%256;
+									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
 									return true;
 								}
@@ -1203,7 +1205,7 @@ public class PPU{
 			// 8x16 sprites:
 
 			// Check range:
-			if(y<=scan && y+16>scan && x>=-7 && x<256){
+			if(y<=scan && y+16>scan && x>=-7 && x<Globals.PIXEL_X){
 
 				// Sprite is in range.
 				// Draw scanline:
@@ -1230,14 +1232,14 @@ public class PPU{
 				col = sprCol[0];
 //				bgPri = bgPriority[0];
 
-				bufferIndex = scan*256+x;
+				bufferIndex = scan*Globals.PIXEL_X+x;
 				if(horiFlip[0]){
 
 					for(int i=7;i>=0;i--){
-						if(x>=0 && x<256){
+						if(x>=0 && x<Globals.PIXEL_X){
 							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
-									spr0HitX = bufferIndex%256;
+									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
 									return true;
 								}
@@ -1250,10 +1252,10 @@ public class PPU{
 				}else{
 
 					for(int i=0;i<8;i++){
-						if(x>=0 && x<256){
+						if(x>=0 && x<Globals.PIXEL_X){
 							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
-									spr0HitX = bufferIndex%256;
+									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
 									return true;
 								}
@@ -1300,7 +1302,7 @@ public class PPU{
 //		if(f_bgPatternTable == 0){
 //			baseTile = 0;
 //		}else{
-//			baseTile = 256;
+//			baseTile = Globals.PIXEL_X;
 //		}
 //
 //		int ntx_max = 2;
@@ -1332,7 +1334,7 @@ public class PPU{
 //
 //		if(currentMirroring == ROM.HORIZONTAL_MIRRORING){
 //			// double horizontally:
-//			for(int y=0;y<240;y++){
+//			for(int y=0;y<Globals.PIXEL_Y;y++){
 //				for(int x=0;x<128;x++){
 //					buffer[(y<<8)+128+x] = buffer[(y<<8)+x];
 //				}
@@ -1340,7 +1342,7 @@ public class PPU{
 //		}else if(currentMirroring == ROM.VERTICAL_MIRRORING){
 //			// double vertically:
 //			for(int y=0;y<120;y++){
-//				for(int x=0;x<256;x++){
+//				for(int x=0;x<Globals.PIXEL_X;x++){
 //					buffer[(y<<8)+0x7800+x] = buffer[(y<<8)+x];
 //				}
 //			}
@@ -1356,7 +1358,7 @@ public class PPU{
 //		for(int i=0;i<16;i++){
 //			for(int y=0;y<16;y++){
 //				for(int x=0;x<16;x++){
-//					buffer[y*256+i*16+x] = imgPalette[i];
+//					buffer[y*Globals.PIXEL_X+i*16+x] = imgPalette[i];
 //				}
 //			}
 //		}
@@ -1365,7 +1367,7 @@ public class PPU{
 //		for(int i=0;i<16;i++){
 //			for(int y=0;y<16;y++){
 //				for(int x=0;x<16;x++){
-//					buffer[y*256+i*16+x] = sprPalette[i];
+//					buffer[y*Globals.PIXEL_X+i*16+x] = sprPalette[i];
 //				}
 //			}
 //		}
@@ -1809,20 +1811,20 @@ public class PPU{
 		// Draw spr#0 hit coordinates:
 		if(Globals.showSpr0Hit){
 			// Spr 0 position:
-			if(sprX[0]>=0 && sprX[0]<256 && sprY[0]>=0 && sprY[0]<240){
-				for(int i=0;i<256;i++){
+			if(sprX[0]>=0 && sprX[0]<Globals.PIXEL_X && sprY[0]>=0 && sprY[0]<Globals.PIXEL_Y){
+				for(int i=0;i<Globals.PIXEL_X;i++){
 					buffer[(sprY[0]<<8)+i] = 0xFF5555;
 				}
-				for(int i=0;i<240;i++){
+				for(int i=0;i<Globals.PIXEL_Y;i++){
 					buffer[(i<<8)+sprX[0]] = 0xFF5555;
 				}
 			}
 			// Hit position:
-			if(spr0HitX>=0 && spr0HitX<256 && spr0HitY>=0 && spr0HitY<240){
-				for(int i=0;i<256;i++){
+			if(spr0HitX>=0 && spr0HitX<Globals.PIXEL_X && spr0HitY>=0 && spr0HitY<Globals.PIXEL_Y){
+				for(int i=0;i<Globals.PIXEL_X;i++){
 					buffer[(spr0HitY<<8)+i] = 0x55FF55;
 				}
-				for(int i=0;i<240;i++){
+				for(int i=0;i<Globals.PIXEL_Y;i++){
 					buffer[(i<<8)+spr0HitX] = 0x55FF55;
 				}
 			}
@@ -1833,7 +1835,7 @@ public class PPU{
 		// if either the sprites or the background should be clipped,
 		// both are clipped after rendering is finished.
 		if(Globals.clipToTvSize || f_bgClipping==0 || f_spClipping==0){
-			for(int y=0;y<240;y++){
+			for(int y=0;y<Globals.PIXEL_Y;y++){
 				for(int x=0;x<8;x++){
 					// Clip left 8-pixels column:
 					buffer[(y<<8)+x] = 3;
@@ -1846,7 +1848,7 @@ public class PPU{
 		// Clip top and bottom 8 pixels:
 		if(Globals.clipToTvSize){
 			for(int y=0;y<8;y++){
-				for(int x=0;x<256;x++){
+				for(int x=0;x<Globals.PIXEL_X;x++){
 					buffer[(y<<8)+x] = 0;
 					buffer[((239-y)<<8)+x] = 0;
 				}
@@ -1858,15 +1860,15 @@ public class PPU{
 
 			bufferSize = nes.getPapu().getLine().getBufferSize();
 			available = nes.getPapu().getLine().available();
-			int scale = bufferSize/256;
+			int scale = bufferSize/Globals.PIXEL_X;
 
 			for(int y=0;y<4;y++){
 				scanlineChanged[y] = true;
-				for(int x=0;x<256;x++){
+				for(int x=0;x<Globals.PIXEL_X;x++){
 					if(x>=(available/scale)){
-						buffer[y*256+x] = 0xFFFFFF;
+						buffer[y*Globals.PIXEL_X+x] = 0xFFFFFF;
 					}else{
-						buffer[y*256+x] = 0;
+						buffer[y*Globals.PIXEL_X+x] = 0;
 					}
 				}
 			}

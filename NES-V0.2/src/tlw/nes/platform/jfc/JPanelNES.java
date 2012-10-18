@@ -129,6 +129,9 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		
 		if(Globals.doubleBuffer){
 			new Thread(){
+				{
+					setName("Double buffer paint thread");
+				}
 				public void run(){
 					while(true){
 						Image img=nes.getPpu().getImage();
@@ -136,7 +139,7 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 							drawFrame(img);
 						}
 						try {
-							Thread.sleep(Globals.frameTimeM);
+							Thread.sleep(12);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -154,10 +157,6 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		for(int i=0;i<pix.length;i++){
 			pix[i]=Globals.COLOR_BG;
 		}
-		
-//		// Repaint component:
-//		this.invalidate();
-//		repaint();
 
 		kbJoy1 = new KbInputHandler(nes,0);
 		kbJoy2 = new KbInputHandler(nes,1);

@@ -142,7 +142,7 @@ public class PPU{
 	private int[] bufferPixRendered = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 //	private int[] spr0dummybuffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 //	private int[] dummyPixPriTable = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
-	private int[] bufferOldFrame = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+//	private int[] bufferOldFrame = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] buffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] tpix;
 	
@@ -222,9 +222,9 @@ public class PPU{
 		curX = 0;
 
 		// Initialize old frame buffer:
-		for(int i=0;i<bufferOldFrame.length;i++){
-			bufferOldFrame[i]=-1;
-		}
+//		for(int i=0;i<bufferOldFrame.length;i++){
+//			bufferOldFrame[i]=-1;
+//		}
 	}
 
 	// Sets Nametable mirroring.
@@ -1059,7 +1059,7 @@ public class PPU{
 	}
 
 	private void renderSpritesPartially(int startscan, int scancount, boolean bgPri){
-		buffer = nes.getGui().getScreenView().getBuffer();
+//		buffer = nes.getGui().getScreenView().getBuffer();
 		if(f_spVisibility==1){
 
 //			int sprT1,sprT2;
@@ -1183,7 +1183,7 @@ public class PPU{
 
 					for(int i=0;i<8;i++){
 						if(x>=0 && x<Globals.PIXEL_X){
-							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<BUFFER_SIZE && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
@@ -1237,7 +1237,7 @@ public class PPU{
 
 					for(int i=7;i>=0;i--){
 						if(x>=0 && x<Globals.PIXEL_X){
-							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<BUFFER_SIZE && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
@@ -1253,7 +1253,7 @@ public class PPU{
 
 					for(int i=0;i<8;i++){
 						if(x>=0 && x<Globals.PIXEL_X){
-							if(bufferIndex>=0 && bufferIndex<61440 && bufferPixRendered[bufferIndex]!=0){
+							if(bufferIndex>=0 && bufferIndex<BUFFER_SIZE && bufferPixRendered[bufferIndex]!=0){
 								if(t.getPix()[toffset+i] != 0){
 									spr0HitX = bufferIndex%Globals.PIXEL_X;
 									spr0HitY = scan;
@@ -1801,7 +1801,7 @@ public class PPU{
 		regS = 0;
 
 		java.util.Arrays.fill(scanlineChanged,true);
-		java.util.Arrays.fill(bufferOldFrame,-1);
+//		java.util.Arrays.fill(bufferOldFrame,-1);
 
 		// Initialize stuff:
 		init();

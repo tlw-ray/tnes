@@ -426,6 +426,9 @@ public class MapperDefault implements MemoryMapper {
     public short joy1Read() {
 
         InputHandler in = nes.getGui().getJoy1();
+        if(in==null){
+        	return 0;
+        }
         short ret;
 
         switch(joy1StrobeState){
@@ -457,6 +460,9 @@ public class MapperDefault implements MemoryMapper {
 
     public short joy2Read() {
         InputHandler in = nes.getGui().getJoy2();
+        if(in==null){
+        	return 0;
+        }
         int st = joy2StrobeState;
 
         joy2StrobeState++;

@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,6 +25,7 @@ import tlw.nes.NES;
 import tlw.nes.core.IBufferView;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.UI;
+import tlw.nes.debug.JFrameFrameView;
 import tlw.nes.vmemory.ByteBuffer;
 // ”∆µ£∫60÷°/√Î
 //œÒÀÿ:240*256=61440*32bit/÷°
@@ -69,6 +72,12 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().add(jpanelNes,BorderLayout.CENTER);
+		
+		JFrameFrameView ffv=new JFrameFrameView();
+//		ffv.setImgs(jpanelNes.getNES().getPpu().getImgs());
+		ffv.setImgs(jpanelNes.getImgs());
+		ffv.setVisible(true);
+		
 		frame.setVisible(true);
 		jpanelNes.init(false);
 		
@@ -128,24 +137,8 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 //		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 		if(Globals.doubleBuffer){
-			new Thread(){
-				{
-					setName("Double buffer paint thread");
-				}
-				public void run(){
-					while(true){
-						Image img=nes.getPpu().getImage();
-						if(img!=null){
-							drawFrame(img);
-						}
-						try {
-							Thread.sleep(12);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}.start();
+			ThreadDoubleBuffer tdb=new ThreadDoubleBuffer();
+			tdb.start();
 		}else{
 			// Retrieve raster from image:
 			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
@@ -245,14 +238,43 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 	public void drawFrame() {
 		drawFrame(img);
 	}
+	int i=0;
 	private void drawFrame(Image img){
-		Graphics imgG=img.getGraphics();
-		paintFPS(110, 20, imgG);
-		
 		Graphics g=getGraphics();
+		//scale
 		g.drawImage(img,0,0,getWidth(),getHeight(),null);
 		//no scale
-		//g.drawImage(img,0,0,Globals.PIXEL_X,Globals.PIXEL_Y,null);
+//		g.drawImage(img,0,0,null);
+		
+		paintFPS(110, 20, g);
+		
+		i++;
+		g.setColor(Color.RED);
+		g.drawRect(0, 0, i%255, i%255);
+		
+		g.drawString("Hello", 40, 40);
+	}
+	List<Image> imgs=new Vector<Image>(300);
+	
+	public List<Image> getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List<Image> imgs) {
+		this.imgs = imgs;
+	}
+
+	public void paint(Graphics g){
+		super.paint(g);
+		Image img=getNES().getPpu().getImage();
+		if(img!=null){
+			drawFrame(img);
+			if(imgs.size()<300){
+				BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_3BYTE_BGR);
+				bi.getGraphics().drawImage(img,0,0,null);
+				imgs.add(bi);
+			}
+		}
 	}
 
 	private long prevFrameTime;
@@ -295,6 +317,25 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		public void mouseReleased(MouseEvent me){
 			if(nes!=null && nes.getMemoryMapper()!=null){
 				nes.getMemoryMapper().setMouseState(false,0,0);
+			}
+		}
+	}
+	class ThreadDoubleBuffer extends Thread{
+		{
+			setName("Double buffer paint thread");
+		}
+		public void run(){
+			while(true){
+//				Image img=nes.getPpu().getImage();
+//				if(img!=null){
+//					drawFrame(img);
+//				}
+				repaint();
+				try {
+					Thread.sleep(15);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

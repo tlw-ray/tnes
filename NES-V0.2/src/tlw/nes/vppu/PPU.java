@@ -3,6 +3,8 @@ package tlw.nes.vppu;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.List;
+import java.util.Vector;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
@@ -332,6 +334,17 @@ public class PPU{
 			}
 		}
 	}
+	
+	List<Image> imgs=new Vector<Image>(100);
+	
+	public List<Image> getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List<Image> imgs) {
+		this.imgs = imgs;
+	}
+
 	long t0;
 	protected void startVBlank(){
 		// Start VBlank period:
@@ -340,16 +353,19 @@ public class PPU{
 		// Do NMI:
 		nes.getCpu().requestIrq(CPU6502.IRQ_NMI);
 		
+		
+		BufferedImage toDraw=null;
 		if(Globals.doubleBuffer){
 			if(img==img0){
-				img=img1;
+				toDraw=img1;
 			}else{
-				img=img0;
+				toDraw=img0;
 			}
-			DataBufferInt bufferInt=(DataBufferInt)img.getRaster().getDataBuffer();
+			DataBufferInt bufferInt=(DataBufferInt)toDraw.getRaster().getDataBuffer();
 			buffer=bufferInt.getData();
 		}
-
+		
+		
 		// Make sure everything is rendered:
 		if(lastRenderedScanline < 239){
 			if(Globals.doubleBuffer){
@@ -360,6 +376,18 @@ public class PPU{
 				// Notify image buffer:
 				nes.getGui().getScreenView().drawFrame();
 			}
+		}
+		
+//		endFrame();
+		
+		if(Globals.doubleBuffer){
+			//下边这句逻辑上是可以的，但是实际上是不行的，可能由于线程安全问题
+//			img=toDraw;
+			
+			//下边这种方式看似浪费内存但实际上是可行的
+			BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_RGB);
+			bi.getGraphics().drawImage(toDraw,0,0,null);
+			img=bi;
 		}
 		
 		if(Globals.enableSound){
@@ -385,7 +413,6 @@ public class PPU{
 		
 		startFrame();
 		
-		endFrame();
 	}
 
 	protected void endScanline(){

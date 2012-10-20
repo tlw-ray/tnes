@@ -13,13 +13,13 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class JFrameFrameView extends JFrame {
+public class JFramePaintRecorder extends JFrame {
 
 	private static final long serialVersionUID = 976650737076425633L;
 	List<Image> imgs;
 	JSpinner jspinner=new JSpinner();
 	JButton jbutton=new JButton("run");
-	public JFrameFrameView(){
+	public JFramePaintRecorder(){
 		setSize(600,400);
 		add(jspinner,BorderLayout.NORTH);
 		add(jbutton,BorderLayout.SOUTH);

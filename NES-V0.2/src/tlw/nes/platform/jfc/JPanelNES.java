@@ -25,7 +25,7 @@ import tlw.nes.NES;
 import tlw.nes.core.IBufferView;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.UI;
-import tlw.nes.debug.JFrameFrameView;
+import tlw.nes.debug.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
 // ”∆µ£∫60÷°/√Î
 //œÒÀÿ:240*256=61440*32bit/÷°
@@ -73,7 +73,7 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().add(jpanelNes,BorderLayout.CENTER);
 		
-		JFrameFrameView ffv=new JFrameFrameView();
+		JFramePaintRecorder ffv=new JFramePaintRecorder();
 //		ffv.setImgs(jpanelNes.getNES().getPpu().getImgs());
 		ffv.setImgs(jpanelNes.getImgs());
 		ffv.setVisible(true);

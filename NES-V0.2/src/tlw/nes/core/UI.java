@@ -18,7 +18,7 @@ public interface UI{
 	public String getWindowCaption();
 	public void setWindowCaption(String s);
 	public void setTitle(String s);
-	public Point getLocation();
+//	public Point getLocation();
 	public int getWidth();
 	public int getHeight();
 	public int getRomFileSize();

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SPI_AudioTrack">
+    <target name="jar">
+    	<mkdir dir="target"/>
+    	<tstamp/>
+    	<buildnumber/>
+		<jar destfile="target/tlw.sound.v${DSTAMP}.${build.number}.jar" basedir="bin">
+		</jar>
+	</target>
+</project>

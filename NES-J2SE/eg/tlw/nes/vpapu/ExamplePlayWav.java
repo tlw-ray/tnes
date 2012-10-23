@@ -17,8 +17,8 @@ public class ExamplePlayWav {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		play0();
-//		play1();
+//		play0();
+		play1();
 		
 		System.out.println("finish...");
 		

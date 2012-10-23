@@ -8,12 +8,15 @@ import javax.sound.sampled.SourceDataLine;
 import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
+import tlw.sound.AudioTrack;
+import tlw.sound.AudioTrackFactory;
 
 
 public final class PAPU{
 
 	private NES nes;
-	private SourceDataLine line;
+//	private SourceDataLine line;
+	private AudioTrack audioTrack;
 
 	private ChannelSquare square1;
 	private ChannelSquare square2;
@@ -147,7 +150,7 @@ public final class PAPU{
 	public synchronized void start(){
 
 		//System.out.println("* Starting PAPU lines.");
-		if(line!=null && line.isActive()){
+		if(audioTrack!=null && audioTrack.isActive()){
 			//System.out.println("* Already running.");
 			return;
 		}
@@ -163,19 +166,22 @@ public final class PAPU{
 		
 //		mixer = AudioSystem.getMixer(mixerInfo[1]);
 
-		AudioFormat audioFormat = new AudioFormat(sampleRate,16,(stereo?2:1),true,false);
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class,audioFormat,sampleRate);
-
-		try{
-
-			line = (SourceDataLine)AudioSystem.getLine(info);
-			line.open(audioFormat);
-			line.start();
-
-		}catch(Exception e){
-			e.printStackTrace();
-			//System.out.println("Couldn't get sound lines.");
-		}
+		audioTrack=AudioTrackFactory.getAudioTrack(sampleRate, 16, (stereo?2:1), true, false);
+		audioTrack.play();
+		
+//		AudioFormat audioFormat = new AudioFormat(sampleRate,16,(stereo?2:1),true,false);
+//		DataLine.Info info = new DataLine.Info(SourceDataLine.class,audioFormat,sampleRate);
+//
+//		try{
+//
+//			line = (SourceDataLine)AudioSystem.getLine(info);
+//			line.open();
+//			line.start();
+//
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			//System.out.println("Couldn't get sound lines.");
+//		}
 
 	}
 
@@ -688,26 +694,26 @@ public final class PAPU{
 	// Writes the sound buffer to the output line:
 	public void writeBuffer(){
 
-		if(line==null)return;
+		if(audioTrack==null)return;
 		bufferIndex -= (bufferIndex%(stereo?4:2));
-		line.write(sampleBuffer,0,bufferIndex);
+		audioTrack.write(sampleBuffer,0,bufferIndex);
 		bufferIndex = 0;
 
 	}
 
 	public void stop(){
 
-		if(line==null){
+		if(audioTrack==null){
 			// No line to close. Probably lack of sound card.
 			return;
 		}
 
-		if(line!=null && line.isOpen() && line.isActive()){
-			line.close();
+		if(audioTrack!=null && audioTrack.isOpen() && audioTrack.isActive()){
+			audioTrack.close();
 		}
 		
 		// Lose line:
-		line = null;
+		audioTrack = null;
 
 	}
 	public void reset(){
@@ -875,19 +881,19 @@ public final class PAPU{
 		
 	}
 
-	public SourceDataLine getLine(){
-		return line;
+	public AudioTrack getLine(){
+		return audioTrack;
 	}
 
 	public boolean isRunning(){
-		return (line!=null && line.isActive());
+		return (audioTrack!=null && audioTrack.isActive());
 	}
 
 	protected int getMillisToAvailableAbove(int target_avail){
 
 		long time;
 		int cur_avail;
-		if((cur_avail=line.available()) >= target_avail)return 0;
+		if((cur_avail=audioTrack.available()) >= target_avail)return 0;
 
 		time  = ((target_avail-cur_avail)*1000)/sampleRate;
 		time /= (stereo?4:2);

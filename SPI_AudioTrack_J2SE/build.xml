@@ -5,8 +5,7 @@
     	<tstamp/>
     	<buildnumber/>
 		<jar destfile="target/tlw.sound.v${DSTAMP}.${build.number}.spi.jar" basedir="bin">
-			<!--<service type="tlw.sound.AudioTrack"> <provider classname="tlw.sound.AudioTrackJ2se" /> </service>
-			-->
+			<service type="tlw.sound.AudioTrack"> <provider classname="tlw.sound.AudioTrackJ2se" /> </service>
 		</jar>
 	</target>
 </project>

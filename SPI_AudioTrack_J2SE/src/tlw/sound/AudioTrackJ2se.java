@@ -1,5 +1,8 @@
 package tlw.sound;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
@@ -41,6 +44,19 @@ public class AudioTrackJ2se implements AudioTrack {
 	}
 	public void setSourceDataLine(SourceDataLine sourceDataLine) {
 		this.sourceDataLine = sourceDataLine;
+	}
+
+	@Override
+	public void init(float sampleRate, int sampleSizeInBits, int channels,
+			boolean signed, boolean bigEndian) {
+		AudioFormat audioFormat = new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class,audioFormat);
+		try {
+			sourceDataLine = (SourceDataLine)AudioSystem.getLine(info);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 

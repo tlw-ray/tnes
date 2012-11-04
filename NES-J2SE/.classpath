@@ -4,5 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NES_Java"/>
 	<classpathentry kind="src" path="eg"/>
+	<classpathentry kind="lib" path="lib/tlw.sound.v20121023.2.jar"/>
+	<classpathentry kind="lib" path="lib/tlw.sound.v20121105.3.spi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

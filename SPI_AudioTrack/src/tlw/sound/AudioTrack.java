@@ -15,4 +15,10 @@ public interface AudioTrack {
 	void close();
 	int available();
 	int getBufferSize();
+	
+	void init(float sampleRate,
+		    int sampleSizeInBits,
+		    int channels,
+		    boolean signed,
+		    boolean bigEndian);
 }

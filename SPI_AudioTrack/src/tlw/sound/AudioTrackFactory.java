@@ -2,12 +2,6 @@ package tlw.sound;
 
 import java.util.ServiceLoader;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 public class AudioTrackFactory {
 	public static void main(String[] args){
 		AudioTrack at=AudioTrackFactory.getAudioTrack(
@@ -25,6 +19,7 @@ public class AudioTrackFactory {
             boolean signed,
             boolean bigEndian){
 		for(AudioTrack service : serviceLoader){
+			service.init(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
 			return service;
 		}
 		return null;

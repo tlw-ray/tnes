@@ -1,9 +1,6 @@
 package tlw.nes.vpapu;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
 import javax.sound.sampled.Mixer;
-import javax.sound.sampled.SourceDataLine;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;

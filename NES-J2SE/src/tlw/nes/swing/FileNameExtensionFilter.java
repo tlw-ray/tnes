@@ -5,7 +5,7 @@
  * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package tlw.nes.platform.jfc;
+package tlw.nes.swing;
 
 import java.io.File;
 import java.util.Locale;

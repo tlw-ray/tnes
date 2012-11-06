@@ -1,4 +1,4 @@
-package tlw.nes.platform.jfc;
+package tlw.nes.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

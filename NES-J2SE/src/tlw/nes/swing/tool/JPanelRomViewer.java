@@ -1,4 +1,4 @@
-package tlw.nes.platform.jfc.tool;
+package tlw.nes.swing.tool;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import tlw.nes.platform.jfc.FileNameExtensionFilter;
+import tlw.nes.swing.FileNameExtensionFilter;
 import tlw.nes.vrom.ROM;
 
 public class JPanelRomViewer extends JPanel{

@@ -1,4 +1,4 @@
-package tlw.nes.platform.jfc.tool;
+package tlw.nes.swing.tool;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

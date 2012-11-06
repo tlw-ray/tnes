@@ -163,7 +163,7 @@ public final class PAPU{
 		
 //		mixer = AudioSystem.getMixer(mixerInfo[1]);
 
-		audioTrack=AudioTrackFactory.getAudioTrack(sampleRate, 16, (stereo?2:1), true, false);
+		audioTrack=AudioTrackFactory.createAudioTrack(sampleRate, 16, (stereo?2:1), true, false);
 		audioTrack.play();
 		
 //		AudioFormat audioFormat = new AudioFormat(sampleRate,16,(stereo?2:1),true,false);

@@ -3,8 +3,6 @@ package tlw.nes.vppu;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.List;
-import java.util.Vector;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
@@ -150,8 +148,6 @@ public class PPU{
 	
 	//double buffer
 	private BufferedImage img;
-	private BufferedImage img0=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-	private BufferedImage img1=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 
 	private boolean[] scanlineChanged = new boolean[Globals.PIXEL_Y];
 	private boolean validTileData;
@@ -334,17 +330,6 @@ public class PPU{
 			}
 		}
 	}
-	
-	List<Image> imgs=new Vector<Image>(100);
-	
-	public List<Image> getImgs() {
-		return imgs;
-	}
-
-	public void setImgs(List<Image> imgs) {
-		this.imgs = imgs;
-	}
-
 	long t0;
 	protected void startVBlank(){
 		// Start VBlank period:
@@ -354,13 +339,8 @@ public class PPU{
 		nes.getCpu().requestIrq(CPU6502.IRQ_NMI);
 		
 		
-		BufferedImage toDraw=null;
+		BufferedImage toDraw=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 		if(Globals.doubleBuffer){
-			if(img==img0){
-				toDraw=img1;
-			}else{
-				toDraw=img0;
-			}
 			DataBufferInt bufferInt=(DataBufferInt)toDraw.getRaster().getDataBuffer();
 			buffer=bufferInt.getData();
 		}
@@ -385,8 +365,14 @@ public class PPU{
 //			img=toDraw;
 			
 			//下边这种方式看似浪费内存但实际上是可行的
-			BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_RGB);
+			BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 			bi.getGraphics().drawImage(toDraw,0,0,null);
+			
+//			int[] data=bufferInt.getData();
+//			bi.setRGB(0, 0, Globals.PIXEL_X, Globals.PIXEL_Y, data, 0, Globals.PIXEL_X);
+			
+//			DataBufferInt bufferInt2=new DataBufferInt(data,data.length);
+//			int[] data=toDraw.getRaster().getPixel(0, 0, new int[Globals.PIXEL_X*Globals.PIXEL_Y]);
 			img=bi;
 		}
 		

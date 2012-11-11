@@ -111,7 +111,7 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		return pix;
 	}
 	
-	BufferedImage img = new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
+	BufferedImage img = new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_RGB);
 //	VolatileImage img = createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);;
 	public void init(boolean showGui) {
 		setFocusable(true);

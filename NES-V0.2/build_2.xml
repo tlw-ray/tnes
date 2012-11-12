@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="NES-Java" default="jar">
+	<property name="compil.debug" value="true"/>
+	<property name="compile.output" value="antbin"/>
+	<property name="compile.lib" value="lib"/>
+	<property name="compile.target" value="target"/>
+	<tstamp/>
+	<property name="jar.name" value="tnes.jar"/>
+	<property name="sign.keystore" value="tlw.keystore" description="The KeyStore file path" />
+	<property name="sign.alias" value="tlw" description="The sing aliase." />
+	<property name="sign.keypass" value="111111" />
+	<property name="sign.storepass" value="111111" />
+	
+	<target name="jar" description="tNes.jar">
+		<property name="src.dir" value="src"/>
+		<echo message="${java.home}"/>
+		<delete dir="${compile.output}"/>
+		<mkdir dir="${compile.output}"/>
+		<mkdir dir="${compile.lib}"/>
+		<copy todir="${compile.output}">
+			<fileset dir="${src.dir}" excludes="**/*.java"/>
+		</copy>
+		<javac debug="${compile.debug}" encoding="GBK" srcdir="${src.dir}" debuglevel="source,lines,vars" destdir="${compile.output}" source="1.5" target="1.5"/>
+		<jar compress="true" basedir="${compile.output}" destfile="${compile.lib}/${jar.name}">
+			<manifest>
+				<attribute name="Created-By" value="tlw_ray@163.com By Ant"/>
+			</manifest>
+		</jar>
+		<copy file="${compile.lib}/${jar.name}" todir="${compile.target}"/>
+		<delete dir="${compile.output}"/>
+	</target>
+</project>

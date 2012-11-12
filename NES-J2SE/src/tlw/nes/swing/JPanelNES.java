@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.util.List;
 import java.util.Vector;
 
@@ -136,15 +135,15 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 //		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_SPEED);
 //		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
-		if(Globals.doubleBuffer){
+//		if(Globals.doubleBuffer){
 			ThreadDoubleBuffer tdb=new ThreadDoubleBuffer();
 			tdb.start();
-		}else{
-			// Retrieve raster from image:
-			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-			pix = dbi.getData();
-			nes.getPpu().setBuffer(pix);
-		}
+//		}else{
+//			// Retrieve raster from image:
+//			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
+//			pix = dbi.getData();
+//			nes.getPpu().setBuffer(pix);
+//		}
 		
 		// Set background color:
 		for(int i=0;i<pix.length;i++){
@@ -266,7 +265,19 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 
 	public void paint(Graphics g){
 		super.paint(g);
-		Image img=getNES().getPpu().getImage();
+		int[] screen=getNES().getPpu().getBuffer();
+		BufferedImage img=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
+		for(int i=0;i<Globals.PIXEL_X;i++){
+			for(int j=0;j<Globals.PIXEL_Y;j++){
+				int color=screen[j*Globals.PIXEL_X+i];
+				byte red=(byte) ((color & 0xFF0000) >> 16);
+				byte green=(byte) ((color & 0xFF00) >> 8);
+				byte blue=(byte) ((color & 0xFF) >> 0);
+				color=blue << 16 | green << 8 | red << 0;
+				img.setRGB(i, j, color);
+			}
+		}
+		
 		if(img!=null){
 			drawFrame(img);
 			if(imgs.size()<300){
@@ -326,10 +337,6 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		}
 		public void run(){
 			while(true){
-//				Image img=nes.getPpu().getImage();
-//				if(img!=null){
-//					drawFrame(img);
-//				}
 				repaint();
 				try {
 					Thread.sleep(15);

@@ -1,9 +1,7 @@
 package tlw.nes.vppu;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-
+//import java.awt.Image;
+//import java.awt.image.BufferedImage;
 import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
@@ -144,10 +142,11 @@ public class PPU{
 //	private int[] dummyPixPriTable = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 //	private int[] bufferOldFrame = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] buffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
+	private int[] screen = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] tpix;
 	
 	//double buffer
-	private BufferedImage img;
+//	private BufferedImage img;
 
 	private boolean[] scanlineChanged = new boolean[Globals.PIXEL_Y];
 	private boolean validTileData;
@@ -338,43 +337,14 @@ public class PPU{
 		// Do NMI:
 		nes.getCpu().requestIrq(CPU6502.IRQ_NMI);
 		
-		
-		BufferedImage toDraw=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-		if(Globals.doubleBuffer){
-			DataBufferInt bufferInt=(DataBufferInt)toDraw.getRaster().getDataBuffer();
-			buffer=bufferInt.getData();
-		}
-		
-		
 		// Make sure everything is rendered:
 		if(lastRenderedScanline < 239){
-			if(Globals.doubleBuffer){
-				renderFramePartially(buffer,lastRenderedScanline+1,Globals.PIXEL_Y-lastRenderedScanline);
-			}else{
-				renderFramePartially(nes.getGui().getScreenView().getBuffer(),lastRenderedScanline+1,Globals.PIXEL_Y-lastRenderedScanline);
-				
-				// Notify image buffer:
-				nes.getGui().getScreenView().drawFrame();
-			}
+			renderFramePartially(buffer,lastRenderedScanline+1,Globals.PIXEL_Y-lastRenderedScanline);
 		}
 		
-//		endFrame();
+		endFrame();
 		
-		if(Globals.doubleBuffer){
-			//下边这句逻辑上是可以的，但是实际上是不行的，可能由于线程安全问题
-//			img=toDraw;
-			
-			//下边这种方式看似浪费内存但实际上是可行的
-			BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-			bi.getGraphics().drawImage(toDraw,0,0,null);
-			
-//			int[] data=bufferInt.getData();
-//			bi.setRGB(0, 0, Globals.PIXEL_X, Globals.PIXEL_Y, data, 0, Globals.PIXEL_X);
-			
-//			DataBufferInt bufferInt2=new DataBufferInt(data,data.length);
-//			int[] data=toDraw.getRaster().getPixel(0, 0, new int[Globals.PIXEL_X*Globals.PIXEL_Y]);
-			img=bi;
-		}
+		screen=buffer.clone();
 		
 		if(Globals.enableSound){
 			nes.getPapu().stuff();
@@ -1888,20 +1858,20 @@ public class PPU{
 		}
 	}
 	public int[] getBuffer() {
-		if(Globals.doubleBuffer){
-			if(img!=null){
-				DataBufferInt bufferInt=(DataBufferInt)img.getData().getDataBuffer();
-				return bufferInt.getData();
-			}
-			return null;
-		}else{
-			return buffer;
-		}
+//		if(Globals.doubleBuffer){
+//			if(img!=null){
+//				DataBufferInt bufferInt=(DataBufferInt)img.getData().getDataBuffer();
+//				return bufferInt.getData();
+//			}
+//			return null;
+//		}else{
+			return screen;
+//		}
 	}
 	
-	public void setBuffer(int[] buffer) {
-		this.buffer = buffer;
-	}
+//	public void setBuffer(int[] buffer) {
+//		this.buffer = buffer;
+//	}
 
 	public void setCycles(int cycles) {
 		this.cycles = cycles;
@@ -1914,7 +1884,7 @@ public class PPU{
 	public Tile[] getPtTile() {
 		return ptTile;
 	}
-	public Image getImage(){
-		return img;
-	}
+//	public Image getImage(){
+//		return img;
+//	}
 }

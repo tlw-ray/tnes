@@ -110,7 +110,7 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 		return pix;
 	}
 	
-	BufferedImage img = new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_RGB);
+	Image img ;
 //	VolatileImage img = createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);;
 	public void init(boolean showGui) {
 		setFocusable(true);
@@ -266,17 +266,7 @@ public class JPanelNES extends JPanel implements UI,IBufferView{
 	public void paint(Graphics g){
 		super.paint(g);
 		int[] screen=getNES().getPpu().getBuffer();
-		BufferedImage img=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-		for(int i=0;i<Globals.PIXEL_X;i++){
-			for(int j=0;j<Globals.PIXEL_Y;j++){
-				int color=screen[j*Globals.PIXEL_X+i];
-				byte red=(byte) ((color & 0xFF0000) >> 16);
-				byte green=(byte) ((color & 0xFF00) >> 8);
-				byte blue=(byte) ((color & 0xFF) >> 0);
-				color=blue << 16 | green << 8 | red << 0;
-				img.setRGB(i, j, color);
-			}
-		}
+		img=UtilImg.toImage(screen, Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 		
 		if(img!=null){
 			drawFrame(img);

@@ -1,6 +1,6 @@
 package tlw.nes.vpapu;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Mixer;
+//import javax.sound.sampled.AudioSystem;
+//import javax.sound.sampled.Mixer;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
@@ -153,13 +153,13 @@ public final class PAPU{
 		}
 
 		bufferIndex = 0;
-		Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-		
-		if(mixerInfo==null || mixerInfo.length==0){
-			//System.out.println("No audio mixer available, sound disabled.");
-			Globals.enableSound = false;
-			return;
-		}
+//		Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+//		
+//		if(mixerInfo==null || mixerInfo.length==0){
+//			//System.out.println("No audio mixer available, sound disabled.");
+//			Globals.enableSound = false;
+//			return;
+//		}
 		
 //		mixer = AudioSystem.getMixer(mixerInfo[1]);
 

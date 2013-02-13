@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
-import tlw.nes.core.IBufferView;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.UI;
 
@@ -79,37 +78,6 @@ public class JPanelTest01 extends JPanel implements UI{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public IBufferView getScreenView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IBufferView getPatternView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IBufferView getSprPalView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IBufferView getNameTableView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IBufferView getImgPalView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void init(boolean showGui) {
 		// TODO Auto-generated method stub

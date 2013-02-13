@@ -6,11 +6,6 @@ public interface UI{
 	public NES getNES();
 	public InputHandler getJoy1();
 	public InputHandler getJoy2();
-	public IBufferView getScreenView();
-	public IBufferView getPatternView();
-	public IBufferView getSprPalView();
-	public IBufferView getNameTableView();
-	public IBufferView getImgPalView();
 	
 	public void init(boolean showGui);
 	public String getWindowCaption();

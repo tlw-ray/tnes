@@ -53,7 +53,7 @@ public class JPanelTest01 extends JPanel implements UI{
 		super.paint(g);
 		int[] colors=getNES().getPpu().getBuffer();
 		
-		int value=0;
+		long value=0;
 		for(int i=0;i<colors.length;i++){
 			value+=colors[i];
 		}

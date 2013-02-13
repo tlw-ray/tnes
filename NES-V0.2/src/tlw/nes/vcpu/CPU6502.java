@@ -1221,7 +1221,7 @@ public final class CPU6502 implements Runnable{
 					if(!crash){
 						crash = true;
 						stopRunning = true;
-						nes.getGui().showErrorMsg("Game crashed, invalid opcode at address $"+Misc.hex16(opaddr));
+						Globals.error("Game crashed, invalid opcode at address $"+Misc.hex16(opaddr));
 					}
 					break;
 

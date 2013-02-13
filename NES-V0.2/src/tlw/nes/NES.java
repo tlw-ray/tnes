@@ -1,7 +1,7 @@
 package tlw.nes;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.MemoryMapper;
-import tlw.nes.core.UI;
+import tlw.nes.core.NesShell;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;
@@ -12,7 +12,7 @@ import tlw.nes.vrom.ROM;
 
 public class NES{
 	
-	private UI gui;
+	private NesShell gui;
 	private CPU6502 cpu;
 	private PPU ppu;
 	private PAPU papu;
@@ -26,7 +26,7 @@ public class NES{
 	private boolean isRunning = false;
 	
 	// Creates the NES system.
-	public NES(UI gui){
+	public NES(NesShell gui){
 		this.gui = gui;
 		
 		// Create memory:
@@ -230,7 +230,7 @@ public class NES{
 	}
 	
 	// Returns the GUI.
-	public UI getGui(){
+	public NesShell getGui(){
 		return gui;
 	}
 	

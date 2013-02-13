@@ -33,6 +33,7 @@ public class Globals{
 	
 	public static boolean disableSprites = false;
 	public static boolean palEmulation=true;
+	//TODO as log
 	public static void error(String msg){
 		System.err.println(msg);
 	}

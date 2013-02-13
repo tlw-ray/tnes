@@ -344,7 +344,10 @@ public class PPU{
 		
 		endFrame();
 		
-		screen=buffer.clone();
+//		screen=buffer.clone();
+		for(int i=0;i<buffer.length;i++){
+			screen[i]=buffer[i];
+		}
 		
 		if(Globals.enableSound){
 			nes.getPapu().stuff();

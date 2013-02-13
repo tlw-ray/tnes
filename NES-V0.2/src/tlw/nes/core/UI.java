@@ -1,6 +1,4 @@
 package tlw.nes.core;
-import java.awt.Point;
-
 import tlw.nes.NES;
 
 public interface UI{

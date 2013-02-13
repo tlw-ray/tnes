@@ -4,6 +4,7 @@ import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.MemoryMapper;
+import tlw.nes.core.UI;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;
@@ -424,8 +425,11 @@ public class MapperDefault implements MemoryMapper {
     }
 
     public short joy1Read() {
-
-        InputHandler in = nes.getGui().getJoy1();
+    	UI ui=nes.getGui();
+    	if(ui==null){
+    		return 0;
+    	}
+        InputHandler in = ui.getJoy1();
         if(in==null){
         	return 0;
         }
@@ -459,7 +463,11 @@ public class MapperDefault implements MemoryMapper {
     }
 
     public short joy2Read() {
-        InputHandler in = nes.getGui().getJoy2();
+    	UI ui=nes.getGui();
+    	if(ui==null){
+    		return 0;
+    	}
+        InputHandler in = ui.getJoy2();
         if(in==null){
         	return 0;
         }

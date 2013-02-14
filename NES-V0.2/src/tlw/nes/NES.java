@@ -58,7 +58,7 @@ public class NES{
 		ppu.init();
 		
 		// Enable sound:
-		enableSound(Globals.enableSound);
+//		enableSound(Globals.enableSound);
 		
 		//TODO 这里去掉貌似没有什么问题，参见cpuMem.reset()方法与这里功能不一致。
 		// Clear CPU memory:

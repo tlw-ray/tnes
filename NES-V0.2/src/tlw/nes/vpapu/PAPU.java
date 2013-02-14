@@ -4,16 +4,14 @@ package tlw.nes.vpapu;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
+import tlw.nes.core.AudioTrack;
 import tlw.nes.vcpu.CPU6502;
-import tlw.sound.AudioTrack;
-import tlw.sound.AudioTrackFactory;
 
 
 public final class PAPU{
 
 	private NES nes;
 //	private SourceDataLine line;
-	private AudioTrack audioTrack;
 
 	private ChannelSquare square1;
 	private ChannelSquare square2;
@@ -147,7 +145,7 @@ public final class PAPU{
 	public synchronized void start(){
 
 		//System.out.println("* Starting PAPU lines.");
-		if(audioTrack!=null && audioTrack.isActive()){
+		if(getLine()!=null && getLine().isActive()){
 			//System.out.println("* Already running.");
 			return;
 		}
@@ -163,8 +161,9 @@ public final class PAPU{
 		
 //		mixer = AudioSystem.getMixer(mixerInfo[1]);
 
-		audioTrack=AudioTrackFactory.createAudioTrack(sampleRate, 16, (stereo?2:1), true, false);
-		audioTrack.play();
+//		audioTrack=AudioTrackFactory.createAudioTrack(sampleRate, 16, (stereo?2:1), true, false);
+		getLine().init(sampleRate, 16, (stereo?2:1), true, false);
+		getLine().play();
 		
 //		AudioFormat audioFormat = new AudioFormat(sampleRate,16,(stereo?2:1),true,false);
 //		DataLine.Info info = new DataLine.Info(SourceDataLine.class,audioFormat,sampleRate);
@@ -691,26 +690,26 @@ public final class PAPU{
 	// Writes the sound buffer to the output line:
 	public void writeBuffer(){
 
-		if(audioTrack==null)return;
+		if(getLine()==null)return;
 		bufferIndex -= (bufferIndex%(stereo?4:2));
-		audioTrack.write(sampleBuffer,0,bufferIndex);
+		getLine().write(sampleBuffer,0,bufferIndex);
 		bufferIndex = 0;
 
 	}
 
 	public void stop(){
 
-		if(audioTrack==null){
+		if(getLine()==null){
 			// No line to close. Probably lack of sound card.
 			return;
 		}
 
-		if(audioTrack!=null && audioTrack.isOpen() && audioTrack.isActive()){
-			audioTrack.close();
+		if(getLine()!=null && getLine().isOpen() && getLine().isActive()){
+			getLine().close();
 		}
 		
-		// Lose line:
-		audioTrack = null;
+		//TODO Lose line:
+//		audioTrack = null;
 
 	}
 	public void reset(){
@@ -879,18 +878,20 @@ public final class PAPU{
 	}
 
 	public AudioTrack getLine(){
-		return audioTrack;
+		return nes.getGui().getAudioTrack();
 	}
 
 	public boolean isRunning(){
-		return (audioTrack!=null && audioTrack.isActive());
+//		return (getLine()!=null && getLine().isActive());
+		//TODO
+		return false;
 	}
 
 	protected int getMillisToAvailableAbove(int target_avail){
 
 		long time;
 		int cur_avail;
-		if((cur_avail=audioTrack.available()) >= target_avail)return 0;
+		if((cur_avail=getLine().available()) >= target_avail)return 0;
 
 		time  = ((target_avail-cur_avail)*1000)/sampleRate;
 		time /= (stereo?4:2);

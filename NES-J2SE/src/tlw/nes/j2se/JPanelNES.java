@@ -20,11 +20,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
+import tlw.nes.AudioTrack;
 import tlw.nes.Globals;
+import tlw.nes.InputHandler;
 import tlw.nes.NES;
-import tlw.nes.core.AudioTrack;
-import tlw.nes.core.InputHandler;
-import tlw.nes.core.NesShell;
+import tlw.nes.NesShell;
 import tlw.nes.debug.JFramePaintRecorder;
 import tlw.nes.j2se.sound.AudioTrackJ2se;
 import tlw.nes.vmemory.ByteBuffer;

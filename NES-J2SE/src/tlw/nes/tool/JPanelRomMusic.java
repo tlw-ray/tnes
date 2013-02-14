@@ -1,4 +1,4 @@
-package tlw.nes.swing.tool;
+package tlw.nes.tool;
 
 import javax.swing.JPanel;
 

@@ -1,4 +1,4 @@
-package tlw.nes.swing;
+package tlw.nes.j2se;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,9 +22,11 @@ import javax.swing.JRadioButtonMenuItem;
 
 import tlw.nes.Globals;
 import tlw.nes.NES;
+import tlw.nes.core.AudioTrack;
 import tlw.nes.core.InputHandler;
 import tlw.nes.core.NesShell;
 import tlw.nes.debug.JFramePaintRecorder;
+import tlw.nes.j2se.sound.AudioTrackJ2se;
 import tlw.nes.vmemory.ByteBuffer;
 //视频：60帧/秒
 //像素:240*256=61440*32bit/帧
@@ -82,12 +84,15 @@ public class JPanelNES extends JPanel implements NesShell{
 		
 	}
 	
-	protected NES nes=new NES(this);
+	
 	private int[] pix=new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	KbInputHandler kbJoy1;
 	KbInputHandler kbJoy2;
 	//TODO 这里数字改小点
 	ByteBuffer byteBuffer=new ByteBuffer(0x20000,ByteBuffer.BO_BIG_ENDIAN);
+	AudioTrack audioTrack=new AudioTrackJ2se();
+	
+	protected NES nes=new NES(this);
 	
 	ActionLoadRom actionLoadRom=new ActionLoadRom(nes);
 	ActionReset actionReset=new ActionReset(nes);
@@ -340,4 +345,10 @@ public class JPanelNES extends JPanel implements NesShell{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public AudioTrack getAudioTrack() {
+		return audioTrack;
+	}
+	
 }

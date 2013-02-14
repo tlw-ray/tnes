@@ -1,4 +1,7 @@
-package tlw.sound;
+package tlw.nes.j2se.sound;
+
+import tlw.nes.core.AudioTrack;
+import tlw.sound.AudioTrackFactory;
 
 public class TestAudioTrackJ2se {
 

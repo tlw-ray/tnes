@@ -1,10 +1,12 @@
-package tlw.sound;
+package tlw.nes.j2se.sound;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+
+import tlw.nes.core.AudioTrack;
 
 public class AudioTrackJ2se implements AudioTrack {
 	SourceDataLine sourceDataLine;
@@ -22,7 +24,9 @@ public class AudioTrackJ2se implements AudioTrack {
 	}
 
 	public boolean isActive() {
-		return sourceDataLine.isActive();
+//		return sourceDataLine.isActive();
+		//TODO 参考实际需要实现
+		return false;
 	}
 
 	public boolean isOpen() {

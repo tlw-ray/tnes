@@ -1,4 +1,4 @@
-package tlw.nes.swing;
+package tlw.nes.j2se;
 
 import java.awt.Component;
 import java.awt.ItemSelectable;

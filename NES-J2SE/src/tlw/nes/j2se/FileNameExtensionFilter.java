@@ -5,7 +5,7 @@
  * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package tlw.nes.swing;
+package tlw.nes.j2se;
 
 import java.io.File;
 import java.util.Locale;

@@ -2,9 +2,9 @@ package tlw.nes.vpapu;
 //import javax.sound.sampled.AudioSystem;
 //import javax.sound.sampled.Mixer;
 
+import tlw.nes.AudioTrack;
 import tlw.nes.Globals;
 import tlw.nes.NES;
-import tlw.nes.core.AudioTrack;
 import tlw.nes.vcpu.CPU6502;
 
 

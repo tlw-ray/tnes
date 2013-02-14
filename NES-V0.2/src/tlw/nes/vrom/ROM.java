@@ -2,8 +2,8 @@ package tlw.nes.vrom;
 import java.util.zip.CRC32;
 
 import tlw.nes.Globals;
+import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
-import tlw.nes.core.MemoryMapper;
 import tlw.nes.vppu.Tile;
 
 /**

@@ -1,6 +1,5 @@
-package tlw.nes.core;
+package tlw.nes;
 
-import tlw.nes.NES;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vrom.ROM;
 

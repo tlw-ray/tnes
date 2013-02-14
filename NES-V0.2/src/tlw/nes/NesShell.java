@@ -1,4 +1,4 @@
-package tlw.nes.core;
+package tlw.nes;
 
 import java.io.InputStream;
 

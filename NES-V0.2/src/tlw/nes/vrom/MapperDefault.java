@@ -1,10 +1,10 @@
 package tlw.nes.vrom;
 
 import tlw.nes.Globals;
+import tlw.nes.InputHandler;
+import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
-import tlw.nes.core.InputHandler;
-import tlw.nes.core.MemoryMapper;
-import tlw.nes.core.NesShell;
+import tlw.nes.NesShell;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;

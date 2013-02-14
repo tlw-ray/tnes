@@ -1,4 +1,4 @@
-package tlw.nes.core;
+package tlw.nes;
 public interface PapuChannel{
 	
 	public void writeReg(int address, int value);

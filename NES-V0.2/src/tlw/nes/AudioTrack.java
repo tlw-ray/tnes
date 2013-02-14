@@ -1,4 +1,4 @@
-package tlw.nes.core;
+package tlw.nes;
 
 public interface AudioTrack {
 	static final int SAMPLE_RATE_11025=11025;

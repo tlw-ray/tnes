@@ -1,7 +1,4 @@
 package tlw.nes;
-import tlw.nes.core.InputHandler;
-import tlw.nes.core.MemoryMapper;
-import tlw.nes.core.NesShell;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;

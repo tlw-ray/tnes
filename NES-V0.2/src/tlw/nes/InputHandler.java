@@ -1,4 +1,4 @@
-package tlw.nes.core;
+package tlw.nes;
 public interface InputHandler{
 	
 	// Joypad keys:

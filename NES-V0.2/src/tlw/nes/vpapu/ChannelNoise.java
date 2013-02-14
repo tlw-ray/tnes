@@ -1,6 +1,6 @@
 package tlw.nes.vpapu;
 
-import tlw.nes.core.PapuChannel;
+import tlw.nes.PapuChannel;
 
 class ChannelNoise implements PapuChannel{
 	

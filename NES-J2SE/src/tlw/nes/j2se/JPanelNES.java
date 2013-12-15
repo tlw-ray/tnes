@@ -25,8 +25,8 @@ import tlw.nes.Globals;
 import tlw.nes.InputHandler;
 import tlw.nes.NES;
 import tlw.nes.NesShell;
-import tlw.nes.debug.JFramePaintRecorder;
 import tlw.nes.j2se.sound.AudioTrackJ2se;
+import tlw.nes.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
 //视频：60帧/秒
 //像素:240*256=61440*32bit/帧
@@ -36,49 +36,46 @@ public class JPanelNES extends JPanel implements NesShell{
 	private static final long serialVersionUID = -2779554736088106527L;
 	static String defaltROM;
 	public static void main(String[] args) {
-		if(args!=null && args.length>0){
-			//启动时第一个参数作为要加载的rom，如果没有该参数则默认加载当前路径下game.nes.
-			defaltROM=args[0];
-		}else{
-			defaltROM="game.nes";
+		if (args != null && args.length > 0) {
+			// 启动时第一个参数作为要加载的rom，如果没有该参数则默认加载当前路径下game.nes.
+			defaltROM = args[0];
+		} else {
+			defaltROM = "game.nes";
 		}
-		
-		JPanelNES jpanelNes=new JPanelNES();
-		
-		JMenuBar jmenuBar=new JMenuBar();
-		
-		JMenu jmenuRom=new JMenu("ROM");
+
+		JPanelNES jpanelNes = new JPanelNES();
+
+		JMenuBar jmenuBar = new JMenuBar();
+
+		JMenu jmenuRom = new JMenu("ROM");
 		jmenuBar.add(jmenuRom);
-		
-		JMenu jmenuArchive=new JMenu("Archive");
-		jmenuBar.add(jmenuArchive);
-		
-		JMenu jmenuSound=new JMenu("Sound");
-		jmenuBar.add(jmenuSound);
-		
 		jmenuRom.add(jpanelNes.actionLoadRom);
 		jmenuRom.addSeparator();
 		jmenuRom.add(jpanelNes.actionReset);
-		
+
+		JMenu jmenuArchive = new JMenu("Archive");
+		jmenuBar.add(jmenuArchive);
 		jmenuArchive.add(jpanelNes.actionSave);
 		jmenuArchive.addSeparator();
 		jmenuArchive.add(jpanelNes.actionLoad);
-		
-		JRadioButtonMenuItem jmenuItemSound=new JRadioButtonMenuItem(jpanelNes.actionSound);
+
+		JMenu jmenuSound = new JMenu("Sound");
+		jmenuBar.add(jmenuSound);
+		JRadioButtonMenuItem jmenuItemSound = new JRadioButtonMenuItem(jpanelNes.actionSound);
 		jmenuSound.add(jmenuItemSound);
 		
-		JFrame frame=new JFrame();
-		frame.setSize(610,450);
+		JMenu jmenuTool = new JMenu("Tools");
+		jmenuBar.add(jmenuTool);
+		jmenuTool.add(jpanelNes.jframePaintRecorder.getActionScreenRecord());
+		
+
+		JFrame frame = new JFrame();
+		frame.setSize(610, 450);
 		frame.setJMenuBar(jmenuBar);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		frame.getContentPane().add(jpanelNes,BorderLayout.CENTER);
-		
-		JFramePaintRecorder ffv=new JFramePaintRecorder();
-//		ffv.setImgs(jpanelNes.getNES().getPpu().getImgs());
-		ffv.setImgs(jpanelNes.getImgs());
-		ffv.setVisible(true);
-		
+		frame.getContentPane().add(jpanelNes, BorderLayout.CENTER);
+
 		frame.setVisible(true);
 		jpanelNes.init(false);
 		
@@ -99,6 +96,9 @@ public class JPanelNES extends JPanel implements NesShell{
 	ActionLoad actionLoad=new ActionLoad(nes, byteBuffer);
 	ActionSave actionSave=new ActionSave(nes, byteBuffer);
 	ActionSound actionSound=new ActionSound(nes);
+	
+	//录屏软件
+	JFramePaintRecorder jframePaintRecorder = new JFramePaintRecorder();
 	
 	public NES getNES() {
 		return nes;
@@ -141,8 +141,8 @@ public class JPanelNES extends JPanel implements NesShell{
 //		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 //		if(Globals.doubleBuffer){
-			ThreadDoubleBuffer tdb=new ThreadDoubleBuffer();
-			tdb.start();
+//			ThreadDoubleBuffer tdb=new ThreadDoubleBuffer();
+//			tdb.start();
 //		}else{
 //			// Retrieve raster from image:
 //			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
@@ -220,10 +220,10 @@ public class JPanelNES extends JPanel implements NesShell{
 		System.err.println(msg);
 	}
 
-	public void drawFrame() {
-		drawFrame(img);
-	}
-	int i=0;
+//	public void drawFrame() {
+//		drawFrame(img);
+//	}
+//	int i=0;
 	private void drawFrame(Image img){
 		Graphics g=getGraphics();
 		//scale
@@ -231,15 +231,20 @@ public class JPanelNES extends JPanel implements NesShell{
 		//no scale
 //		g.drawImage(img,0,0,null);
 		
+		//Test: paintFPS
 		paintFPS(110, 20, g);
 		
-		i++;
-		g.setColor(Color.RED);
-		g.drawRect(0, 0, i%255, i%255);
+		//Test: Draw a rectangle
+//		i++;
+//		g.setColor(Color.RED);
+//		g.drawRect(0, 0, i%255, i%255);
 		
-		g.drawString("Hello", 40, 40);
+		//Test: Draw "hello"
+//		g.drawString("Hello", 40, 40);
 	}
-	List<Image> imgs=new Vector<Image>(300);
+	
+	int catchImageCount=300;
+	List<Image> imgs=new Vector<Image>(catchImageCount);
 	
 	public List<Image> getImgs() {
 		return imgs;
@@ -247,21 +252,6 @@ public class JPanelNES extends JPanel implements NesShell{
 
 	public void setImgs(List<Image> imgs) {
 		this.imgs = imgs;
-	}
-
-	public void paint(Graphics g){
-		super.paint(g);
-		int[] screen=getNES().getPpu().getBuffer();
-		img=UtilImg.toImage(screen, Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-		
-		if(img!=null){
-			drawFrame(img);
-			if(imgs.size()<300){
-				BufferedImage bi=new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_3BYTE_BGR);
-				bi.getGraphics().drawImage(img,0,0,null);
-				imgs.add(bi);
-			}
-		}
 	}
 
 	private long prevFrameTime;
@@ -307,25 +297,15 @@ public class JPanelNES extends JPanel implements NesShell{
 			}
 		}
 	}
-	class ThreadDoubleBuffer extends Thread{
-		{
-			setName("Double buffer paint thread");
-		}
-		public void run(){
-			while(true){
-				repaint();
-				try {
-					Thread.sleep(15);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+
 	@Override
-	public void display(int[] frameBuffer) {
-		// TODO Auto-generated method stub
+	public void drawFrame(int[] frameBuffer) {
+		img=UtilImg.toImage(frameBuffer, Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
 		
+		if(img!=null){
+			drawFrame(img);
+			jframePaintRecorder.addImage(img);
+		}
 	}
 
 	@Override

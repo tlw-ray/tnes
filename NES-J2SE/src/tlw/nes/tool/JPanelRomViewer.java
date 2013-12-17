@@ -11,8 +11,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import tlw.nes.j2se.FileNameExtensionFilter;
 import tlw.nes.vrom.ROM;
 
 public class JPanelRomViewer extends JPanel{

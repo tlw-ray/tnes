@@ -4,11 +4,26 @@ import java.io.InputStream;
 
 
 public interface NesShell {
+	//手柄
 	InputHandler getJoy1();
 	InputHandler getJoy2();
+	
+	//音频
+	//获取音频对象（设置初始化参数）
 	AudioTrack getAudioTrack();
-	void display(int[] frameBuffer);
+	//播放一段声音
 	void play(int[] soundBuffer);
+	
+	//视频
+	/**
+	 * 绘制一帧
+	 * @param frameBuffer
+	 */
+	void drawFrame(int[] frameBuffer);
+	
+	//卡带
 	void load(InputStream rom);
+	
+	//重置
 	void reset();
 }

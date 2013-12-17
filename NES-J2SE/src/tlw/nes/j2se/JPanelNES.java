@@ -115,7 +115,7 @@ public class JPanelNES extends JPanel implements NesShell{
 		return pix;
 	}
 	
-	Image img ;
+	
 //	VolatileImage img = createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);;
 	public void init(boolean showGui) {
 		setFocusable(true);
@@ -224,24 +224,6 @@ public class JPanelNES extends JPanel implements NesShell{
 //		drawFrame(img);
 //	}
 //	int i=0;
-	private void drawFrame(Image img){
-		Graphics g=getGraphics();
-		//scale
-		g.drawImage(img,0,0,getWidth(),getHeight(),null);
-		//no scale
-//		g.drawImage(img,0,0,null);
-		
-		//Test: paintFPS
-		paintFPS(110, 20, g);
-		
-		//Test: Draw a rectangle
-//		i++;
-//		g.setColor(Color.RED);
-//		g.drawRect(0, 0, i%255, i%255);
-		
-		//Test: Draw "hello"
-//		g.drawString("Hello", 40, 40);
-	}
 	
 	int catchImageCount=300;
 	List<Image> imgs=new Vector<Image>(catchImageCount);
@@ -297,15 +279,30 @@ public class JPanelNES extends JPanel implements NesShell{
 			}
 		}
 	}
+	//注意:是BGR，不是RGB;
+	BufferedImage img=new BufferedImage(Globals.PIXEL_X, Globals.PIXEL_Y, BufferedImage.TYPE_INT_BGR) ;
 
 	@Override
 	public void drawFrame(int[] frameBuffer) {
-		img=UtilImg.toImage(frameBuffer, Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_BGR);
-		
-		if(img!=null){
-			drawFrame(img);
-			jframePaintRecorder.addImage(img);
+		//注意：这里是纵向点阵绘制，不是横向;
+		for(int x=0;x<256;x++){
+			for(int y=0;y<240;y++){
+				img.getRaster().getDataBuffer().setElem(y*Globals.PIXEL_X+x, frameBuffer[y*Globals.PIXEL_X+x]);
+			}
 		}
+		
+		//Test: paintFPS
+		paintFPS(110, 20, img.getGraphics());
+		
+		Graphics g=getGraphics();
+		
+		//scale
+		g.drawImage(img,0,0,getWidth(),getHeight(),null);
+		//no scale
+//		g.drawImage(img,0,0,null);
+		
+		jframePaintRecorder.addImage(img);
+		
 	}
 
 	@Override

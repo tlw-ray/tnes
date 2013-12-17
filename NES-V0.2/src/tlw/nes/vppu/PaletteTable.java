@@ -9,7 +9,7 @@ public class PaletteTable{
 	private int currentEmph = -1;
 	private int currentHue, currentSaturation, currentLightness, currentContrast;
 
-	public void makeTables(){
+	public static void makeTables(){
 		int r,g,b,col;
 		
 		// Calculate a table for each possible emphasis setting:
@@ -187,19 +187,19 @@ public class PaletteTable{
 		return hsl&0xFF;
 	}
 	
-	public int getRed(int rgb){
+	public static int getRed(int rgb){
 		return (rgb>>16)&0xFF;
 	}
 	
-	public int getGreen(int rgb){
+	public static int getGreen(int rgb){
 		return (rgb>>8)&0xFF;
 	}
 	
-	public int getBlue(int rgb){
+	public static int getBlue(int rgb){
 		return rgb&0xFF;
 	}
 	
-	public int getRgb(int r, int g, int b){
+	public static int getRgb(int r, int g, int b){
 		return ((r<<16)|(g<<8)|(b));
 	}
 	

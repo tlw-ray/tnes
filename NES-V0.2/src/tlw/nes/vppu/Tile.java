@@ -9,11 +9,8 @@ public class Tile{
 	private int fbIndex;
 	private int tIndex;
 	private int x,y;
-//	private int w,h;
-//	private int incX,incY;
 	private int palIndex;
 	private int tpri;
-//	private int c;
 	private boolean initialized = false;
 	private boolean[] opaque = new boolean[8];
 	

@@ -12,18 +12,15 @@ public interface NesShell {
 	//获取音频对象（设置初始化参数）
 	AudioTrack getAudioTrack();
 	//播放一段声音
-	void play(int[] soundBuffer);
+	void playSound(int[] soundBuffer);
 	
 	//视频
 	/**
 	 * 绘制一帧
 	 * @param frameBuffer
 	 */
-	void drawFrame(int[] frameBuffer);
+	void playFrame(int[] frameBuffer);
 	
 	//卡带
 	void load(InputStream rom);
-	
-	//重置
-	void reset();
 }

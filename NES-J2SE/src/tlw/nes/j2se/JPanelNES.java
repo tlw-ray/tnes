@@ -133,10 +133,9 @@ public class JPanelNES extends JPanel implements NesShell{
 			pix[i]=Globals.COLOR_BG;
 		}
 
-		kbJoy1 = new KbInputHandler(nes,0);
-		kbJoy2 = new KbInputHandler(nes,1);
 		
 		// Map keyboard input keys for joypad 1:
+		kbJoy1 = new KbInputHandler(nes,0);
 		kbJoy1.mapKey(InputHandler.KEY_A,KeyEvent.VK_X);
 		kbJoy1.mapKey(InputHandler.KEY_B,KeyEvent.VK_Z);
 		kbJoy1.mapKey(InputHandler.KEY_START,KeyEvent.VK_ENTER);
@@ -148,6 +147,7 @@ public class JPanelNES extends JPanel implements NesShell{
 		addKeyListener(kbJoy1);
 
 		// Map keyboard input keys for joypad 2:
+		kbJoy2 = new KbInputHandler(nes,1);
 		kbJoy2.mapKey(InputHandler.KEY_A,KeyEvent.VK_NUMPAD7);
 		kbJoy2.mapKey(InputHandler.KEY_B,KeyEvent.VK_NUMPAD9);
 		kbJoy2.mapKey(InputHandler.KEY_START,KeyEvent.VK_NUMPAD1);

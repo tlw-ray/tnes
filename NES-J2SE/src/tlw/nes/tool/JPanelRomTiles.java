@@ -63,7 +63,7 @@ public class JPanelRomTiles extends JPanel {
 	}
 
 	public void init(){
-		panelTiles.setLayout(new GridLayout(8,8));
+		panelTiles.setLayout(new GridLayout(16,16));
 		comboBoxVROM.addActionListener(new ActionVROMTiles());
 	}
 
@@ -92,16 +92,12 @@ public class JPanelRomTiles extends JPanel {
 				int idx=(Integer)item;
 				Tile[][] tiles=rom.getVromTile();
 				
-//				NES nes=new NES(null);
-//				nes.loadRom(rom.getFileName());
-//				tiles[0]=nes.getPpu().getPtTile();
-				
 				panelTiles.removeAll();
 				for(int i=0;i<tiles[idx].length;i++){
 					Tile tile=tiles[idx][i];
 					BufferedImage bi=new BufferedImage(8,8,BufferedImage.TYPE_INT_RGB);
-					int[] data=tile.getPix();
 					
+//					PaletteTable.makeTables();
 //					int[] data=tile.renderSimple(0, 0, 0, PaletteTable.origTable);
 //					for(int x=0;x<8;x++){
 //						for(int y=0;y<8;y++){
@@ -111,6 +107,7 @@ public class JPanelRomTiles extends JPanel {
 //						}
 //					}
 					
+					int[] data=tile.getPix();
 					for(int x=0;x<8;x++){
 						for(int y=0;y<8;y++){
 							int id=x*8+y;

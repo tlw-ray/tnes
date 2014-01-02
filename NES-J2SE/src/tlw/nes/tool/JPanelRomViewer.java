@@ -38,7 +38,7 @@ public class JPanelRomViewer extends JPanel{
 		tabbedPane.addTab("ROM:", panelRom);
 		
 		rom=new ROM();
-		rom.load("target/ROM/Ì¹¿Ë.nes", null);
+		rom.load("game.nes", null);
 		
 		panelRomInfo.setRom(rom);
 		panelTiles.setRom(rom);

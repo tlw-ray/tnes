@@ -3,7 +3,6 @@ package tlw.nes.j2se;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -11,8 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -100,6 +97,8 @@ public class JPanelNES extends JPanel implements NesShell{
 	//录屏软件
 	JFramePaintRecorder jframePaintRecorder = new JFramePaintRecorder();
 	
+	PainterFPS painterFPS=new PainterFPS();
+	
 	public NES getNES() {
 		return nes;
 	}
@@ -116,7 +115,7 @@ public class JPanelNES extends JPanel implements NesShell{
 	}
 	
 	
-//	VolatileImage img = createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);;
+//	TODO VolatileImage img = createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);;
 	public void init(boolean showGui) {
 		setFocusable(true);
 		requestFocus();
@@ -130,25 +129,6 @@ public class JPanelNES extends JPanel implements NesShell{
 				nes.getCpu().setPause(true);
 			}
 		});
-		
-		//TODO 尝试使用VolatileImage以提升效率
-//		img = new BufferedImage(Globals.PIXEL_X,Globals.PIXEL_Y,BufferedImage.TYPE_INT_RGB);
-//		img= createVolatileImage(Globals.PIXEL_X,Globals.PIXEL_Y);
-		// Create graphics object to use for FPS display:
-//		Graphics gfx = img.createGraphics();
-//		Graphics2D g2d = (Graphics2D)gfx;
-//		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_SPEED);
-//		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-		
-//		if(Globals.doubleBuffer){
-//			ThreadDoubleBuffer tdb=new ThreadDoubleBuffer();
-//			tdb.start();
-//		}else{
-//			// Retrieve raster from image:
-//			DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-//			pix = dbi.getData();
-//			nes.getPpu().setBuffer(pix);
-//		}
 		
 		// Set background color:
 		for(int i=0;i<pix.length;i++){
@@ -187,78 +167,7 @@ public class JPanelNES extends JPanel implements NesShell{
 		nes.loadRom(defaltROM);
 		nes.startEmulation();
 	}
-
-	public String getWindowCaption() {
-		return null;
-	}
-
-	public void setWindowCaption(String s) {
-		
-	}
-
-	public void setTitle(String s) {
-		
-	}
-
-	public int getRomFileSize() {
-		return 0;
-	}
-
-	public void destroy() {
-		
-	}
-
-	public void println(String s) {
-		System.out.println(s);
-	}
-
-	public void showLoadProgress(int percentComplete) {
-		System.out.println("...loading "+percentComplete+"%");
-	}
-
-	public void showErrorMsg(String msg) {
-		System.err.println(msg);
-	}
-
-//	public void drawFrame() {
-//		drawFrame(img);
-//	}
-//	int i=0;
 	
-	int catchImageCount=300;
-	List<Image> imgs=new Vector<Image>(catchImageCount);
-	
-	public List<Image> getImgs() {
-		return imgs;
-	}
-
-	public void setImgs(List<Image> imgs) {
-		this.imgs = imgs;
-	}
-
-	private long prevFrameTime;
-	private String fps;
-	private int fpsCounter;
-	public void paintFPS(int x, int y, Graphics g){
-		// Update FPS count(每45帧统计一次):
-		if(--fpsCounter<=0){
-			long ct = System.currentTimeMillis();
-			long frameT = (ct-prevFrameTime)/45;
-			if(frameT == 0){
-				fps = "FPS: -";
-			}else{
-				fps = "FPS: "+(1000/frameT);
-			}
-			fpsCounter=45;
-			prevFrameTime = ct;
-		}
-		
-		// Draw FPS.
-		g.setColor(Color.black);
-		g.fillRect(x,y-g.getFontMetrics().getAscent(),g.getFontMetrics().stringWidth(fps)+3,g.getFontMetrics().getHeight());
-		g.setColor(Color.cyan);
-		g.drawString(fps,x,y);
-	}
 	class MouseAdapterNES extends MouseAdapter {
 		//the component must can request focus to be key border input.
 		public void mouseClicked(MouseEvent me){
@@ -283,7 +192,7 @@ public class JPanelNES extends JPanel implements NesShell{
 	BufferedImage img=new BufferedImage(Globals.PIXEL_X, Globals.PIXEL_Y, BufferedImage.TYPE_INT_BGR) ;
 
 	@Override
-	public void drawFrame(int[] frameBuffer) {
+	public void playFrame(int[] frameBuffer) {
 		//注意：这里是纵向点阵绘制，不是横向;
 		for(int x=0;x<256;x++){
 			for(int y=0;y<240;y++){
@@ -292,7 +201,7 @@ public class JPanelNES extends JPanel implements NesShell{
 		}
 		
 		//Test: paintFPS
-		paintFPS(110, 20, img.getGraphics());
+		painterFPS.paintFPS(110, 20, img.getGraphics());
 		
 		Graphics g=getGraphics();
 		
@@ -306,21 +215,14 @@ public class JPanelNES extends JPanel implements NesShell{
 	}
 
 	@Override
-	public void play(int[] soundBuffer) {
+	public void playSound(int[] soundBuffer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void load(InputStream rom) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

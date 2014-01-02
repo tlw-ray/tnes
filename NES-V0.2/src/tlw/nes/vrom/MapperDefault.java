@@ -1,6 +1,7 @@
 package tlw.nes.vrom;
 
-import tlw.nes.Globals;
+import java.util.logging.Logger;
+
 import tlw.nes.InputHandler;
 import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
@@ -544,7 +545,7 @@ public class MapperDefault implements MemoryMapper {
     }
 
     protected void loadCHRROM() {
-    	Globals.info("Loading CHR ROM..");
+    	Logger.getAnonymousLogger().info("Loading CHR ROM..");
     	ROM rom=nes.getRom();
         if (rom.getVromBankCount() > 0) {
         	loadVromBank(0, CpuInfo.MM_ZERO);
@@ -554,7 +555,7 @@ public class MapperDefault implements MemoryMapper {
                 loadVromBank(1, ROM.VROM_SIZE);
             }
         } else {
-        	Globals.info("There aren't any CHR-ROM banks..");
+        	Logger.getAnonymousLogger().info("There aren't any CHR-ROM banks..");
         }
     }
 

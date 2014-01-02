@@ -1,5 +1,7 @@
 package tlw.nes.vcpu;
 
+import java.util.logging.Logger;
+
 import tlw.nes.Globals;
 import tlw.nes.Misc;
 import tlw.nes.NES;
@@ -1221,7 +1223,7 @@ public final class CPU6502 implements Runnable{
 					if(!crash){
 						crash = true;
 						stopRunning = true;
-						Globals.error("Game crashed, invalid opcode at address $"+Misc.hex16(opaddr));
+						Logger.getAnonymousLogger().severe("Game crashed, invalid opcode at address $"+Misc.hex16(opaddr));
 					}
 					break;
 

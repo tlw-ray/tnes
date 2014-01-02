@@ -1,7 +1,7 @@
 package tlw.nes.vrom;
+import java.util.logging.Logger;
 import java.util.zip.CRC32;
 
-import tlw.nes.Globals;
 import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CpuInfo;
@@ -426,7 +426,7 @@ public class ROM{
         }
 
 		// If the mapper wasn't supported, create the standard one:
-		Globals.error("Warning: Mapper not supported yet.");
+        Logger.getAnonymousLogger().severe("Warning: Mapper not supported yet.");
 		return new MapperDefault();
 		
 	}
@@ -467,7 +467,7 @@ public class ROM{
 					saveRam[i] = Short.parseShort(hexByte, 16);
 				}
 				
-				Globals.info("Battery RAM loaded.");
+				Logger.getAnonymousLogger().info("Battery RAM loaded.");
 				if(nes.getMemoryMapper()!=null){
 					nes.getMemoryMapper().loadBatteryRam();
 				}

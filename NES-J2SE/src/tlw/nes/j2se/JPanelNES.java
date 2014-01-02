@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
@@ -160,34 +158,10 @@ public class JPanelNES extends JPanel implements NesShell{
 		kbJoy2.mapKey(InputHandler.KEY_RIGHT,KeyEvent.VK_NUMPAD6);
 		addKeyListener(kbJoy2);
 		
-		//can request focus
-		MouseAdapterNES mouseAdapter=new MouseAdapterNES();
-		addMouseListener(mouseAdapter);
-		
 		nes.loadRom(defaltROM);
 		nes.startEmulation();
 	}
 	
-	class MouseAdapterNES extends MouseAdapter {
-		//the component must can request focus to be key border input.
-		public void mouseClicked(MouseEvent me){
-			requestFocus();
-		}
-		public void mousePressed(MouseEvent me){
-			requestFocus();
-			
-			if(me.getX()>=0 && me.getY()>=0 && me.getX()<256 && me.getY()<240){
-				if(nes!=null && nes.getMemoryMapper()!=null){
-					nes.getMemoryMapper().setMouseState(true,me.getX(),me.getY());
-				}
-			}
-		}
-		public void mouseReleased(MouseEvent me){
-			if(nes!=null && nes.getMemoryMapper()!=null){
-				nes.getMemoryMapper().setMouseState(false,0,0);
-			}
-		}
-	}
 	//注意:是BGR，不是RGB;
 	BufferedImage img=new BufferedImage(Globals.PIXEL_X, Globals.PIXEL_Y, BufferedImage.TYPE_INT_BGR) ;
 

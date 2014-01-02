@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Vector;
 
@@ -92,7 +93,9 @@ public class JFramePaintRecorder extends JFrame {
 	public synchronized void addImage(Image img){
 		Integer maxFrameCount=(Integer)jspinnerFrameCount.getValue();
 		if(imgs.size()<maxFrameCount){
-			imgs.add(img);
+			BufferedImage bi=new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_INT_RGB);
+			bi.getGraphics().drawImage(img, 0, 0, this);
+			imgs.add(bi);
 			spinnerModelFrameIndex.setMaximum(imgs.size()-1);
 			spinnerModelFrameIndex.setValue(imgs.size()-1);
 		}

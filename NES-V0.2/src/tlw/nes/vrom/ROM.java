@@ -4,6 +4,7 @@ import java.util.zip.CRC32;
 import tlw.nes.Globals;
 import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
+import tlw.nes.vcpu.CpuInfo;
 import tlw.nes.vppu.Tile;
 
 /**
@@ -484,7 +485,7 @@ public class ROM{
 		}
 		//System.out.println("Trying to write to battery RAM. batteryRam="+batteryRam+" enableSave="+enableSave);
 		if(batteryRam && !failedSaveFile){
-			saveRam[address-MemoryMapper.CPU_MEM_RAM_CARTRIDGE] = value;
+			saveRam[address-CpuInfo.MM_EXPANSION_MODULES] = value;
 			saveRamUpToDate = false;
 		}
 	}

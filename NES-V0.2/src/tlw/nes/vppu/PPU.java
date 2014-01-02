@@ -10,6 +10,37 @@ import tlw.nes.vmemory.Memory;
 import tlw.nes.vrom.ROM;
 
 public class PPU{
+	
+//	--------------------------------------- $4000
+//	 Empty
+//	--------------------------------------- $3F20
+//	 Sprite Palette
+//	--------------------------------------- $3F10
+//	 Image Palette
+//	--------------------------------------- $3F00
+//	 Empty
+//	--------------------------------------- $3000
+//	 Attribute Table 3
+//	--------------------------------------- $2FC0
+//	 Name Table 3 (32x30 tiles)
+//	--------------------------------------- $2C00
+//	 Attribute Table 2
+//	--------------------------------------- $2BC0
+//	 Name Table 2 (32x30 tiles)
+//	--------------------------------------- $2800
+//	 Attribute Table 1
+//	--------------------------------------- $27C0
+//	 Name Table 1 (32x30 tiles)
+//	--------------------------------------- $2400
+//	 Attribute Table 0
+//	--------------------------------------- $23C0
+//	 Name Table 0 (32x30 tiles)
+//	--------------------------------------- $2000
+//	 Pattern Table 1 (256x2x8, may be VROM)
+//	--------------------------------------- $1000
+//	 Pattern Table 0 (256x2x8, may be VROM)
+//	--------------------------------------- $0000
+	
 	//PPU Memory Map FROM 0x4000
 	public static final int MM_EMPTY01=			0x4000;
 	public static final int MM_SPRITE_PALETTE=	0x3F20;
@@ -138,16 +169,10 @@ public class PPU{
 	private int[] attrib = new int[32];
 	private int[] bufferBG = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] bufferPixRendered = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
-//	private int[] spr0dummybuffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
-//	private int[] dummyPixPriTable = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
-//	private int[] bufferOldFrame = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] buffer = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] screen = new int[Globals.PIXEL_X*Globals.PIXEL_Y];
 	private int[] tpix;
 	
-	//double buffer
-//	private BufferedImage img;
-
 	private boolean[] scanlineChanged = new boolean[Globals.PIXEL_Y];
 	private boolean validTileData;
 	private int att;
@@ -218,10 +243,6 @@ public class PPU{
 		lastRenderedScanline = -1;
 		curX = 0;
 
-		// Initialize old frame buffer:
-//		for(int i=0;i<bufferOldFrame.length;i++){
-//			bufferOldFrame[i]=-1;
-//		}
 	}
 
 	// Sets Nametable mirroring.
@@ -343,6 +364,9 @@ public class PPU{
 		}
 		
 		endFrame();
+		
+		//NOTE: 这里触发显示器重绘
+		nes.getGui().playFrame(screen);
 		
 //		screen=buffer.clone();
 		for(int i=0;i<buffer.length;i++){

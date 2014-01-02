@@ -6,6 +6,7 @@ import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
 import tlw.nes.NesShell;
 import tlw.nes.vcpu.CPU6502;
+import tlw.nes.vcpu.CpuInfo;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;
 import tlw.nes.vppu.PPU;
@@ -96,7 +97,7 @@ public class MapperDefault implements MemoryMapper {
         } else if (address > 0x4017) {
 
         	nes.getCpuMemory().getMem()[address] = value;
-            if (address >= CPU_MEM_RAM_CARTRIDGE && address < CPU_MEM_BANK_LOWER) {
+            if (address >= CpuInfo.MM_EXPANSION_MODULES && address < CpuInfo.MM_RAM) {
 
                 // Write to SaveRAM. Store in file:
                 if (rom != null) {
@@ -119,7 +120,7 @@ public class MapperDefault implements MemoryMapper {
 
     public void writelow(int address, short value) {
 
-        if (address < CPU_MEM_IO) {
+        if (address < CpuInfo.MM_2K_INTERNAL_RAM) {
             // Mirroring of RAM:
             nes.getCpuMemory().getMem()[address & 0x7FF] = value;
 
@@ -127,7 +128,7 @@ public class MapperDefault implements MemoryMapper {
         	nes.getCpuMemory().getMem()[address] = value;
 
         } else if (address > 0x2007 && address < ROM.ROM_SIZE) {
-            regWrite(CPU_MEM_IO + (address & 0x7), value);
+            regWrite(CpuInfo.MM_2K_INTERNAL_RAM + (address & 0x7), value);
 
         } else {
             regWrite(address, value);
@@ -172,7 +173,7 @@ public class MapperDefault implements MemoryMapper {
             // ROM:
             return nes.getCpuMemory().getMem()[address];
 
-        } else if (address >= CPU_MEM_IO) {
+        } else if (address >= CpuInfo.MM_2K_INTERNAL_RAM) {
 
             // I/O Ports.
             return regLoad(address);
@@ -530,13 +531,14 @@ public class MapperDefault implements MemoryMapper {
     }
 
     protected void loadPRGROM() {
-    	loadRomBank(0, MemoryMapper.CPU_MEM_BANK_LOWER);
+    	loadRomBank(0, CpuInfo.MM_RAM);
         if (nes.getRom().getRomBankCount() > 1) {
             // Load the two first banks into memory.
-            loadRomBank(1, MemoryMapper.CPU_MEM_BANK_UPPER);
+            loadRomBank(1, CpuInfo.MM_LOWER_BANK_OF_CARTRIDGE);
         } else {
             // Load the one bank into both memory locations:
-            loadRomBank(0, MemoryMapper.CPU_MEM_BANK_UPPER);
+            loadRomBank(0, CpuInfo.MM_LOWER_BANK_OF_CARTRIDGE);
+            
         }
 
     }
@@ -545,7 +547,7 @@ public class MapperDefault implements MemoryMapper {
     	Globals.info("Loading CHR ROM..");
     	ROM rom=nes.getRom();
         if (rom.getVromBankCount() > 0) {
-        	loadVromBank(0, MemoryMapper.CPU_MEM_RAM_INTERNAL);
+        	loadVromBank(0, CpuInfo.MM_ZERO);
             if (rom.getVromBankCount() == 1) {
                 loadVromBank(0, ROM.VROM_SIZE);
             } else {
@@ -562,7 +564,7 @@ public class MapperDefault implements MemoryMapper {
             short[] ram = rom.getBatteryRam();
             if (ram != null && ram.length == ROM.BATTERYROM_SIZE) {
                 // Load Battery RAM into memory:
-                System.arraycopy(ram, 0, nes.getCpuMemory().getMem(), CPU_MEM_RAM_CARTRIDGE, ROM.BATTERYROM_SIZE);
+                System.arraycopy(ram, 0, nes.getCpuMemory().getMem(), CpuInfo.MM_EXPANSION_MODULES, ROM.BATTERYROM_SIZE);
             }
         }
     }

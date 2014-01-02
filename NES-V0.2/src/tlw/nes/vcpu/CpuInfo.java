@@ -117,7 +117,7 @@ public class CpuInfo{
 	public static final int MM_EXPANSION_MODULES=			0x6000;			//Expansion Modules 
 	public static final int MM_IO=							0x5000;			//Input/Output
 	public static final int MM_2K_INTERNAL_RAM=				0x2000;			//2kB Internal RAM, mirrored 4 times
-	
+	public static final int MM_ZERO=						0x0;	
 	public static int[] getOpData(){
 		if(opdata==null)initOpData();
 		return opdata;

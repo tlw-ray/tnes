@@ -11,7 +11,6 @@ import tlw.nes.vcpu.CPU6502;
 public final class PAPU{
 
 	private NES nes;
-//	private SourceDataLine line;
 
 	private ChannelSquare square1;
 	private ChannelSquare square2;
@@ -1030,14 +1029,15 @@ public final class PAPU{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			while(getLine().available() < min_avail){
-				try {
-					Thread.yield();
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+			//下边一段似乎可以去掉
+//			while(getLine().available() < min_avail){
+//				try {
+//					Thread.yield();
+//					Thread.sleep(50);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
 			writeBuffer();
 		}
 	}

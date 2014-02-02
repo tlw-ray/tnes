@@ -2,10 +2,9 @@ package tlw.nes.vrom;
 
 import java.util.logging.Logger;
 
-import tlw.nes.InputHandler;
-import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
-import tlw.nes.NesShell;
+import tlw.nes.interf.InputHandler;
+import tlw.nes.interf.NesShell;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vcpu.CpuInfo;
 import tlw.nes.vmemory.ByteBuffer;

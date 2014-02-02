@@ -1,7 +1,7 @@
-package tlw.nes;
+package tlw.nes.vrom;
 
+import tlw.nes.NES;
 import tlw.nes.vmemory.ByteBuffer;
-import tlw.nes.vrom.ROM;
 
 public interface MemoryMapper{
 	static final int PPU_REGISTER_CONTROL1=0x2000;		// | RW  | PPU Control Register 1

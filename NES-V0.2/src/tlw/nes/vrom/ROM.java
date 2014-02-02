@@ -2,7 +2,6 @@ package tlw.nes.vrom;
 import java.util.logging.Logger;
 import java.util.zip.CRC32;
 
-import tlw.nes.MemoryMapper;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CpuInfo;
 import tlw.nes.vppu.Tile;

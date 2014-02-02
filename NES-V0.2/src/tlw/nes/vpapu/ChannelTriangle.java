@@ -1,6 +1,5 @@
 package tlw.nes.vpapu;
 
-import tlw.nes.PapuChannel;
 
 class ChannelTriangle implements PapuChannel{
 	

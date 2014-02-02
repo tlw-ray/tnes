@@ -1,10 +1,13 @@
 package tlw.nes;
+import tlw.nes.interf.InputHandler;
+import tlw.nes.interf.NesShell;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vmemory.Memory;
 import tlw.nes.vpapu.PAPU;
 import tlw.nes.vppu.PPU;
 import tlw.nes.vppu.PaletteTable;
+import tlw.nes.vrom.MemoryMapper;
 import tlw.nes.vrom.ROM;
 
 public class NES{

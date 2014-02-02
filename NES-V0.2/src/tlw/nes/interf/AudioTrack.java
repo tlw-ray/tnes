@@ -1,4 +1,4 @@
-package tlw.nes;
+package tlw.nes.interf;
 
 public interface AudioTrack {
 	//TODO ¿É¼ò»¯

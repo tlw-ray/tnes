@@ -1,6 +1,5 @@
 package tlw.nes.vpapu;
 
-import tlw.nes.PapuChannel;
 import tlw.nes.vcpu.CPU6502;
 
 class ChannelDM implements PapuChannel{

@@ -20,7 +20,10 @@ import tlw.nes.interf.AudioTrack;
 import tlw.nes.interf.Display;
 import tlw.nes.interf.InputHandler;
 import tlw.nes.interf.NesShell;
-import tlw.nes.screen_recorder.JFramePaintRecorder;
+import tlw.nes.j2se.device.AudioTrackJ2se;
+import tlw.nes.j2se.device.KeyBoardInputHandler;
+import tlw.nes.j2se.plugin.PainterFPS;
+import tlw.nes.tool.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vppu.PPU;
 //สำฦตฃบ60ึก/ร๋

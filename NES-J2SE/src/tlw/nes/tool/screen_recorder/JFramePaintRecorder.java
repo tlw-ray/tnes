@@ -1,4 +1,4 @@
-package tlw.nes.screen_recorder;
+package tlw.nes.tool.screen_recorder;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -20,10 +20,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-//屏幕帧录制
-//1.IMAGE_COUNT 记录总共的图像数量
-//2.getImages().add(Image)将正在显示的画面加入到屏幕录制
-//3.play()方法依次播放每个图像
+//�??帧�???//1.IMAGE_COUNT 记�??��?????????//2.getImages().add(Image)�???��?示�??��?????��?�????//3.play()?��?�?????�?��?��?
 public class JFramePaintRecorder extends JFrame {
 
 	private static final long serialVersionUID = 976650737076425633L;
@@ -35,7 +32,7 @@ public class JFramePaintRecorder extends JFrame {
 	
 	JToolBar jtoolBar=new JToolBar();
 	
-	JLabel jlabelFrameCount=new JLabel("帧数");
+	JLabel jlabelFrameCount=new JLabel("帧�?");
 	SpinnerNumberModel spinnerModelFrameCount=new SpinnerNumberModel(300, 0, 600, 100);
 	JSpinner jspinnerFrameCount=new JSpinner(spinnerModelFrameCount);
 	
@@ -66,7 +63,7 @@ public class JFramePaintRecorder extends JFrame {
 			}
 		});
 		
-		setTitle("T-NES屏幕录制");
+		setTitle("T-NES�??�??");
 		setSize(600,400);
 		add(jtoolBar,BorderLayout.NORTH);
 		add(jpanelFrameInfo,BorderLayout.SOUTH);
@@ -102,7 +99,7 @@ public class JFramePaintRecorder extends JFrame {
 		private static final long serialVersionUID = 297185206662005761L;
 
 		public ActionScreenRecorder(){
-			putValue(NAME, "录制");
+			putValue(NAME, "�??");
 		}
 		
 		@Override
@@ -117,7 +114,7 @@ public class JFramePaintRecorder extends JFrame {
 		private static final long serialVersionUID = 3475433122941047617L;
 
 		public ActionPlay(){
-			putValue(NAME, "播放");
+			putValue(NAME, "???");
 		}
 		
 		@Override

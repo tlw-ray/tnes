@@ -1,4 +1,4 @@
-package tlw.nes.j2se;
+package tlw.nes.j2se.plugin;
 
 import java.awt.Color;
 import java.awt.Graphics;

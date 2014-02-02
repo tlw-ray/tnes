@@ -15,7 +15,7 @@ public final class CPU6502 implements Runnable{
 	public static boolean palEmulation=true;
 
 	// Thread:
-	private Thread myThread;
+	private Thread cpuThread;
 
 	// References to other parts of NES :
 	private NES nes;
@@ -155,22 +155,22 @@ public final class CPU6502 implements Runnable{
 	}
 
 	public synchronized void beginExecution(){
-		if(myThread!=null && myThread.isAlive()){
+		if(cpuThread!=null && cpuThread.isAlive()){
 			endExecution();
 		}
 
-		myThread = new Thread(this);
-		myThread.setName("CPU-Thread");
-		myThread.start();
-		myThread.setPriority(Thread.MIN_PRIORITY);
+		cpuThread = new Thread(this);
+		cpuThread.setName("CPU-Thread");
+		cpuThread.start();
+		cpuThread.setPriority(Thread.MIN_PRIORITY);
 	}
 
 	public synchronized void endExecution(){
 		//System.out.println("* Attempting to stop CPU thread.");
-		if(myThread!=null && myThread.isAlive()){
+		if(cpuThread!=null && cpuThread.isAlive()){
 			try{
 				stopRunning = true;
-				myThread.join();
+				cpuThread.join();
 			}catch(InterruptedException ie){
 				//System.out.println("** Unable to stop CPU thread!");
 				ie.printStackTrace();
@@ -181,7 +181,7 @@ public final class CPU6502 implements Runnable{
 	}
 
 	public boolean isRunning(){
-		return (myThread!=null && myThread.isAlive());
+		return (cpuThread!=null && cpuThread.isAlive());
 	}
 
 	public void run(){
@@ -1340,10 +1340,7 @@ public final class CPU6502 implements Runnable{
 
 			REG_PC_NEW = nes.getMemoryMapper().load(0xFFFA) | (nes.getMemoryMapper().load(0xFFFB) << 8);
 			REG_PC_NEW--;
-
 		}
-
-
 	}
 
 	private void doResetInterrupt(){

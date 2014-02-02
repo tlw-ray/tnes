@@ -20,14 +20,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-//录屏软件
-//用来分析PPU生成屏幕数据
-//1.IMAGE_COUNT 为会记录的屏幕数量。
-//2.getImages().add(Image)能够将图像加入到该窗体程序。
-//3.按钮Play会将加入的图像依次播放，每张之间sleep(15)。
-//4.最大帧数,用来控制记录的最大帧数。
-//5.当前帧数,用来显示第x帧的图像。
-
+//屏幕帧录制
+//1.IMAGE_COUNT 记录总共的图像数量
+//2.getImages().add(Image)将正在显示的画面加入到屏幕录制
+//3.play()方法依次播放每个图像
 public class JFramePaintRecorder extends JFrame {
 
 	private static final long serialVersionUID = 976650737076425633L;
@@ -39,13 +35,10 @@ public class JFramePaintRecorder extends JFrame {
 	
 	JToolBar jtoolBar=new JToolBar();
 	
-	//最大帧数
-	JLabel jlabelFrameCount=new JLabel("最大帧:");
+	JLabel jlabelFrameCount=new JLabel("帧数");
 	SpinnerNumberModel spinnerModelFrameCount=new SpinnerNumberModel(300, 0, 600, 100);
 	JSpinner jspinnerFrameCount=new JSpinner(spinnerModelFrameCount);
 	
-	//当前显示帧
-	JLabel jlabelFrameIndex=new JLabel("当前帧:");
 	SpinnerNumberModel spinnerModelFrameIndex=new SpinnerNumberModel(0, 0, 600, 1);
 	JSpinner jspinnerFrameIndex=new JSpinner(spinnerModelFrameIndex);
 	
@@ -60,7 +53,6 @@ public class JFramePaintRecorder extends JFrame {
 		gbc.gridy=GridBagConstraints.RELATIVE;
 		gbc.fill=GridBagConstraints.HORIZONTAL;
 		jpanelFrameInfo.add(jlabelFrameCount, gbc);
-		jpanelFrameInfo.add(jlabelFrameIndex, gbc);
 		gbc.gridx=1;
 		gbc.weightx=1;
 		jpanelFrameInfo.add(jspinnerFrameCount, gbc);
@@ -74,7 +66,7 @@ public class JFramePaintRecorder extends JFrame {
 			}
 		});
 		
-		setTitle("T-NES屏幕录制软件");
+		setTitle("T-NES屏幕录制");
 		setSize(600,400);
 		add(jtoolBar,BorderLayout.NORTH);
 		add(jpanelFrameInfo,BorderLayout.SOUTH);
@@ -110,7 +102,7 @@ public class JFramePaintRecorder extends JFrame {
 		private static final long serialVersionUID = 297185206662005761L;
 
 		public ActionScreenRecorder(){
-			putValue(NAME, "录屏软件");
+			putValue(NAME, "录制");
 		}
 		
 		@Override

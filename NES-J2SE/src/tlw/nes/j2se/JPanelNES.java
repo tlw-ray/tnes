@@ -20,7 +20,6 @@ import tlw.nes.interf.AudioTrack;
 import tlw.nes.interf.Display;
 import tlw.nes.interf.InputHandler;
 import tlw.nes.interf.NesShell;
-import tlw.nes.j2se.sound.AudioTrackJ2se;
 import tlw.nes.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vppu.PPU;

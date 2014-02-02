@@ -1,4 +1,4 @@
-package tlw.nes.j2se.sound;
+package tlw.nes.j2se;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;

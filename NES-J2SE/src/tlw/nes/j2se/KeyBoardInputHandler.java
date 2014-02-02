@@ -5,7 +5,7 @@ import java.awt.event.*;
 import tlw.nes.InputHandler;
 import tlw.nes.NES;
 
-public class KbInputHandler implements KeyListener, InputHandler {
+public class KeyBoardInputHandler implements KeyListener, InputHandler {
     boolean[] allKeysState;
     int[] keyMapping;
     int id;
@@ -16,7 +16,7 @@ public class KbInputHandler implements KeyListener, InputHandler {
     ThreadBBB threadBBB=new ThreadBBB();
     
     int b=0;
-    public KbInputHandler(NES nes, int id) {
+    public KeyBoardInputHandler(NES nes, int id) {
         this.nes = nes;
         this.id = id;
         allKeysState = new boolean[255];
@@ -28,8 +28,8 @@ public class KbInputHandler implements KeyListener, InputHandler {
         return (short) (allKeysState[keyMapping[padKey]] ? 0x41 : 0x40);
     }
 
-    public void mapKey(int padKey, int kbKeycode) {
-        keyMapping[padKey] = kbKeycode;
+    public void mapKey(int padKey, int keyBoardKeycode) {
+        keyMapping[padKey] = keyBoardKeycode;
     }
 
     public void keyPressed(KeyEvent ke) {

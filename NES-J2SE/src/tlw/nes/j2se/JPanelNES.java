@@ -16,13 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
 import tlw.nes.AudioTrack;
-import tlw.nes.Globals;
 import tlw.nes.InputHandler;
 import tlw.nes.NES;
 import tlw.nes.NesShell;
 import tlw.nes.j2se.sound.AudioTrackJ2se;
 import tlw.nes.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
+import tlw.nes.vppu.PPU;
 //视频：60帧/秒
 //像素:240*256=61440*32bit/帧
 //声音:44100Hz*(16bit/32bit)=22050*32bit/秒=735*32bit/帧
@@ -77,9 +77,9 @@ public class JPanelNES extends JPanel implements NesShell{
 	}
 	
 	
-	private int[] pix=new int[Globals.PIXEL_X*Globals.PIXEL_Y];
-	KbInputHandler kbJoy1;
-	KbInputHandler kbJoy2;
+	private int[] pix=new int[PPU.PIXEL_X*PPU.PIXEL_Y];
+	KeyBoardInputHandler kbJoy1;
+	KeyBoardInputHandler kbJoy2;
 	//TODO 这里数字改小点
 	ByteBuffer byteBuffer=new ByteBuffer(0x20000,ByteBuffer.BO_BIG_ENDIAN);
 	AudioTrack audioTrack=new AudioTrackJ2se();
@@ -129,13 +129,13 @@ public class JPanelNES extends JPanel implements NesShell{
 		});
 		
 		// Set background color:
-		for(int i=0;i<pix.length;i++){
-			pix[i]=Globals.COLOR_BG;
-		}
+//		for(int i=0;i<pix.length;i++){
+//			pix[i]=Globals.COLOR_BG;
+//		}
 
 		
 		// Map keyboard input keys for joypad 1:
-		kbJoy1 = new KbInputHandler(nes,0);
+		kbJoy1 = new KeyBoardInputHandler(nes,0);
 		kbJoy1.mapKey(InputHandler.KEY_A,KeyEvent.VK_X);
 		kbJoy1.mapKey(InputHandler.KEY_B,KeyEvent.VK_Z);
 		kbJoy1.mapKey(InputHandler.KEY_START,KeyEvent.VK_ENTER);
@@ -147,7 +147,7 @@ public class JPanelNES extends JPanel implements NesShell{
 		addKeyListener(kbJoy1);
 
 		// Map keyboard input keys for joypad 2:
-		kbJoy2 = new KbInputHandler(nes,1);
+		kbJoy2 = new KeyBoardInputHandler(nes,1);
 		kbJoy2.mapKey(InputHandler.KEY_A,KeyEvent.VK_NUMPAD7);
 		kbJoy2.mapKey(InputHandler.KEY_B,KeyEvent.VK_NUMPAD9);
 		kbJoy2.mapKey(InputHandler.KEY_START,KeyEvent.VK_NUMPAD1);
@@ -163,14 +163,14 @@ public class JPanelNES extends JPanel implements NesShell{
 	}
 	
 	//注意:是BGR，不是RGB;
-	BufferedImage img=new BufferedImage(Globals.PIXEL_X, Globals.PIXEL_Y, BufferedImage.TYPE_INT_BGR) ;
+	BufferedImage img=new BufferedImage(PPU.PIXEL_X, PPU.PIXEL_Y, BufferedImage.TYPE_INT_BGR) ;
 
 	@Override
 	public void playFrame(int[] frameBuffer) {
 		//注意：这里是纵向点阵绘制，不是横向;
 		for(int x=0;x<256;x++){
 			for(int y=0;y<240;y++){
-				img.getRaster().getDataBuffer().setElem(y*Globals.PIXEL_X+x, frameBuffer[y*Globals.PIXEL_X+x]);
+				img.getRaster().getDataBuffer().setElem(y*PPU.PIXEL_X+x, frameBuffer[y*PPU.PIXEL_X+x]);
 			}
 		}
 		

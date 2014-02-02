@@ -1,11 +1,5 @@
 package tlw.nes.vmemory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.util.logging.Logger;
 
 public class ByteBuffer{
 	
@@ -17,7 +11,7 @@ public class ByteBuffer{
 	private short[] buf;
 	private int size;
 	private int curPos;
-	private boolean hasBeenErrors;
+//	private boolean hasBeenErrors;
 	private boolean expandable=true;
 	private int expandBy = 4096;
 	
@@ -30,7 +24,7 @@ public class ByteBuffer{
 		this.size = size;
 		this.byteOrder = byteOrdering;
 		curPos = 0;
-		hasBeenErrors = false;
+//		hasBeenErrors = false;
 	}
 	
 	
@@ -43,7 +37,7 @@ public class ByteBuffer{
 			size = content.length;
 			this.byteOrder = byteOrdering;
 			curPos = 0;
-			hasBeenErrors = false;
+//			hasBeenErrors = false;
 		}catch(Exception e){
 			//System.out.println("ByteBuffer: Couldn't create buffer from empty array.");
 			e.printStackTrace();
@@ -52,75 +46,76 @@ public class ByteBuffer{
 	
 	
 	
-	public void setExpandable(boolean exp){
-		expandable = exp;
-	}
+//	public void setExpandable(boolean exp){
+//		expandable = exp;
+//	}
 	
-	public void setExpandBy(int expBy){
-		
-		if(expBy > 1024){
-			this.expandBy = expBy;
-		}
-		
-	}
+//	public void setExpandBy(int expBy){
+//		
+//		if(expBy > 1024){
+//			this.expandBy = expBy;
+//		}
+//		
+//	}
 	
-	public void setByteOrder(int byteOrder){
-		
-		if(byteOrder>=0 && byteOrder<2){
-			this.byteOrder = byteOrder;
-		}
-		
-	}
+//	public void setByteOrder(int byteOrder){
+//		
+//		if(byteOrder>=0 && byteOrder<2){
+//			this.byteOrder = byteOrder;
+//		}
+//		
+//	}
 	
-	public byte[] getBytes(){
-		byte[] ret = new byte[buf.length];
-		for(int i=0;i<buf.length;i++){
-			ret[i] = (byte)buf[i];
-		}
-		return ret;
-	}
+//	public byte[] getBytes(){
+//		byte[] ret = new byte[buf.length];
+//		for(int i=0;i<buf.length;i++){
+//			ret[i] = (byte)buf[i];
+//		}
+//		return ret;
+//	}
 	
-	public int getSize(){
-		return this.size;
-	}
+//	public int getSize(){
+//		return this.size;
+//	}
 	
-	public int getPos(){
-		return curPos;
-	}
+//	public int getPos(){
+//		return curPos;
+//	}
 	
 	private void error(){
-		hasBeenErrors = true;
+//		hasBeenErrors = true;
 		//System.out.println("Not in range!");
+		Logger.getAnonymousLogger().severe("Not in range!");
 	}
 	
-	public boolean hasHadErrors(){
-		return hasBeenErrors;
-	}
+//	public boolean hasHadErrors(){
+//		return hasBeenErrors;
+//	}
 	
-	public void clear(){
-		for(int i=0;i<buf.length;i++){
-			buf[i] = 0;
-		}
-		curPos=0;
-	}
+//	public void clear(){
+//		for(int i=0;i<buf.length;i++){
+//			buf[i] = 0;
+//		}
+//		curPos=0;
+//	}
 	
-	public void fill(byte value){
-		for(int i=0;i<size;i++){
-			buf[i]=value;
-		}
-	}
+//	public void fill(byte value){
+//		for(int i=0;i<size;i++){
+//			buf[i]=value;
+//		}
+//	}
 	
-	public boolean fillRange(int start, int length, byte value){
-		if(inRange(start,length)){
-			for(int i=start;i<(start+length);i++){
-				buf[i] = value;
-			}
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean fillRange(int start, int length, byte value){
+//		if(inRange(start,length)){
+//			for(int i=start;i<(start+length);i++){
+//				buf[i] = value;
+//			}
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
 	public void resize(int length){
 		
@@ -131,13 +126,13 @@ public class ByteBuffer{
 		
 	}
 	
-	public void resizeToCurrentPos(){
-		resize(curPos);
-	}
+//	public void resizeToCurrentPos(){
+//		resize(curPos);
+//	}
 	
-	public void expand(){
-		expand(expandBy);
-	}
+//	public void expand(){
+//		expand(expandBy);
+//	}
 	
 	public void expand(int byHowMuch){
 		resize(size+byHowMuch);
@@ -219,29 +214,29 @@ public class ByteBuffer{
 		}
 	}
 	
-	public boolean putShort(short var){
-		boolean ret = putShort(var,curPos);
-		if(ret){
-			move(2);
-		}
-		return ret;
-	}
+//	public boolean putShort(short var){
+//		boolean ret = putShort(var,curPos);
+//		if(ret){
+//			move(2);
+//		}
+//		return ret;
+//	}
 		
-	public boolean putShort(short var, int pos){
-		if(inRange(pos,2)){
-			if(this.byteOrder == BO_BIG_ENDIAN){
-				buf[pos+0] = (short)((var>>8)&255);
-				buf[pos+1] = (short)((var)&255);
-			}else{
-				buf[pos+1] = (short)((var>>8)&255);
-				buf[pos+0] = (short)((var)&255);
-			}
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean putShort(short var, int pos){
+//		if(inRange(pos,2)){
+//			if(this.byteOrder == BO_BIG_ENDIAN){
+//				buf[pos+0] = (short)((var>>8)&255);
+//				buf[pos+1] = (short)((var)&255);
+//			}else{
+//				buf[pos+1] = (short)((var>>8)&255);
+//				buf[pos+0] = (short)((var)&255);
+//			}
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
 	public boolean putInt(int var){
 		boolean ret = putInt(var,curPos);
@@ -271,95 +266,95 @@ public class ByteBuffer{
 		}
 	}
 	
-	public boolean putString(String var){
-		boolean ret = putString(var,curPos);
-		if(ret){
-			move(2*var.length());
-		}
-		return ret;
-	}
+//	public boolean putString(String var){
+//		boolean ret = putString(var,curPos);
+//		if(ret){
+//			move(2*var.length());
+//		}
+//		return ret;
+//	}
+//	
+//	public boolean putString(String var, int pos){
+//		char[] charArr = var.toCharArray();
+//		short theChar;
+//		if(inRange(pos,var.length()*2)){
+//			for(int i=0;i<var.length();i++){
+//				theChar = (short)(charArr[i]);
+//				buf[pos+0] = (short)((theChar>>8)&255);
+//				buf[pos+1] = (short)((theChar   )&255);
+//				pos+=2;
+//			}
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
-	public boolean putString(String var, int pos){
-		char[] charArr = var.toCharArray();
-		short theChar;
-		if(inRange(pos,var.length()*2)){
-			for(int i=0;i<var.length();i++){
-				theChar = (short)(charArr[i]);
-				buf[pos+0] = (short)((theChar>>8)&255);
-				buf[pos+1] = (short)((theChar   )&255);
-				pos+=2;
-			}
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean putChar(char var){
+//		boolean ret = putChar(var,curPos);
+//		if(ret){
+//			move(2);
+//		}
+//		return ret;
+//	}
 	
-	public boolean putChar(char var){
-		boolean ret = putChar(var,curPos);
-		if(ret){
-			move(2);
-		}
-		return ret;
-	}
+//	public boolean putChar(char var, int pos){
+//		int tmp = var;
+//		if(inRange(pos,2)){
+//			if(byteOrder == BO_BIG_ENDIAN){
+//				buf[pos+0] = (short)((tmp>>8)&255);
+//				buf[pos+1] = (short)((tmp   )&255);
+//			}else{
+//				buf[pos+1] = (short)((tmp>>8)&255);
+//				buf[pos+0] = (short)((tmp   )&255);
+//			}
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
-	public boolean putChar(char var, int pos){
-		int tmp = var;
-		if(inRange(pos,2)){
-			if(byteOrder == BO_BIG_ENDIAN){
-				buf[pos+0] = (short)((tmp>>8)&255);
-				buf[pos+1] = (short)((tmp   )&255);
-			}else{
-				buf[pos+1] = (short)((tmp>>8)&255);
-				buf[pos+0] = (short)((tmp   )&255);
-			}
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean putCharAscii(char var){
+//		boolean ret = putCharAscii(var,curPos);
+//		if(ret){
+//			move(1);
+//		}
+//		return ret;
+//	}
 	
-	public boolean putCharAscii(char var){
-		boolean ret = putCharAscii(var,curPos);
-		if(ret){
-			move(1);
-		}
-		return ret;
-	}
+//	public boolean putCharAscii(char var, int pos){
+//		if(inRange(pos)){
+//			buf[pos] = (short)var;
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
-	public boolean putCharAscii(char var, int pos){
-		if(inRange(pos)){
-			buf[pos] = (short)var;
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean putStringAscii(String var){
+//		boolean ret = putStringAscii(var,curPos);
+//		if(ret){
+//			move(var.length());
+//		}
+//		return ret;
+//	}
 	
-	public boolean putStringAscii(String var){
-		boolean ret = putStringAscii(var,curPos);
-		if(ret){
-			move(var.length());
-		}
-		return ret;
-	}
-	
-	public boolean putStringAscii(String var, int pos){
-		char[] charArr = var.toCharArray();
-		if(inRange(pos,var.length())){
-			for(int i=0;i<var.length();i++){
-				buf[pos] = (short)charArr[i];
-				pos++;
-			}
-			return true;
-		}else{
-			error();
-			return false;
-		}
-	}
+//	public boolean putStringAscii(String var, int pos){
+//		char[] charArr = var.toCharArray();
+//		if(inRange(pos,var.length())){
+//			for(int i=0;i<var.length();i++){
+//				buf[pos] = (short)charArr[i];
+//				pos++;
+//			}
+//			return true;
+//		}else{
+//			error();
+//			return false;
+//		}
+//	}
 	
 	public boolean putByteArray(short[] arr){
 		if(arr==null)return false;
@@ -383,44 +378,44 @@ public class ByteBuffer{
 		return true;
 	}
 	
-	public boolean putShortArray(short[] arr){
-		if(arr==null)return false;
-		if(buf.length-curPos < arr.length*2){
-			resize(curPos+arr.length*2);
-		}
-		if(byteOrder == BO_BIG_ENDIAN){
-			for(int i=0;i<arr.length;i++){
-				buf[curPos+0] = (short)((arr[i]>>8)&255);
-				buf[curPos+1] = (short)((arr[i]   )&255);
-				curPos+=2;
-			}
-		}else{
-			for(int i=0;i<arr.length;i++){
-				buf[curPos+1] = (short)((arr[i]>>8)&255);
-				buf[curPos+0] = (short)((arr[i]   )&255);
-				curPos+=2;
-			}
-		}
-		return true;
-	}
+//	public boolean putShortArray(short[] arr){
+//		if(arr==null)return false;
+//		if(buf.length-curPos < arr.length*2){
+//			resize(curPos+arr.length*2);
+//		}
+//		if(byteOrder == BO_BIG_ENDIAN){
+//			for(int i=0;i<arr.length;i++){
+//				buf[curPos+0] = (short)((arr[i]>>8)&255);
+//				buf[curPos+1] = (short)((arr[i]   )&255);
+//				curPos+=2;
+//			}
+//		}else{
+//			for(int i=0;i<arr.length;i++){
+//				buf[curPos+1] = (short)((arr[i]>>8)&255);
+//				buf[curPos+0] = (short)((arr[i]   )&255);
+//				curPos+=2;
+//			}
+//		}
+//		return true;
+//	}
 	
-	public String toString(){
-		StringBuffer strBuf = new StringBuffer();
-		short tmp;
-		for(int i=0;i<(size-1);i+=2){
-			tmp = (short)((buf[i]<<8)|(buf[i+1]));
-			strBuf.append((char)(tmp));
-		}
-		return strBuf.toString();
-	}
+//	public String toString(){
+//		StringBuffer strBuf = new StringBuffer();
+//		short tmp;
+//		for(int i=0;i<(size-1);i+=2){
+//			tmp = (short)((buf[i]<<8)|(buf[i+1]));
+//			strBuf.append((char)(tmp));
+//		}
+//		return strBuf.toString();
+//	}
 	
-	public String toStringAscii(){
-		StringBuffer strBuf = new StringBuffer();
-		for(int i=0;i<size;i++){
-			strBuf.append((char)(buf[i]));
-		}
-		return strBuf.toString();
-	}
+//	public String toStringAscii(){
+//		StringBuffer strBuf = new StringBuffer();
+//		for(int i=0;i<size;i++){
+//			strBuf.append((char)(buf[i]));
+//		}
+//		return strBuf.toString();
+//	}
 	
 	public boolean readBoolean(){
 		boolean ret = readBoolean(curPos);
@@ -447,24 +442,24 @@ public class ByteBuffer{
 		}
 	}
 	
-	public short readShort() throws ArrayIndexOutOfBoundsException{
-		short ret = readShort(curPos);
-		move(2);
-		return ret;
-	}
+//	public short readShort() throws ArrayIndexOutOfBoundsException{
+//		short ret = readShort(curPos);
+//		move(2);
+//		return ret;
+//	}
 	
-	public short readShort(int pos) throws ArrayIndexOutOfBoundsException{
-		if(inRange(pos,2)){
-			if(this.byteOrder == BO_BIG_ENDIAN){
-				return (short)((buf[pos]<<8)|(buf[pos+1]));
-			}else{
-				return (short)((buf[pos+1]<<8)|(buf[pos]));
-			}
-		}else{
-			error();
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public short readShort(int pos) throws ArrayIndexOutOfBoundsException{
+//		if(inRange(pos,2)){
+//			if(this.byteOrder == BO_BIG_ENDIAN){
+//				return (short)((buf[pos]<<8)|(buf[pos+1]));
+//			}else{
+//				return (short)((buf[pos+1]<<8)|(buf[pos]));
+//			}
+//		}else{
+//			error();
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
 	public int readInt() throws ArrayIndexOutOfBoundsException{
 		int ret = readInt(curPos);
@@ -493,117 +488,117 @@ public class ByteBuffer{
 		}
 	}
 	
-	public char readChar() throws ArrayIndexOutOfBoundsException{
-		char ret = readChar(curPos);
-		move(2);
-		return ret;
-	}
+//	public char readChar() throws ArrayIndexOutOfBoundsException{
+//		char ret = readChar(curPos);
+//		move(2);
+//		return ret;
+//	}
 	
-	public char readChar(int pos) throws ArrayIndexOutOfBoundsException{
-		if(inRange(pos,2)){
-			return (char)(readShort(pos));
-		}else{
-			error();
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public char readChar(int pos) throws ArrayIndexOutOfBoundsException{
+//		if(inRange(pos,2)){
+//			return (char)(readShort(pos));
+//		}else{
+//			error();
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
-	public char readCharAscii() throws ArrayIndexOutOfBoundsException{
-		char ret = readCharAscii(curPos);
-		move(1);
-		return ret;
-	}
+//	public char readCharAscii() throws ArrayIndexOutOfBoundsException{
+//		char ret = readCharAscii(curPos);
+//		move(1);
+//		return ret;
+//	}
 	
-	public char readCharAscii(int pos) throws ArrayIndexOutOfBoundsException{
-		if(inRange(pos,1)){
-			return (char)(readByte(pos)&255);
-		}else{
-			error();
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public char readCharAscii(int pos) throws ArrayIndexOutOfBoundsException{
+//		if(inRange(pos,1)){
+//			return (char)(readByte(pos)&255);
+//		}else{
+//			error();
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
-	public String readString(int length) throws ArrayIndexOutOfBoundsException{
-		if(length > 0){
-			String ret = readString(curPos,length);
-			move(ret.length()*2);
-			return ret;
-		}else{
-			return new String("");
-		}
-	}
+//	public String readString(int length) throws ArrayIndexOutOfBoundsException{
+//		if(length > 0){
+//			String ret = readString(curPos,length);
+//			move(ret.length()*2);
+//			return ret;
+//		}else{
+//			return new String("");
+//		}
+//	}
 	
-	public String readString(int pos, int length) throws ArrayIndexOutOfBoundsException{
-		char[] tmp;
-		if(inRange(pos,length*2) && length>0){
-			 tmp = new char[length];
-			 for(int i=0;i<length;i++){
-			 	tmp[i] = readChar(pos+i*2);
-			 }
-			 return new String(tmp);
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public String readString(int pos, int length) throws ArrayIndexOutOfBoundsException{
+//		char[] tmp;
+//		if(inRange(pos,length*2) && length>0){
+//			 tmp = new char[length];
+//			 for(int i=0;i<length;i++){
+//			 	tmp[i] = readChar(pos+i*2);
+//			 }
+//			 return new String(tmp);
+//		}else{
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
-	public String readStringWithShortLength() throws ArrayIndexOutOfBoundsException{
-		String ret = readStringWithShortLength(curPos);
-		move(ret.length()*2+2);
-		return ret;
-	}
+//	public String readStringWithShortLength() throws ArrayIndexOutOfBoundsException{
+//		String ret = readStringWithShortLength(curPos);
+//		move(ret.length()*2+2);
+//		return ret;
+//	}
 	
-	public String readStringWithShortLength(int pos) throws ArrayIndexOutOfBoundsException{
-		short len;
-		if(inRange(pos,2)){
-			len = readShort(pos);
-			if(len>0){
-				return readString(pos+2,len);
-			}else{
-				return new String("");
-			}
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public String readStringWithShortLength(int pos) throws ArrayIndexOutOfBoundsException{
+//		short len;
+//		if(inRange(pos,2)){
+//			len = readShort(pos);
+//			if(len>0){
+//				return readString(pos+2,len);
+//			}else{
+//				return new String("");
+//			}
+//		}else{
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
-	public String readStringAscii(int length) throws ArrayIndexOutOfBoundsException{
-		String ret = readStringAscii(curPos,length);
-		move(ret.length());
-		return ret;
-	}
+//	public String readStringAscii(int length) throws ArrayIndexOutOfBoundsException{
+//		String ret = readStringAscii(curPos,length);
+//		move(ret.length());
+//		return ret;
+//	}
 	
-	public String readStringAscii(int pos, int length) throws ArrayIndexOutOfBoundsException{
-		char[] tmp;
-		if(inRange(pos,length) && length > 0){
-			tmp = new char[length];
-			for(int i=0;i<length;i++){
-				tmp[i] = readCharAscii(pos+i);
-			}
-			return new String(tmp);
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public String readStringAscii(int pos, int length) throws ArrayIndexOutOfBoundsException{
+//		char[] tmp;
+//		if(inRange(pos,length) && length > 0){
+//			tmp = new char[length];
+//			for(int i=0;i<length;i++){
+//				tmp[i] = readCharAscii(pos+i);
+//			}
+//			return new String(tmp);
+//		}else{
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
-	public String readStringAsciiWithShortLength() throws ArrayIndexOutOfBoundsException{
-		String ret = readStringAsciiWithShortLength(curPos);
-		move(ret.length()+2);
-		return ret;
-	}
+//	public String readStringAsciiWithShortLength() throws ArrayIndexOutOfBoundsException{
+//		String ret = readStringAsciiWithShortLength(curPos);
+//		move(ret.length()+2);
+//		return ret;
+//	}
 	
-	public String readStringAsciiWithShortLength(int pos) throws ArrayIndexOutOfBoundsException{
-		short len;
-		if(inRange(pos,2)){
-			len = readShort(pos);
-			if(len > 0){
-				return readStringAscii(pos+2,len);
-			}else{
-				return new String("");
-			}
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
-	}
+//	public String readStringAsciiWithShortLength(int pos) throws ArrayIndexOutOfBoundsException{
+//		short len;
+//		if(inRange(pos,2)){
+//			len = readShort(pos);
+//			if(len > 0){
+//				return readStringAscii(pos+2,len);
+//			}else{
+//				return new String("");
+//			}
+//		}else{
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
+//	}
 	
 //	private short[] expandShortArray(short[] array, int size){
 //		short[] newArr = new short[array.length+size];
@@ -615,103 +610,103 @@ public class ByteBuffer{
 //		return newArr;
 //	}
 	
-	public void crop(){
-		if(curPos>0){
-			if(curPos<buf.length){
-				short[] newBuf = new short[curPos];
-				System.arraycopy(buf,0,newBuf,0,curPos);
-				buf = newBuf;
-			}
-		}else{
-			//System.out.println("Could not crop buffer, as the current position is 0. The buffer may not be empty.");
-		}
-	}
+//	public void crop(){
+//		if(curPos>0){
+//			if(curPos<buf.length){
+//				short[] newBuf = new short[curPos];
+//				System.arraycopy(buf,0,newBuf,0,curPos);
+//				buf = newBuf;
+//			}
+//		}else{
+//			//System.out.println("Could not crop buffer, as the current position is 0. The buffer may not be empty.");
+//		}
+//	}
 	
-	public static ByteBuffer asciiEncode(ByteBuffer buf){
-		
-		short[] data = buf.buf;
-		byte[] enc = new byte[buf.getSize()*2];
-		
-		int encpos = 0;
-		int tmp;
-		for(int i=0;i<data.length;i++){
-			
-			tmp = data[i];
-			enc[encpos  ] = (byte)(65+(tmp   ) & 0xF);
-			enc[encpos+1] = (byte)(65+(tmp>>4) & 0xF);
-			encpos += 2;
-			
-		}
-		return new ByteBuffer(enc,ByteBuffer.BO_BIG_ENDIAN);
-		
-	}
+//	public static ByteBuffer asciiEncode(ByteBuffer buf){
+//		
+//		short[] data = buf.buf;
+//		byte[] enc = new byte[buf.getSize()*2];
+//		
+//		int encpos = 0;
+//		int tmp;
+//		for(int i=0;i<data.length;i++){
+//			
+//			tmp = data[i];
+//			enc[encpos  ] = (byte)(65+(tmp   ) & 0xF);
+//			enc[encpos+1] = (byte)(65+(tmp>>4) & 0xF);
+//			encpos += 2;
+//			
+//		}
+//		return new ByteBuffer(enc,ByteBuffer.BO_BIG_ENDIAN);
+//		
+//	}
 	
-	public static ByteBuffer asciiDecode(ByteBuffer buf){
-		return null;
-	}
+//	public static ByteBuffer asciiDecode(ByteBuffer buf){
+//		return null;
+//	}
+
+//	public static void saveToZipFile(File f, ByteBuffer buf){
+//		
+//		try{
+//			
+//			FileOutputStream fOut = new FileOutputStream(f);
+//			ZipOutputStream zipOut = new ZipOutputStream(fOut);
+//			zipOut.putNextEntry(new ZipEntry("contents"));
+//			zipOut.write(buf.getBytes());
+//			zipOut.closeEntry();
+//			zipOut.close();
+//			fOut.close();
+//			//System.out.println("Buffer was successfully saved to "+f.getPath());
+//			
+//		}catch(Exception e){
+//			
+//			//System.out.println("Unable to save buffer to file "+f.getPath());
+//			e.printStackTrace();
+//			
+//		}
+//		
+//	}
 	
-	public static void saveToZipFile(File f, ByteBuffer buf){
-		
-		try{
-			
-			FileOutputStream fOut = new FileOutputStream(f);
-			ZipOutputStream zipOut = new ZipOutputStream(fOut);
-			zipOut.putNextEntry(new ZipEntry("contents"));
-			zipOut.write(buf.getBytes());
-			zipOut.closeEntry();
-			zipOut.close();
-			fOut.close();
-			//System.out.println("Buffer was successfully saved to "+f.getPath());
-			
-		}catch(Exception e){
-			
-			//System.out.println("Unable to save buffer to file "+f.getPath());
-			e.printStackTrace();
-			
-		}
-		
-	}
-	
-	public static ByteBuffer readFromZipFile(File f){
-		
-		try{
-			
-			FileInputStream in = new FileInputStream(f);
-			ZipInputStream zipIn = new ZipInputStream(in);
-			int len, curlen, read;
-			
-			ZipFile zip = new ZipFile(f);
-			ZipEntry entry = zip.getEntry("contents");
-			len = (int)entry.getSize();
-			//System.out.println("Len = "+len);
-			
-			curlen=0;
-			byte[] buf = new byte[len];
-			zipIn.getNextEntry();
-			while(curlen<len){
-				read = zipIn.read(buf,curlen,len-curlen);
-				if(read>=0){
-					curlen += read;
-				}else{
-					// end of file.
-					break;
-				}
-			}
-			zipIn.closeEntry();
-			zipIn.close();
-			in.close();
-			zip.close();
-			return new ByteBuffer(buf,ByteBuffer.BO_BIG_ENDIAN);
-			
-		}catch(Exception e){
-			//System.out.println("Unable to load buffer from file "+f.getPath());
-			e.printStackTrace();
-		}
-		
-		// fail:
-		return null;
-		
-	}
+//	public static ByteBuffer readFromZipFile(File f){
+//		
+//		try{
+//			
+//			FileInputStream in = new FileInputStream(f);
+//			ZipInputStream zipIn = new ZipInputStream(in);
+//			int len, curlen, read;
+//			
+//			ZipFile zip = new ZipFile(f);
+//			ZipEntry entry = zip.getEntry("contents");
+//			len = (int)entry.getSize();
+//			//System.out.println("Len = "+len);
+//			
+//			curlen=0;
+//			byte[] buf = new byte[len];
+//			zipIn.getNextEntry();
+//			while(curlen<len){
+//				read = zipIn.read(buf,curlen,len-curlen);
+//				if(read>=0){
+//					curlen += read;
+//				}else{
+//					// end of file.
+//					break;
+//				}
+//			}
+//			zipIn.closeEntry();
+//			zipIn.close();
+//			in.close();
+//			zip.close();
+//			return new ByteBuffer(buf,ByteBuffer.BO_BIG_ENDIAN);
+//			
+//		}catch(Exception e){
+//			//System.out.println("Unable to load buffer from file "+f.getPath());
+//			e.printStackTrace();
+//		}
+//		
+//		// fail:
+//		return null;
+//		
+//	}
 	
 	
 }

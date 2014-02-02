@@ -882,7 +882,7 @@ public final class PAPU{
 	}
 
 	public AudioTrack getLine(){
-		return nes.getGui().getAudioTrack();
+		return nes.getShell().getAudioTrack();
 	}
 
 	public boolean isRunning(){

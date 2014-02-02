@@ -426,7 +426,7 @@ public class MapperDefault implements MemoryMapper {
     }
 
     public short joy1Read() {
-    	NesShell ui=nes.getGui();
+    	NesShell ui=nes.getShell();
     	if(ui==null){
     		return 0;
     	}
@@ -464,7 +464,7 @@ public class MapperDefault implements MemoryMapper {
     }
 
     public short joy2Read() {
-    	NesShell ui=nes.getGui();
+    	NesShell ui=nes.getShell();
     	if(ui==null){
     		return 0;
     	}

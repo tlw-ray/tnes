@@ -235,7 +235,7 @@ public class NES{
 	}
 	
 	// Returns the GUI.
-	public NesShell getGui(){
+	public NesShell getShell(){
 		return gui;
 	}
 	

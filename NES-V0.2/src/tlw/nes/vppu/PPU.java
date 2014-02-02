@@ -378,7 +378,7 @@ public class PPU{
 		endFrame();
 		
 		//NOTE: 这里触发显示器重绘
-		nes.getGui().getDisplay().playFrame(screen);
+		nes.getShell().getDisplay().playFrame(screen);
 		
 //		screen=buffer.clone();
 		for(int i=0;i<buffer.length;i++){

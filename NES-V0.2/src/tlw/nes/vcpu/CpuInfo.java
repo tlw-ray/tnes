@@ -9,10 +9,10 @@ public class CpuInfo{
 	private static int[] opdata;
 	
 	// Instruction names:
-	private static String[] instname;
+//	private static String[] instname;
 	
 	// Address mode descriptions:
-	private static String[] addrDesc;
+//	private static String[] addrDesc;
 	
 	public static int[] cycTable;
 	
@@ -124,33 +124,33 @@ public class CpuInfo{
 	}
 	
 	
-	public static String[] getInstNames(){
-		if(instname==null)initInstNames();
-		return instname;
-	}
+//	public static String[] getInstNames(){
+//		if(instname==null)initInstNames();
+//		return instname;
+//	}
 	
 	
-	public static String getInstName(int inst){
-		if(instname==null)initInstNames();
-		if(inst<instname.length){
-			return instname[inst];
-		}else{
-			return "???";
-		}
-	}
+//	public static String getInstName(int inst){
+//		if(instname==null)initInstNames();
+//		if(inst<instname.length){
+//			return instname[inst];
+//		}else{
+//			return "???";
+//		}
+//	}
 	
 	
-	public static String[] getAddressModeNames(){
-		if(addrDesc==null)initAddrDesc();
-		return addrDesc;
-	}
+//	public static String[] getAddressModeNames(){
+//		if(addrDesc==null)initAddrDesc();
+//		return addrDesc;
+//	}
 	
 	
-	public static String getAddressModeName(int addrMode){
-		if(addrDesc==null)initAddrDesc();
-		if(addrMode>=0 && addrMode<addrDesc.length)return addrDesc[addrMode];
-		return "???";
-	}
+//	public static String getAddressModeName(int addrMode){
+//		if(addrDesc==null)initAddrDesc();
+//		if(addrMode>=0 && addrMode<addrDesc.length)return addrDesc[addrMode];
+//		return "???";
+//	}
 	
 	
 	private static void initOpData(){
@@ -461,89 +461,89 @@ public class CpuInfo{
 		
 	}
 	
-	private static void initInstNames(){
-		
-		instname = new String[56];
-		
-		// Instruction Names:
-		instname[ 0] = "ADC";
-		instname[ 1] = "AND";
-		instname[ 2] = "ASL";
-		instname[ 3] = "BCC";
-		instname[ 4] = "BCS";
-		instname[ 5] = "BEQ";
-		instname[ 6] = "BIT";
-		instname[ 7] = "BMI";
-		instname[ 8] = "BNE";
-		instname[ 9] = "BPL";
-		instname[10] = "BRK";
-		instname[11] = "BVC";
-		instname[12] = "BVS";
-		instname[13] = "CLC";
-		instname[14] = "CLD";
-		instname[15] = "CLI";
-		instname[16] = "CLV";
-		instname[17] = "CMP";
-		instname[18] = "CPX";
-		instname[19] = "CPY";
-		instname[20] = "DEC";
-		instname[21] = "DEX";
-		instname[22] = "DEY";
-		instname[23] = "EOR";
-		instname[24] = "INC";
-		instname[25] = "INX";
-		instname[26] = "INY";
-		instname[27] = "JMP";
-		instname[28] = "JSR";
-		instname[29] = "LDA";
-		instname[30] = "LDX";
-		instname[31] = "LDY";
-		instname[32] = "LSR";
-		instname[33] = "NOP";
-		instname[34] = "ORA";
-		instname[35] = "PHA";
-		instname[36] = "PHP";
-		instname[37] = "PLA";
-		instname[38] = "PLP";
-		instname[39] = "ROL";
-		instname[40] = "ROR";
-		instname[41] = "RTI";
-		instname[42] = "RTS";
-		instname[43] = "SBC";
-		instname[44] = "SEC";
-		instname[45] = "SED";
-		instname[46] = "SEI";
-		instname[47] = "STA";
-		instname[48] = "STX";
-		instname[49] = "STY";
-		instname[50] = "TAX";
-		instname[51] = "TAY";
-		instname[52] = "TSX";
-		instname[53] = "TXA";
-		instname[54] = "TXS";
-		instname[55] = "TYA";
-		
-	}
+//	private static void initInstNames(){
+//		
+//		instname = new String[56];
+//		
+//		// Instruction Names:
+//		instname[ 0] = "ADC";
+//		instname[ 1] = "AND";
+//		instname[ 2] = "ASL";
+//		instname[ 3] = "BCC";
+//		instname[ 4] = "BCS";
+//		instname[ 5] = "BEQ";
+//		instname[ 6] = "BIT";
+//		instname[ 7] = "BMI";
+//		instname[ 8] = "BNE";
+//		instname[ 9] = "BPL";
+//		instname[10] = "BRK";
+//		instname[11] = "BVC";
+//		instname[12] = "BVS";
+//		instname[13] = "CLC";
+//		instname[14] = "CLD";
+//		instname[15] = "CLI";
+//		instname[16] = "CLV";
+//		instname[17] = "CMP";
+//		instname[18] = "CPX";
+//		instname[19] = "CPY";
+//		instname[20] = "DEC";
+//		instname[21] = "DEX";
+//		instname[22] = "DEY";
+//		instname[23] = "EOR";
+//		instname[24] = "INC";
+//		instname[25] = "INX";
+//		instname[26] = "INY";
+//		instname[27] = "JMP";
+//		instname[28] = "JSR";
+//		instname[29] = "LDA";
+//		instname[30] = "LDX";
+//		instname[31] = "LDY";
+//		instname[32] = "LSR";
+//		instname[33] = "NOP";
+//		instname[34] = "ORA";
+//		instname[35] = "PHA";
+//		instname[36] = "PHP";
+//		instname[37] = "PLA";
+//		instname[38] = "PLP";
+//		instname[39] = "ROL";
+//		instname[40] = "ROR";
+//		instname[41] = "RTI";
+//		instname[42] = "RTS";
+//		instname[43] = "SBC";
+//		instname[44] = "SEC";
+//		instname[45] = "SED";
+//		instname[46] = "SEI";
+//		instname[47] = "STA";
+//		instname[48] = "STX";
+//		instname[49] = "STY";
+//		instname[50] = "TAX";
+//		instname[51] = "TAY";
+//		instname[52] = "TSX";
+//		instname[53] = "TXA";
+//		instname[54] = "TXS";
+//		instname[55] = "TYA";
+//		
+//	}
 	
-	private static void initAddrDesc(){
-		
-		addrDesc = new String[]{
-			"Zero Page           ",
-			"Relative            ",
-			"Implied             ",
-			"Absolute            ",
-			"Accumulator         ",
-			"Immediate           ",
-			"Zero Page,X         ",
-			"Zero Page,Y         ",
-			"Absolute,X          ",
-			"Absolute,Y          ",
-			"Preindexed Indirect ",
-			"Postindexed Indirect",
-			"Indirect Absolute   "
-		};
-		
-	}
+//	private static void initAddrDesc(){
+//		
+//		addrDesc = new String[]{
+//			"Zero Page           ",
+//			"Relative            ",
+//			"Implied             ",
+//			"Absolute            ",
+//			"Accumulator         ",
+//			"Immediate           ",
+//			"Zero Page,X         ",
+//			"Zero Page,Y         ",
+//			"Absolute,X          ",
+//			"Absolute,Y          ",
+//			"Preindexed Indirect ",
+//			"Postindexed Indirect",
+//			"Indirect Absolute   "
+//		};
+//		
+//	}
 	
 	
 }

@@ -3,12 +3,17 @@ package tlw.nes.vpapu;
 //import javax.sound.sampled.Mixer;
 
 import tlw.nes.AudioTrack;
-import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
 
 
 public final class PAPU{
+	
+	public static double CPU_FREQ_NTSC = 1789772.5d;
+	public static double CPU_FREQ_PAL  = 1773447.4d;
+	
+	//×î¼ÑÖ¡ÂÊ
+	public static int preferredFrameRate = 60;
 
 	private NES nes;
 
@@ -783,10 +788,10 @@ public final class PAPU{
 		}
 
 		sampleRate = rate;
-		sampleTimerMax = (int)((1024.0*Globals.CPU_FREQ_NTSC*Globals.preferredFrameRate) /
+		sampleTimerMax = (int)((1024.0*CPU_FREQ_NTSC*preferredFrameRate) /
 			(sampleRate*60.0d));
 		
-		frameTime = (int)((14915.0*(double)Globals.preferredFrameRate)/60.0d);
+		frameTime = (int)((14915.0*(double)preferredFrameRate)/60.0d);
 
 		sampleTimer = 0;
 		bufferIndex = 0;
@@ -1021,7 +1026,7 @@ public final class PAPU{
 	}
 	public void stuff(){
 		// Sound stuff:
-		if(Globals.enableSound && bufferIndex>0){
+		if(NES.enableSound && bufferIndex>0){
 			int min_avail = getLine().getBufferSize()-4*bufferIndex;
 			int millis=getMillisToAvailableAbove(min_avail);
 			try {

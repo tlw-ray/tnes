@@ -47,7 +47,6 @@ class NameTable{
 		int basex,basey;
 		int add;
 		int tx,ty;
-//		int attindex;
 		basex = index%8;
 		basey = index/8;
 		basex *= 4;

@@ -9,6 +9,11 @@ import tlw.nes.vrom.ROM;
 
 public class NES{
 	
+	//显示声音缓冲
+	public static boolean showSoundBuffer = true;
+	//是否声音 TODO 可以优化对声音的处理在统一的位置
+	public static boolean enableSound = true;
+	
 	private NesShell gui;
 	private CPU6502 cpu;
 	private PPU ppu;
@@ -126,7 +131,7 @@ public class NES{
 	}
 	
 	public void startEmulation(){
-		if(Globals.enableSound && !papu.isRunning()){
+		if(NES.enableSound && !papu.isRunning()){
 			papu.start();
 		}		
 		if(rom!=null && rom.isValid() && !cpu.isRunning()){
@@ -140,7 +145,7 @@ public class NES{
 			cpu.endExecution();
 			isRunning = false;
 		}
-		if(Globals.enableSound && papu.isRunning()){
+		if(NES.enableSound && papu.isRunning()){
 			papu.stop();
 		}
 	}
@@ -317,7 +322,7 @@ public class NES{
 		}
 		
 		//System.out.println("** SOUND ENABLE = "+enable+" **");
-		Globals.enableSound = enable;
+		NES.enableSound = enable;
 		
 		if(wasRunning){
 			startEmulation();

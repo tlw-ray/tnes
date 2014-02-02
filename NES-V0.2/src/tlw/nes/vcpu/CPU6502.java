@@ -2,7 +2,6 @@ package tlw.nes.vcpu;
 
 import java.util.logging.Logger;
 
-import tlw.nes.Globals;
 import tlw.nes.Misc;
 import tlw.nes.NES;
 import tlw.nes.vmemory.ByteBuffer;
@@ -13,7 +12,8 @@ import tlw.nes.vmemory.ByteBuffer;
 // PPU and PAPU.
 
 public final class CPU6502 implements Runnable{
-
+	
+	public static boolean palEmulation=true;
 
 	// Thread:
 	private Thread myThread;
@@ -1233,7 +1233,7 @@ public final class CPU6502 implements Runnable{
 
 			// ----------------------------------------------------------------------------------------------------
 
-			if(Globals.palEmulation){
+			if(palEmulation){
 				palCnt++;
 				if(palCnt==5){
 					palCnt=0;
@@ -1246,7 +1246,7 @@ public final class CPU6502 implements Runnable{
 			nes.getPpu().emulateCycles();
 			
 			//execute papu
-			if(Globals.enableSound){
+			if(NES.enableSound){
 				nes.getPapu().clockFrameCounter(cycleCount);
 			}
 		} // End of run loop.

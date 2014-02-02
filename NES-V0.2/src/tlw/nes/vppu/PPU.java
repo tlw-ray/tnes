@@ -4,7 +4,6 @@ package tlw.nes.vppu;
 //import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import tlw.nes.Globals;
 import tlw.nes.Misc;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
@@ -76,6 +75,13 @@ public class PPU{
 	public static final int MODEL_VBLANK_INTERRUPTS=1;
 	
 	public static final int BUFFER_SIZE=PPU.PIXEL_X*PPU.PIXEL_Y;
+	
+	//showSpr0Hit
+	public static boolean showSpr0Hit = true;
+	//display sprite
+	public static boolean disableSprites = false;
+	//每秒60帧，一帧耗费的时间
+	public static int frameTimeN =16666667;
 	
 	private NES nes;
 
@@ -380,14 +386,14 @@ public class PPU{
 			screen[i]=buffer[i];
 		}
 		
-		if(Globals.enableSound){
+		if(NES.enableSound){
 			nes.getPapu().stuff();
 		}else{
 			//如果不通过声音来控制节奏则通过帧等待
 			long timeSpend=System.nanoTime()-t0;
-			if(timeSpend < Globals.frameTimeN){
+			if(timeSpend < frameTimeN){
 				try {
-					long toWaite=Globals.frameTimeN-timeSpend;
+					long toWaite=frameTimeN-timeSpend;
 					long waiteM=toWaite / 1000000;
 					int waiteN=(int)(toWaite % 1000000);
 					Thread.sleep(waiteM,waiteN);
@@ -492,8 +498,7 @@ public class PPU{
 			// Color display.
 			// f_color determines color emphasis.
 			// Use first entry of image palette as BG color.
-//			bgColor = imgPalette[0];
-			bgColor = Globals.COLOR_BG;
+			bgColor = imgPalette[0];
 		}else{
 			// Monochrome display.
 			// f_color determines the bg color.
@@ -530,11 +535,14 @@ public class PPU{
 	}
 
 	protected void endFrame(){
+		
 		// Draw spr#0 hit coordinates:
 		showSpr0Hit();
+		
 		// if either the sprites or the background should be clipped,
 		// both are clipped after rendering is finished.
-		showClipToTvSize();
+//		showClipToTvSize();
+		
 		// Show sound buffer:
 		showSoundBuffer();
 	}
@@ -953,7 +961,7 @@ public class PPU{
 			}
 		}
 
-		if(f_spVisibility == 1 && !Globals.disableSprites){
+		if(f_spVisibility == 1 && !disableSprites){
 			renderSpritesPartially(startScan,scanCount,false);
 		}
 
@@ -1824,7 +1832,7 @@ public class PPU{
 	}
 	private void showSpr0Hit(){
 		// Draw spr#0 hit coordinates:
-		if(Globals.showSpr0Hit){
+		if(showSpr0Hit){
 			// Spr 0 position:
 			if(sprX[0]>=0 && sprX[0]<PPU.PIXEL_X && sprY[0]>=0 && sprY[0]<PPU.PIXEL_Y){
 				for(int i=0;i<PPU.PIXEL_X;i++){
@@ -1845,33 +1853,33 @@ public class PPU{
 			}
 		}
 	}
-	private void showClipToTvSize(){
-		// This is a bit lazy..
-		// if either the sprites or the background should be clipped,
-		// both are clipped after rendering is finished.
-		if(Globals.clipToTvSize || f_bgClipping==0 || f_spClipping==0){
-			for(int y=0;y<PPU.PIXEL_Y;y++){
-				for(int x=0;x<8;x++){
-					// Clip left 8-pixels column:
-					buffer[(y<<8)+x] = 3;
-					// Clip right 8-pixels column too:
-					buffer[(y<<8)+255-x] = 3;
-				}
-			}
-		}
-
-		// Clip top and bottom 8 pixels:
-		if(Globals.clipToTvSize){
-			for(int y=0;y<8;y++){
-				for(int x=0;x<PPU.PIXEL_X;x++){
-					buffer[(y<<8)+x] = 0;
-					buffer[((239-y)<<8)+x] = 0;
-				}
-			}
-		}
-	}
+//	private void showClipToTvSize(){
+//		// This is a bit lazy..
+//		// if either the sprites or the background should be clipped,
+//		// both are clipped after rendering is finished.
+//		if(NES.clipToTvSize || f_bgClipping==0 || f_spClipping==0){
+//			for(int y=0;y<PPU.PIXEL_Y;y++){
+//				for(int x=0;x<8;x++){
+//					// Clip left 8-pixels column:
+//					buffer[(y<<8)+x] = 3;
+//					// Clip right 8-pixels column too:
+//					buffer[(y<<8)+255-x] = 3;
+//				}
+//			}
+//		}
+//
+//		// Clip top and bottom 8 pixels:
+//		if(NES.clipToTvSize){
+//			for(int y=0;y<8;y++){
+//				for(int x=0;x<PPU.PIXEL_X;x++){
+//					buffer[(y<<8)+x] = 0;
+//					buffer[((239-y)<<8)+x] = 0;
+//				}
+//			}
+//		}
+//	}
 	private void showSoundBuffer(){
-		if(Globals.showSoundBuffer && nes.getPapu().getLine()!=null){
+		if(NES.showSoundBuffer && nes.getPapu().getLine()!=null){
 
 			bufferSize = nes.getPapu().getLine().getBufferSize();
 			available = nes.getPapu().getLine().available();

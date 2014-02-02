@@ -2,7 +2,6 @@ package tlw.nes.vcpu;
 
 import java.util.logging.Logger;
 
-import tlw.nes.Misc;
 import tlw.nes.NES;
 import tlw.nes.vmemory.ByteBuffer;
 
@@ -1223,7 +1222,7 @@ public final class CPU6502 implements Runnable{
 					if(!crash){
 						crash = true;
 						stopRunning = true;
-						Logger.getAnonymousLogger().severe("Game crashed, invalid opcode at address $"+Misc.hex16(opaddr));
+						Logger.getAnonymousLogger().severe("Game crashed, invalid opcode at address $"+NES.hex16(opaddr));
 					}
 					break;
 

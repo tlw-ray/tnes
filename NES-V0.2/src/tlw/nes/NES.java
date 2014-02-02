@@ -328,6 +328,14 @@ public class NES{
 			startEmulation();
 		}
 	}
+
+	public static String hex16(int i){
+		String s = Integer.toHexString(i);
+		while(s.length()<4){
+			s = "0"+s;
+		}
+		return s.toUpperCase();
+	}
 	
 //	public void setFramerate(int rate){
 //		Globals.preferredFrameRate = rate;

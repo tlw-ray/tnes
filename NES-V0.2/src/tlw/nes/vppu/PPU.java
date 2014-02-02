@@ -4,7 +4,6 @@ package tlw.nes.vppu;
 //import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import tlw.nes.Misc;
 import tlw.nes.NES;
 import tlw.nes.vcpu.CPU6502;
 import tlw.nes.vmemory.ByteBuffer;
@@ -928,7 +927,7 @@ public class PPU{
 			if(address<vramMirrorTable.length){
 				writeMem(vramMirrorTable[address],value);
 			}else{
-				Logger.getAnonymousLogger().severe("Invalid VRAM address: "+Misc.hex16(address));
+				Logger.getAnonymousLogger().severe("Invalid VRAM address: "+NES.hex16(address));
 				nes.getCpu().setCrashed(true);
 			}
 		}

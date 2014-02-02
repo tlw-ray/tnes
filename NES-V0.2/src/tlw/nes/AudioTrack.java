@@ -1,6 +1,7 @@
 package tlw.nes;
 
 public interface AudioTrack {
+	//TODO ¿É¼ò»¯
 	static final int SAMPLE_RATE_11025=11025;
 	static final int SAMPLE_RATE_22050=22050;
 	static final int SAMPLE_RATE_44100=44100;

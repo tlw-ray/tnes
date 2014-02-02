@@ -3,7 +3,7 @@ import java.util.logging.Logger;
 
 public class ByteBuffer{
 	
-	public static final boolean DEBUG = false;
+//	public static final boolean DEBUG = false;
 	public static final int BO_BIG_ENDIAN = 0;
 	public static final int BO_LITTLE_ENDIAN = 1;
 	

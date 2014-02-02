@@ -15,10 +15,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
-import tlw.nes.AudioTrack;
-import tlw.nes.InputHandler;
 import tlw.nes.NES;
-import tlw.nes.NesShell;
+import tlw.nes.interf.AudioTrack;
+import tlw.nes.interf.Display;
+import tlw.nes.interf.InputHandler;
+import tlw.nes.interf.NesShell;
 import tlw.nes.j2se.sound.AudioTrackJ2se;
 import tlw.nes.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
@@ -27,7 +28,7 @@ import tlw.nes.vppu.PPU;
 //像素:240*256=61440*32bit/帧
 //声音:44100Hz*(16bit/32bit)=22050*32bit/秒=735*32bit/帧
 //必须继承自JPanel，使用Canvas,JComponent时弹出菜单显示会有问题。
-public class JPanelNES extends JPanel implements NesShell{
+public class JPanelNES extends JPanel implements NesShell, Display{
 	private static final long serialVersionUID = -2779554736088106527L;
 	static String defaltROM;
 	public static void main(String[] args) {
@@ -189,12 +190,6 @@ public class JPanelNES extends JPanel implements NesShell{
 	}
 
 	@Override
-	public void playSound(int[] soundBuffer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void load(InputStream rom) {
 
 	}
@@ -202,6 +197,11 @@ public class JPanelNES extends JPanel implements NesShell{
 	@Override
 	public AudioTrack getAudioTrack() {
 		return audioTrack;
+	}
+
+	@Override
+	public Display getDisplay() {
+		return this;
 	}
 	
 }

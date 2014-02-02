@@ -6,7 +6,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import tlw.nes.AudioTrack;
+import tlw.nes.interf.AudioTrack;
 
 public class AudioTrackJ2se implements AudioTrack {
 	SourceDataLine sourceDataLine;

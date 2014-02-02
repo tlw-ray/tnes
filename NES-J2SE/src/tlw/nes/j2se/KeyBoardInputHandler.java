@@ -2,8 +2,8 @@ package tlw.nes.j2se;
 
 import java.awt.event.*;
 
-import tlw.nes.InputHandler;
 import tlw.nes.NES;
+import tlw.nes.interf.InputHandler;
 
 public class KeyBoardInputHandler implements KeyListener, InputHandler {
     boolean[] allKeysState;

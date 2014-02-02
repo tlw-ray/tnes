@@ -1,7 +1,7 @@
 package tlw.nes.interf;
 
 public interface AudioTrack {
-	//TODO 可简化
+	//TODO 需要简化
 	static final int SAMPLE_RATE_11025=11025;
 	static final int SAMPLE_RATE_22050=22050;
 	static final int SAMPLE_RATE_44100=44100;

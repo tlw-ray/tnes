@@ -32,17 +32,7 @@ public interface NesShell {
 	 */
 	AudioTrack getAudioTrack();
 	
-	/**
-	 * 播放一段声音 (供nes)
-	 * @param soundBuffer
-	 */
-	void playSound(int[] soundBuffer);
-	
-	/**
-	 * 绘制一帧视频 (供nes)
-	 * @param frameBuffer
-	 */
-	void playFrame(int[] frameBuffer);
+	Display getDisplay();
 	
 	/**
 	 * 卡带 (供nes)

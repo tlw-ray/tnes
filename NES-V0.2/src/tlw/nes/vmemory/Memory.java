@@ -28,9 +28,9 @@ public class Memory{
 		for(int i=0;i<mem.length;i++)mem[i] = 0;
 	}
 	
-	public int getMemSize(){
-		return memLength;
-	}
+//	public int getMemSize(){
+//		return memLength;
+//	}
 	
 	public void write(int address, short value){
 		mem[address] = value;

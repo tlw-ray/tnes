@@ -28,21 +28,21 @@ public class ByteBuffer{
 	}
 	
 	
-	public ByteBuffer(byte[] content, int byteOrdering){
-		try{
-			buf = new short[content.length];
-			for(int i=0;i<content.length;i++){
-				buf[i] = (short)(content[i] & 255);
-			}
-			size = content.length;
-			this.byteOrder = byteOrdering;
-			curPos = 0;
-//			hasBeenErrors = false;
-		}catch(Exception e){
-			//System.out.println("ByteBuffer: Couldn't create buffer from empty array.");
-			e.printStackTrace();
-		}
-	}
+//	public ByteBuffer(byte[] content, int byteOrdering){
+//		try{
+//			buf = new short[content.length];
+//			for(int i=0;i<content.length;i++){
+//				buf[i] = (short)(content[i] & 255);
+//			}
+//			size = content.length;
+//			this.byteOrder = byteOrdering;
+//			curPos = 0;
+////			hasBeenErrors = false;
+//		}catch(Exception e){
+//			//System.out.println("ByteBuffer: Couldn't create buffer from empty array.");
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	

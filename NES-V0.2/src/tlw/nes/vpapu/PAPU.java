@@ -678,17 +678,6 @@ public final class PAPU{
 
 	}
 
-
-	// Writes the sound buffer to the output line:
-	public void writeBuffer(){
-
-		if(getLine()==null)return;
-		bufferIndex -= (bufferIndex%(stereo?4:2));
-		getLine().write(sampleBuffer,0,bufferIndex);
-		bufferIndex = 0;
-
-	}
-
 	public void stop(){
 
 		if(getLine()==null){
@@ -869,9 +858,9 @@ public final class PAPU{
 	}
 
 	public boolean isRunning(){
-//		return (getLine()!=null && getLine().isActive());
+		return (getLine()!=null && getLine().isActive());
 		//TODO
-		return false;
+//		return false;
 	}
 
 	protected int getMillisToAvailableAbove(int target_avail){
@@ -1026,7 +1015,12 @@ public final class PAPU{
 //					e.printStackTrace();
 //				}
 //			}
-			writeBuffer();
+			
+			// Writes the sound buffer to the output line:
+			if(getLine()==null)return;
+			bufferIndex -= (bufferIndex%(stereo?4:2));
+			getLine().write(sampleBuffer,0,bufferIndex);
+			bufferIndex = 0;
 		}
 	}
 }

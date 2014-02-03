@@ -227,8 +227,8 @@ class ChannelDM implements PapuChannel{
 		
 	}
 	
-	public void destroy(){
-		papu = null;
-	}
+//	public void destroy(){
+//		papu = null;
+//	}
 	
 }

@@ -1,6 +1,4 @@
 package tlw.nes.vpapu;
-//import javax.sound.sampled.AudioSystem;
-//import javax.sound.sampled.Mixer;
 
 import tlw.nes.NES;
 import tlw.nes.interf.AudioTrack;
@@ -28,24 +26,17 @@ public final class PAPU{
 	private int[] noiseWavelengthLookup;
 	private int[] square_table;
 	private int[] tnd_table;
-	private int[] ismpbuffer;
 	private byte[] sampleBuffer;
 
-	private int frameIrqCounter;
 	private int frameIrqCounterMax;
 	private int initCounter;
-	private short channelEnableValue;
 
-	private byte b1,b2,b3,b4;
 	private int bufferSize = 2048;
 	private int bufferIndex;
 	private int sampleRate = 44100;
 
 	private boolean frameIrqEnabled;
 	private boolean frameIrqActive;
-	private boolean frameClockNow;
-	private boolean startedPlaying=false;
-	private boolean recordOutput = false;
 	private boolean stereo = true;
 	private boolean initingHardware = false;
 
@@ -61,7 +52,6 @@ public final class PAPU{
 	private int sampleTimer;
 	private int frameTime;
 	private int sampleTimerMax;
-	private int sampleCount;
 	private int sampleValueL,sampleValueR;
 	private int triValue = 0;
 
@@ -106,7 +96,6 @@ public final class PAPU{
 
 		setSampleRate(sampleRate,false);
 		sampleBuffer = new byte[bufferSize*(stereo?4:2)];
-		ismpbuffer = new int[bufferSize*(stereo?2:1)];
 		bufferIndex = 0;
 		frameIrqEnabled = false;
 		initCounter = 2048;
@@ -315,7 +304,6 @@ public final class PAPU{
 	// in the GUI.
 	protected void updateChannelEnable(int value){
 
-		channelEnableValue = (short)value;
 		square1.setEnabled(userEnableSquare1 && (value&1)!=0);
 		square2.setEnabled(userEnableSquare2 && (value&2)!=0);
 		triangle.setEnabled(userEnableTriangle && (value&4)!=0);
@@ -723,7 +711,6 @@ public final class PAPU{
 		masterFrameCounter = 0;
 		derivedFrameCounter = 0;
 		countSequence = 0;
-		sampleCount = 0;
 		initCounter = 2048;
 		frameIrqEnabled = false;
 		initingHardware = false;
@@ -747,10 +734,6 @@ public final class PAPU{
 		frameIrqEnabled = false;
 		frameIrqCounterMax = 4;
 
-		channelEnableValue = 0xFF;
-		b1 = 0;
-		b2 = 0;
-		startedPlaying = false;
 		sampleValueL = 0;
 		sampleValueR = 0;
 		prevSampleL = 0;

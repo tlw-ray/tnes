@@ -20,7 +20,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-//å±??å¸§å???//1.IMAGE_COUNT è®°å??»å?????????//2.getImages().add(Image)å°???¨æ?ç¤ºç??»é?????°å?å¹????//3.play()?¹æ?ä¾?????æ¯?¸ª?¾å?
 public class JFramePaintRecorder extends JFrame {
 
 	private static final long serialVersionUID = 976650737076425633L;
@@ -32,7 +31,7 @@ public class JFramePaintRecorder extends JFrame {
 	
 	JToolBar jtoolBar=new JToolBar();
 	
-	JLabel jlabelFrameCount=new JLabel("å¸§æ?");
+	JLabel jlabelFrameCount=new JLabel("å¸§");
 	SpinnerNumberModel spinnerModelFrameCount=new SpinnerNumberModel(300, 0, 600, 100);
 	JSpinner jspinnerFrameCount=new JSpinner(spinnerModelFrameCount);
 	
@@ -63,7 +62,6 @@ public class JFramePaintRecorder extends JFrame {
 			}
 		});
 		
-		setTitle("T-NESå±??å½??");
 		setSize(600,400);
 		add(jtoolBar,BorderLayout.NORTH);
 		add(jpanelFrameInfo,BorderLayout.SOUTH);
@@ -99,7 +97,7 @@ public class JFramePaintRecorder extends JFrame {
 		private static final long serialVersionUID = 297185206662005761L;
 
 		public ActionScreenRecorder(){
-			putValue(NAME, "å½??");
+			putValue(NAME, "ScreenRecorder");
 		}
 		
 		@Override
@@ -114,7 +112,7 @@ public class JFramePaintRecorder extends JFrame {
 		private static final long serialVersionUID = 3475433122941047617L;
 
 		public ActionPlay(){
-			putValue(NAME, "???");
+			putValue(NAME, "Play");
 		}
 		
 		@Override

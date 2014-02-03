@@ -23,7 +23,6 @@ import tlw.nes.interf.NesShell;
 import tlw.nes.j2se.device.AudioTrackJ2se;
 import tlw.nes.j2se.device.KeyBoardInputHandler;
 import tlw.nes.j2se.plugin.PainterFPS;
-import tlw.nes.tool.screen_recorder.JFramePaintRecorder;
 import tlw.nes.vmemory.ByteBuffer;
 import tlw.nes.vppu.PPU;
 //ÊÓÆµ£º60Ö¡/Ãë
@@ -62,9 +61,9 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 		JRadioButtonMenuItem jmenuItemSound = new JRadioButtonMenuItem(jpanelNes.actionSound);
 		jmenuSound.add(jmenuItemSound);
 		
-		JMenu jmenuTool = new JMenu("Tools");
-		jmenuBar.add(jmenuTool);
-		jmenuTool.add(jpanelNes.jframePaintRecorder.getActionScreenRecord());
+//		JMenu jmenuTool = new JMenu("Tools");
+//		jmenuBar.add(jmenuTool);
+//		jmenuTool.add(jpanelNes.jframePaintRecorder.getActionScreenRecord());
 		
 
 		JFrame frame = new JFrame();
@@ -96,7 +95,7 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 	ActionSound actionSound=new ActionSound(nes);
 	
 	//Â¼ÆÁÈí¼þ
-	JFramePaintRecorder jframePaintRecorder = new JFramePaintRecorder();
+//	JFramePaintRecorder jframePaintRecorder = new JFramePaintRecorder();
 	
 	PainterFPS painterFPS=new PainterFPS();
 	
@@ -187,7 +186,7 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 		//no scale
 //		g.drawImage(img,0,0,null);
 		
-		jframePaintRecorder.addImage(img);
+//		jframePaintRecorder.addImage(img);
 		
 	}
 

@@ -1,5 +1,7 @@
 package tlw.nes.vppu;
 
+import java.util.logging.Logger;
+
 import tlw.nes.vmemory.ByteBuffer;
 
 class NameTable{
@@ -72,7 +74,9 @@ class NameTable{
 	public void stateSave(ByteBuffer buf){
 		
 		for(int i=0;i<width*height;i++){
-			if(tile[i]>255)//System.out.println(">255!!");
+			if(tile[i]>255){
+				Logger.getAnonymousLogger().warning(">255!!");
+			}
 			buf.putByte((byte)tile[i]);
 		}
 		for(int i=0;i<width*height;i++){

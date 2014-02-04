@@ -435,16 +435,15 @@ public class MapperDefault implements MemoryMapper {
         	return 0;
         }
         short ret;
-
         switch(joy1StrobeState){
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
+        case InputHandler.KEY_A:
+        case InputHandler.KEY_B:
+        case InputHandler.KEY_SELECT:
+        case InputHandler.KEY_START:
+        case InputHandler.KEY_UP:
+        case InputHandler.KEY_DOWN:
+        case InputHandler.KEY_LEFT:
+        case InputHandler.KEY_RIGHT:
         	ret=in.getKeyState(joy1StrobeState);
         	break;
         case 19:

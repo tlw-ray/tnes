@@ -138,26 +138,26 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 		
 		// Map keyboard input keys for joypad 1:
 		kbJoy1 = new KeyBoardInputHandler(nes,0);
-		kbJoy1.mapKey(InputHandler.KEY_A,KeyEvent.VK_X);
-		kbJoy1.mapKey(InputHandler.KEY_B,KeyEvent.VK_Z);
-		kbJoy1.mapKey(InputHandler.KEY_START,KeyEvent.VK_ENTER);
-		kbJoy1.mapKey(InputHandler.KEY_SELECT,KeyEvent.VK_CONTROL);
-		kbJoy1.mapKey(InputHandler.KEY_UP,KeyEvent.VK_UP);
-		kbJoy1.mapKey(InputHandler.KEY_DOWN,KeyEvent.VK_DOWN);
-		kbJoy1.mapKey(InputHandler.KEY_LEFT,KeyEvent.VK_LEFT);
-		kbJoy1.mapKey(InputHandler.KEY_RIGHT,KeyEvent.VK_RIGHT);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_A,KeyEvent.VK_X);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_B,KeyEvent.VK_Z);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_START,KeyEvent.VK_ENTER);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_SELECT,KeyEvent.VK_CONTROL);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_UP,KeyEvent.VK_UP);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_DOWN,KeyEvent.VK_DOWN);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_LEFT,KeyEvent.VK_LEFT);
+		kbJoy1.mapKey(InputHandler.PAD_KEY_RIGHT,KeyEvent.VK_RIGHT);
 		addKeyListener(kbJoy1);
 
 		// Map keyboard input keys for joypad 2:
 		kbJoy2 = new KeyBoardInputHandler(nes,1);
-		kbJoy2.mapKey(InputHandler.KEY_A,KeyEvent.VK_NUMPAD7);
-		kbJoy2.mapKey(InputHandler.KEY_B,KeyEvent.VK_NUMPAD9);
-		kbJoy2.mapKey(InputHandler.KEY_START,KeyEvent.VK_NUMPAD1);
-		kbJoy2.mapKey(InputHandler.KEY_SELECT,KeyEvent.VK_NUMPAD3);
-		kbJoy2.mapKey(InputHandler.KEY_UP,KeyEvent.VK_NUMPAD8);
-		kbJoy2.mapKey(InputHandler.KEY_DOWN,KeyEvent.VK_NUMPAD2);
-		kbJoy2.mapKey(InputHandler.KEY_LEFT,KeyEvent.VK_NUMPAD4);
-		kbJoy2.mapKey(InputHandler.KEY_RIGHT,KeyEvent.VK_NUMPAD6);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_A,KeyEvent.VK_NUMPAD7);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_B,KeyEvent.VK_NUMPAD9);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_START,KeyEvent.VK_NUMPAD1);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_SELECT,KeyEvent.VK_NUMPAD3);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_UP,KeyEvent.VK_NUMPAD8);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_DOWN,KeyEvent.VK_NUMPAD2);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_LEFT,KeyEvent.VK_NUMPAD4);
+		kbJoy2.mapKey(InputHandler.PAD_KEY_RIGHT,KeyEvent.VK_NUMPAD6);
 		addKeyListener(kbJoy2);
 		
 		nes.loadRom(defaltROM);

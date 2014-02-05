@@ -436,14 +436,14 @@ public class MapperDefault implements MemoryMapper {
         }
         short ret;
         switch(joy1StrobeState){
-        case InputHandler.KEY_A:
-        case InputHandler.KEY_B:
-        case InputHandler.KEY_SELECT:
-        case InputHandler.KEY_START:
-        case InputHandler.KEY_UP:
-        case InputHandler.KEY_DOWN:
-        case InputHandler.KEY_LEFT:
-        case InputHandler.KEY_RIGHT:
+        case InputHandler.PAD_KEY_A:
+        case InputHandler.PAD_KEY_B:
+        case InputHandler.PAD_KEY_SELECT:
+        case InputHandler.PAD_KEY_START:
+        case InputHandler.PAD_KEY_UP:
+        case InputHandler.PAD_KEY_DOWN:
+        case InputHandler.PAD_KEY_LEFT:
+        case InputHandler.PAD_KEY_RIGHT:
         	ret=in.getKeyState(joy1StrobeState);
         	break;
         case 19:
@@ -479,21 +479,21 @@ public class MapperDefault implements MemoryMapper {
         }
 
         if (st == 0) {
-            return in.getKeyState(InputHandler.KEY_A);
+            return in.getKeyState(InputHandler.PAD_KEY_A);
         } else if (st == 1) {
-            return in.getKeyState(InputHandler.KEY_B);
+            return in.getKeyState(InputHandler.PAD_KEY_B);
         } else if (st == 2) {
-            return in.getKeyState(InputHandler.KEY_SELECT);
+            return in.getKeyState(InputHandler.PAD_KEY_SELECT);
         } else if (st == 3) {
-            return in.getKeyState(InputHandler.KEY_START);
+            return in.getKeyState(InputHandler.PAD_KEY_START);
         } else if (st == 4) {
-            return in.getKeyState(InputHandler.KEY_UP);
+            return in.getKeyState(InputHandler.PAD_KEY_UP);
         } else if (st == 5) {
-            return in.getKeyState(InputHandler.KEY_DOWN);
+            return in.getKeyState(InputHandler.PAD_KEY_DOWN);
         } else if (st == 6) {
-            return in.getKeyState(InputHandler.KEY_LEFT);
+            return in.getKeyState(InputHandler.PAD_KEY_LEFT);
         } else if (st == 7) {
-            return in.getKeyState(InputHandler.KEY_RIGHT);
+            return in.getKeyState(InputHandler.PAD_KEY_RIGHT);
         } else if (st == 16) {
             return (short) 0;
         } else if (st == 17) {

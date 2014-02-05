@@ -2,14 +2,14 @@ package tlw.nes.interf;
 public interface InputHandler{
 	
 	// Joypad keys:
-	public static final int KEY_A =      0;
-	public static final int KEY_B =      1;
-	public static final int KEY_SELECT = 2;
-	public static final int KEY_START =  3;
-	public static final int KEY_UP =     4;
-	public static final int KEY_DOWN =   5;
-	public static final int KEY_LEFT =   6;
-	public static final int KEY_RIGHT =  7;
+	public static final int PAD_KEY_A =      0;
+	public static final int PAD_KEY_B =      1;
+	public static final int PAD_KEY_SELECT = 2;
+	public static final int PAD_KEY_START =  3;
+	public static final int PAD_KEY_UP =     4;
+	public static final int PAD_KEY_DOWN =   5;
+	public static final int PAD_KEY_LEFT =   6;
+	public static final int PAD_KEY_RIGHT =  7;
 	
 	// Key count:
 	public static final int NUM_KEYS  =  8;
@@ -32,5 +32,11 @@ public interface InputHandler{
 	 * 键状态重置，输入设备进入未按下任何按钮的状态
 	 */
 	public void reset();
+	
+	/**
+	 * 获得手柄所有8个键的状态
+	 * @return
+	 */
+	public byte getPadKeyState();
 	
 }

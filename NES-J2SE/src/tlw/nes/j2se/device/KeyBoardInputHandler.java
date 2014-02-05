@@ -6,16 +6,19 @@ import tlw.nes.NES;
 import tlw.nes.interf.InputHandler;
 
 public class KeyBoardInputHandler implements KeyListener, InputHandler {
+	
     boolean[] allKeysState;
     int[] keyMapping;
     int id;
     NES nes;
     
+  //把allKeyState改为byte类型，每次只传输8个比特 
+    byte padKeysState;
+    
     //连发
     boolean bPressed=false;
     ThreadBBB threadBBB=new ThreadBBB();
     
-    int b=0;
     public KeyBoardInputHandler(NES nes, int id) {
         this.nes = nes;
         this.id = id;
@@ -25,40 +28,54 @@ public class KeyBoardInputHandler implements KeyListener, InputHandler {
     }
 
     public short getKeyState(int padKey) {
-        return (short) (allKeysState[keyMapping[padKey]] ? 0x41 : 0x40);
+//        return (short) (allKeysState[keyMapping[padKey]] ? 0x41 : 0x40);
+    	return (short)(((padKeysState>>padKey & 1) == 1)?0x41 : 0x40);
     }
 
     public void mapKey(int padKey, int keyBoardKeycode) {
         keyMapping[padKey] = keyBoardKeycode;
     }
 
-    public void keyPressed(KeyEvent ke) {
+    public synchronized void keyPressed(KeyEvent ke) {
+    	
         int kc = ke.getKeyCode();
         if (kc >= allKeysState.length) {
             return;
         }
     	
-        if(kc==keyMapping[InputHandler.KEY_B]){
+        if(kc==keyMapping[InputHandler.PAD_KEY_B]){
         	bPressed=true;
-        }else{
-        	allKeysState[kc] = true;
         }
-
+        
+        allKeysState[kc] = true;
 
         // Can't hold both left & right or up & down at same time:
-        if (kc == keyMapping[InputHandler.KEY_LEFT]) {
-            allKeysState[keyMapping[InputHandler.KEY_RIGHT]] = false;
-        } else if (kc == keyMapping[InputHandler.KEY_RIGHT]) {
-            allKeysState[keyMapping[InputHandler.KEY_LEFT]] = false;
-        } else if (kc == keyMapping[InputHandler.KEY_UP]) {
-            allKeysState[keyMapping[InputHandler.KEY_DOWN]] = false;
-        } else if (kc == keyMapping[InputHandler.KEY_DOWN]) {
-            allKeysState[keyMapping[InputHandler.KEY_UP]] = false;
+        if (kc == keyMapping[InputHandler.PAD_KEY_LEFT]) {
+            allKeysState[keyMapping[InputHandler.PAD_KEY_RIGHT]] = false;
+        } else if (kc == keyMapping[InputHandler.PAD_KEY_RIGHT]) {
+            allKeysState[keyMapping[InputHandler.PAD_KEY_LEFT]] = false;
+        } else if (kc == keyMapping[InputHandler.PAD_KEY_UP]) {
+            allKeysState[keyMapping[InputHandler.PAD_KEY_DOWN]] = false;
+        } else if (kc == keyMapping[InputHandler.PAD_KEY_DOWN]) {
+            allKeysState[keyMapping[InputHandler.PAD_KEY_UP]] = false;
         }
+        
+        updatePadKeyState();
+    }
+    public void updatePadKeyState(){
+        //根据allKeysState更新padKeyStat
+        byte result=0;
+        for(int i=0;i<NUM_KEYS;i++){
+        	int keyBoard=keyMapping[i];
+        	boolean pressed=allKeysState[keyBoard];
+        	if(pressed){
+        		result+=1<<i;
+        	}
+        }
+        padKeysState=result;
     }
 
-    public void keyReleased(KeyEvent ke) {
-
+    public synchronized void keyReleased(KeyEvent ke) {
         int kc = ke.getKeyCode();
         if (kc >= allKeysState.length) {
             return;
@@ -84,9 +101,11 @@ public class KeyBoardInputHandler implements KeyListener, InputHandler {
             }
         }
         //连发
-        if (kc == keyMapping[InputHandler.KEY_B]){
+        if (kc == keyMapping[InputHandler.PAD_KEY_B]){
         	bPressed=false;
         }
+        
+        updatePadKeyState();
     }
 
     public void keyTyped(KeyEvent ke) {
@@ -113,11 +132,15 @@ public class KeyBoardInputHandler implements KeyListener, InputHandler {
 					e.printStackTrace();
 				}
 	    		if(bPressed){
-	    			allKeysState[keyMapping[InputHandler.KEY_B]] = !allKeysState[keyMapping[InputHandler.KEY_B]];
+	    			allKeysState[keyMapping[InputHandler.PAD_KEY_B]] = !allKeysState[keyMapping[InputHandler.PAD_KEY_B]];
 	    		}else{
 	    			continue;
 	    		}
     		}
     	}
     }
+	@Override
+	public byte getPadKeyState() {
+		return padKeysState;
+	}
 }

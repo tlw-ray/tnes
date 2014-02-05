@@ -1,8 +1,17 @@
 package tlw.nes.vcpu;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 import tlw.nes.NES;
+import tlw.nes.interf.InputHandler;
+import tlw.nes.server.ThreadJoyRead;
+import tlw.nes.server.ThreadJoyWrite;
 import tlw.nes.vmemory.ByteBuffer;
 
 // Class that provides emulation of the 6502 processor used in the NES.
@@ -13,10 +22,15 @@ import tlw.nes.vmemory.ByteBuffer;
 public final class CPU6502 implements Runnable{
 	
 	public static boolean palEmulation=true;
-
+	
+	private String server;
+	private Integer port;
+	private ThreadJoyRead threadJoyRead;
+	private ThreadJoyWrite threadJoyWrite;
+	
 	// Thread:
 	private Thread cpuThread;
-
+	
 	// References to other parts of NES :
 	private NES nes;
 
@@ -186,9 +200,85 @@ public final class CPU6502 implements Runnable{
 
 	public void run(){
 		stopRunning = false;
+		processNet();
 		emulate();
 	}
 
+	//处理联机模式
+	protected void processNet(){
+		if(port!=null ){
+			//联网模式：主机模式 | 客户机模式
+			Socket socket=null;
+			InputHandler joyLocal,joyRemote;
+			
+			if(server==null){
+				//主机模式：以port为端口建立主机等待客户机加入；并建立相应的主机资源；
+				System.out.println("Lisen and wait client join at... "+port);
+				try {
+					//建立Socket监听，等待客户机加入
+					socket=new ServerSocket(port).accept();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//主机模式：手柄1作为本地，手柄2作为远程；
+				joyLocal=nes.getShell().getJoy1();
+				joyRemote=nes.getShell().getJoy2();
+			}else{
+				//客户机模式：根据server,port尝试连接入主机；并建立相应的客户机资源
+				System.out.println("Try to connect to ..."+server+":"+port);
+				try {
+					socket=new Socket(server,port);
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//客户机模式：手柄1作为远程，手柄2作为本地；
+				joyLocal=nes.getShell().getJoy2();
+				joyRemote=nes.getShell().getJoy1();
+			}
+			
+			try{
+				//手柄状态读取线程，将远程手柄状态读出到本地
+				threadJoyRead=new ThreadJoyRead();
+				threadJoyRead.setThreadMain(cpuThread);
+				threadJoyRead.setIn(new DataInputStream(socket.getInputStream()));
+				threadJoyRead.setJoy(joyRemote);
+				threadJoyRead.start();
+				
+				//手柄状态写入线程，将本地手柄状态写入远端
+				threadJoyWrite=new ThreadJoyWrite();
+				threadJoyWrite.setThreadMain(cpuThread);
+				threadJoyWrite.setOut(new DataOutputStream(socket.getOutputStream()));
+				threadJoyWrite.setJoy(joyLocal);
+				threadJoyWrite.start();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else{
+			//单机模式：
+		}
+	}
+	
+	//如果是联机模式同步本地和远程手柄数据
+	protected void synchronizJoy(){
+		if(port!=null){
+			//联机模式
+			synchronized (threadJoyWrite) {
+				synchronized(threadJoyRead){
+					threadJoyWrite.notify();
+					threadJoyRead.notify();
+					try {
+						threadJoyWrite.wait();
+						threadJoyRead.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
 	// Emulates cpu instructions until stopped.
 	protected void emulate(){
 		// NES Memory
@@ -1244,6 +1334,8 @@ public final class CPU6502 implements Runnable{
 			nes.getPpu().setCycles(cycleCount*3);
 			nes.getPpu().emulateCycles();
 			
+			synchronizJoy();
+			
 			//execute papu
 			if(NES.enableSound){
 				nes.getPapu().clockFrameCounter(cycleCount);
@@ -1390,4 +1482,5 @@ public final class CPU6502 implements Runnable{
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
+
 }

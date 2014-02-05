@@ -1,8 +1,5 @@
 package tlw.nes.android;
 
-import java.util.TimerTask;
-
-import tlw.nes.Globals;
 import tlw.nes.NES;
 import tlw.nes.core.IBufferView;
 import tlw.nes.core.InputHandler;
@@ -29,17 +26,11 @@ public class ViewNES extends View implements UI{
 
 		int[] colors=getNES().getPpu().getBuffer();
 		
-		int value=0;
+		long value=0;
 		for(int i=0;i<colors.length;i++){
 			value+=colors[i];
 		}
 		Log.i("tlw",value+"");
-		
-//		canvas.drawBitmap(colors, 0, Globals.PIXEL_X, 0, 0, Globals.PIXEL_X, Globals.PIXEL_Y, false, paint);
-		
-//		Bitmap bm=Bitmap.createBitmap(colors, Globals.PIXEL_X, Globals.PIXEL_Y, Bitmap.Config.ARGB_8888);
-//		bm.setPixels(colors, 0, 0, 0, 0, Globals.PIXEL_X, Globals.PIXEL_Y);
-//		canvas.drawBitmap(bm,0,0,new Paint());
 		
 		painter.paintFPS(canvas);
 	}

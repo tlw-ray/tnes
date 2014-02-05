@@ -2,6 +2,7 @@ package tlw.nes.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
 @author liwei.tang@magustek.com
@@ -9,18 +10,19 @@ import java.io.IOException;
  */
 public class ThreadJoyWrite extends ThreadClient {
 
-	DataOutputStream out;
+	OutputStream out;
 	
 	@Override
 	public void process() {
 		try {
-			out.writeInt(100);
+			byte value=joy.getPadKeyState();
+			out.write(value);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DataOutputStream getOut() {
+	public OutputStream getOut() {
 		return out;
 	}
 

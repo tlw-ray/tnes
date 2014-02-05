@@ -39,4 +39,9 @@ public interface InputHandler{
 	 */
 	public byte getPadKeyState();
 	
+	/**
+	 * 设定手柄所有8个键的状态
+	 * @param value
+	 */
+	public void setPadKeyState(byte value);
 }

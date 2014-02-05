@@ -2,6 +2,7 @@ package tlw.nes.server;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import tlw.nes.interf.InputHandler;
 
@@ -11,20 +12,21 @@ import tlw.nes.interf.InputHandler;
  */
 public class ThreadJoyRead extends ThreadClient {
 
-	DataInputStream in;
+	InputStream in;
 	
 	@Override
 	public void process() {
 		try {
 			for(int i=0;i<InputHandler.NUM_KEYS;i++){
-				in.readInt();
+				byte value=(byte)in.read();
+				joy.setPadKeyState(value);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public DataInputStream getIn() {
+	public InputStream getIn() {
 		return in;
 	}
 

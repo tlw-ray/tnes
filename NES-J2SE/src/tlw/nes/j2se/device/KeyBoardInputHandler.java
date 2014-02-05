@@ -143,4 +143,9 @@ public class KeyBoardInputHandler implements KeyListener, InputHandler {
 	public byte getPadKeyState() {
 		return padKeysState;
 	}
+
+	@Override
+	public void setPadKeyState(byte value) {
+		this.padKeysState=value;
+	}
 }

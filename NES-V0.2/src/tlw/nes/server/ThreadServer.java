@@ -1,77 +1,149 @@
 package tlw.nes.server;
 
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import tlw.nes.interf.InputHandler;
+
 
 /**
 @author liwei.tang@magustek.com
 @since 2014年2月5日 上午8:52:56
-主线程产生数据
+用来验证线程模型
  */
-public class ThreadServer extends Thread{
+public abstract class ThreadServer extends Thread{
 	
-	private String server;
+	protected String ip;
+	protected Integer port;
 	
-	private int port=1234;
+	protected ThreadJoy threadJoyRead;
+	protected ThreadJoy threadJoyWrite;
 	
-	ThreadJoyRead threadJoyRead=new ThreadJoyRead();
-	ThreadJoyWrite threadJoyWrite=new ThreadJoyWrite();
+	protected InputHandler joy1,joy2;
 	
-	Thread cpuThread;
+	protected ReadWriteLock readWriteLock=new ReentrantReadWriteLock();
 	
-	public void ready(){
-		if(isHost()){
-			//Socket Listen
-			
-		}else{
-			//Socket Connect
-			
-		}
-		
-		threadJoyRead.start();
-		threadJoyWrite.start();
-		start();
+	public ThreadServer(){
+		setName("Thread-Server");
 	}
 	
+	public abstract void initialize();
+	
 	public void run(){
+		
 		//exchange joy status
 		while(true){
-			synchronized (threadJoyWrite) {
-				synchronized(threadJoyRead){
+			
+			synchronized(this){
+				
+				try{
+					readWriteLock.writeLock().lock();
 					
-					//doSomethine
+					beforeWait();
 					
-					//VBlank
+					if(!isSingleMode()){
 					
-					threadJoyWrite.notify();
-					threadJoyRead.notify();
+						if(!threadJoyWrite.isAlive()){
+							threadJoyWrite.start();
+						}
+						
+						if(!threadJoyRead.isAlive()){
+							threadJoyRead.start();
+						}
+						
+						synchronized(threadJoyWrite){
+							threadJoyWrite.finished=false;
+							threadJoyWrite.notify();
+						}
+						
+						synchronized(threadJoyRead){
+							threadJoyRead.finished=false;
+							threadJoyRead.notify();
+						}
+					
+					}
+					
+				}finally{
+					readWriteLock.writeLock().unlock();
+				}
+				
+				if(!isSingleMode()){
+					
 					try {
-						threadJoyWrite.wait();
-						threadJoyRead.wait();
+						wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}finally{
+						afterWait();
 					}
+					
 				}
+						
 			}
 		}
 	}
+	
+	public abstract void beforeWait();
+	public abstract void afterWait();
 
 	public boolean isHost() {
-		return server!=null;
+		return ip!=null;
 	}
 
-	public String getServer() {
-		return server;
+	public String getIP() {
+		return ip;
 	}
 
-	public void setServer(String server) {
-		this.server = server;
+	public void setIP(String ip) {
+		this.ip = ip;
 	}
 
-	public int getPort() {
+	public Integer getPort() {
 		return port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(Integer port) {
 		this.port = port;
+	}
+
+	public ThreadJoy getThreadJoyRead() {
+		return threadJoyRead;
+	}
+
+	public void setThreadJoyRead(ThreadJoy threadJoyRead) {
+		this.threadJoyRead = threadJoyRead;
+	}
+
+	public ThreadJoy getThreadJoyWrite() {
+		return threadJoyWrite;
+	}
+
+	public void setThreadJoyWrite(ThreadJoy threadJoyWrite) {
+		this.threadJoyWrite = threadJoyWrite;
+	}
+
+	public InputHandler getJoy1() {
+		return joy1;
+	}
+
+	public void setJoy1(InputHandler joy1) {
+		this.joy1 = joy1;
+	}
+
+	public InputHandler getJoy2() {
+		return joy2;
+	}
+
+	public void setJoy2(InputHandler joy2) {
+		this.joy2 = joy2;
+	}
+	
+	/**
+	 * 是否单机模式
+	 * @return
+	 */
+	public boolean isSingleMode(){
+		return port==null;
 	}
 	
 }

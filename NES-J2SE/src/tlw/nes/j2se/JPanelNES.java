@@ -3,8 +3,6 @@ package tlw.nes.j2se;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -12,6 +10,7 @@ import java.io.InputStream;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
@@ -31,15 +30,9 @@ import tlw.nes.vppu.PPU;
 //必须继承自JPanel，使用Canvas,JComponent时弹出菜单显示会有问题。
 public class JPanelNES extends JPanel implements NesShell, Display{
 	private static final long serialVersionUID = -2779554736088106527L;
-	static String defaltROM;
+	static String defaltROM = "game.nes";
 	public static void main(String[] args) {
-		if (args != null && args.length > 0) {
-			// 启动时第一个参数作为要加载的rom，如果没有该参数则默认加载当前路径下game.nes.
-			defaltROM = args[0];
-		} else {
-			defaltROM = "game.nes";
-		}
-
+	
 		JPanelNES jpanelNes = new JPanelNES();
 
 		JMenuBar jmenuBar = new JMenuBar();
@@ -72,6 +65,21 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().add(jpanelNes, BorderLayout.CENTER);
+		
+		JPanelServerInfo jpanelServerInfo=new JPanelServerInfo();
+		JOptionPane.showMessageDialog(frame, jpanelServerInfo, "", JOptionPane.PLAIN_MESSAGE);
+		
+		if(jpanelServerInfo.jradioButtonServer.isSelected()){
+			//主机模式
+			int port=(Integer)jpanelServerInfo.jspinnerPort.getValue();
+			jpanelNes.getNES().getCpu().setPort(port);
+		}else if(jpanelServerInfo.jradioButtonClient.isSelected()){
+			//客户机模式
+			String ip=jpanelServerInfo.jtextFieldIP.getText();
+			int port=(Integer)jpanelServerInfo.jspinnerPort.getValue();
+			jpanelNes.getNES().getCpu().setPort(port);
+			jpanelNes.getNES().getCpu().setServer(ip);
+		}
 
 		frame.setVisible(true);
 		jpanelNes.init(false);
@@ -121,14 +129,15 @@ public class JPanelNES extends JPanel implements NesShell, Display{
 		requestFocus();
 		setBackground(Color.BLACK);
 		
-		this.addFocusListener(new FocusListener(){
-			public void focusGained(FocusEvent e) {
-				nes.getCpu().setPause(false);
-			}
-			public void focusLost(FocusEvent e) {
-				nes.getCpu().setPause(true);
-			}
-		});
+		//当失去焦点时暂停游戏
+//		this.addFocusListener(new FocusListener(){
+//			public void focusGained(FocusEvent e) {
+//				nes.getCpu().setPause(false);
+//			}
+//			public void focusLost(FocusEvent e) {
+//				nes.getCpu().setPause(true);
+//			}
+//		});
 		
 		// Set background color:
 //		for(int i=0;i<pix.length;i++){

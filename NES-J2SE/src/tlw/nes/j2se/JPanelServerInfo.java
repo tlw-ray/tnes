@@ -1,5 +1,6 @@
 package tlw.nes.j2se;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -17,6 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -32,7 +34,7 @@ public class JPanelServerInfo extends JPanel implements ActionListener{
 		JPanelServerInfo pane=new JPanelServerInfo();
 		frame.add(pane);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(320,230);
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
@@ -49,6 +51,8 @@ public class JPanelServerInfo extends JPanel implements ActionListener{
 	JTextArea jtextAreaDesc=new JTextArea();
 	
 	public JPanelServerInfo(){
+		
+		setPreferredSize(new Dimension(260,180));
 		
 		JPanel jpanelRadioButtons=new JPanel();
 		jpanelRadioButtons.setLayout(new GridLayout(1,3));
@@ -92,8 +96,9 @@ public class JPanelServerInfo extends JPanel implements ActionListener{
 		
 		jtextAreaDesc.setEditable(false);
 		jtextAreaDesc.setWrapStyleWord(true);
+		jtextFieldIP.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		jradioButtonServer.doClick();
+		jradioButtonSingle.doClick();
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class ThreadJoyWrite extends ThreadJoy {
 		try {
 			byte value=joy.getPadKeyState();
 			out.write(value);
-//			System.out.println("Write:"+value);
+//				System.out.println("Write:"+value);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

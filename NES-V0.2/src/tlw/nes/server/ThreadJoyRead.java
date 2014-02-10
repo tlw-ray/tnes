@@ -19,7 +19,7 @@ public class ThreadJoyRead extends ThreadJoy {
 			joy.setPadKeyState(value);
 //			System.out.println("Read:"+value);
 		} catch (IOException e) {
-			//TODO 这里应加入退出标记
+			//TODO 这里应加入退出处理、由于对面的socket已断开
 			e.printStackTrace();
 		}
 	}

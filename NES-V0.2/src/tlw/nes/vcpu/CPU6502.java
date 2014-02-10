@@ -72,7 +72,7 @@ public final class CPU6502 implements Runnable{
 	private boolean stopRunning;
 	private boolean pause=false;
 	private boolean crash;
-
+	
 	// Constructor:
 	public CPU6502(NES nes){
 		this.nes = nes;

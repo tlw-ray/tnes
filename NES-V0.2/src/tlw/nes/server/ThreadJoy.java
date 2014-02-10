@@ -3,6 +3,7 @@ package tlw.nes.server;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import tlw.nes.interf.InputHandler;
+import tlw.nes.server.tst.TimeStat;
 
 /**
 @author liwei.tang@magustek.com
@@ -17,9 +18,18 @@ public abstract class ThreadJoy extends Thread{
 	
 	ThreadJoy threadOtherClient;
 	
+	//是否已经执行过(读|写)操作
 	protected boolean finished=true;
 	
 	ReadWriteLock readWriteLock;
+	
+	//模拟器每处理10个cpu循环，进行一次键盘状态
+	private int communicationStep=15;
+	private int communicationValue=0;
+	private int communicationCount=0;
+	private int communicationCount_max=10000;
+	
+	TimeStat timeStat=new TimeStat();
 	
 	public void run(){
 		while(true){
@@ -28,7 +38,18 @@ public abstract class ThreadJoy extends Thread{
 				try{
 					readWriteLock.readLock().lock();
 					
-					process();
+					if(communicationValue++>communicationStep){
+						process();
+						communicationValue=0;
+						
+						if(communicationCount++>communicationCount_max){
+							System.out.println(communicationCount);
+							communicationCount=0;
+						}
+					}
+					
+//					process();
+					timeStat.call();
 					
 					synchronized(ThreadJoy.class){
 						finished=true;
@@ -55,6 +76,7 @@ public abstract class ThreadJoy extends Thread{
 	}
 	
 	public abstract void process();
+	
 	public abstract void notifyServer();
 
 	public InputHandler getJoy() {

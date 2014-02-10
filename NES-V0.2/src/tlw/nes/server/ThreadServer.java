@@ -40,7 +40,7 @@ public abstract class ThreadServer extends Thread{
 					readWriteLock.writeLock().lock();
 					
 					beforeWait();
-					
+						
 					if(!isSingleMode()){
 					
 						if(!threadJoyWrite.isAlive()){

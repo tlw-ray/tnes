@@ -12,6 +12,7 @@ import tlw.nes.interf.InputHandler;
 import tlw.nes.server.ThreadJoyRead;
 import tlw.nes.server.ThreadJoyWrite;
 import tlw.nes.server.ThreadServer;
+import tlw.nes.server.tst.CallStat;
 import tlw.nes.server.tst.InputHandlerImpl;
 
 /**
@@ -20,13 +21,7 @@ import tlw.nes.server.tst.InputHandlerImpl;
  */
 public class ThreadServerNet extends ThreadServer {
 
-	static final int LOG_COUNT=10000;
-	
-	//每执行LOG_COUNT次数输出一次
-	int pc=0;
-	int pc_pack=0;
-	
-	long start=System.currentTimeMillis();
+	CallStat callState=new CallStat();
 	
 	public void initialize() {
 		//虚拟手柄
@@ -99,13 +94,7 @@ public class ThreadServerNet extends ThreadServer {
 
 	@Override
 	public void beforeWait() {
-		//服务端每执行LOG_COUNT次就输出一次，用来判定是否一直在执行未死锁。
-		pc++;
-		if(pc>LOG_COUNT){
-			System.out.println("running ... "+(pc_pack++)+"*"+LOG_COUNT+" times spend "+(System.currentTimeMillis()-start)+" ms.");
-			pc=0;
-			start=System.currentTimeMillis();
-		}
+		callState.call();
 	}
 
 	@Override
